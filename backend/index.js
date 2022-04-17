@@ -1,7 +1,12 @@
 const express = require("express");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-const port = process.env.PORT || 5000;
+app.use(express.json());
+app.use("/api/users", userRoutes);
 
-app.listen(port, () => console.log("Listening on port " + port));
+require("./routes/authRoute")(app);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log("Listening on port " + PORT));
