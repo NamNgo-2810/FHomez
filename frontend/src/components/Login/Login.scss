@@ -1,0 +1,33 @@
+.modal {
+    width:'100vw';
+    height:'100vh'
+}
+
+.modal-dialog {
+    height: auto
+}
+
+.modal-content {
+    width: 85%!important;
+    height: 70%;
+    margin: auto;
+}
+
+.sign-in {
+    background-color: #5cb85c!important;
+    border-color: #5cb85c!important
+}
+
+.f-sign-in {
+    background-color: #506dab!important;
+    border-color: #506dab!important
+}
+
+.g-sign-in {
+    background-color: #dd4b39!important;
+    border-color: #dd4b39!important
+}
+
+.text-info:hover > span {
+    cursor: pointer
+}
