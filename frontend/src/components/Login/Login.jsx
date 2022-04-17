@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button, Form, Modal } from "react-bootstrap";
 import { FaFacebookF, FaGoogle, FaSignInAlt } from "react-icons/fa";
-import styles from "./Login.scss";
+import styles from "./Login.module.scss";
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
