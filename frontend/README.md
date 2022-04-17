@@ -6,3 +6,4 @@ Cách chạy code
 Phân tích code + stack 
 1. Chia các đoạn code sử dụng lại nhiều lần thành 1 component riêng
 2. Sử dụng thư viện để xây dựng giao diện (chưa xác định)
+3. Sử dụng react icon: https://react-icons.github.io/react-icons/
