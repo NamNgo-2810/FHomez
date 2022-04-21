@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const database = require("../services/database");
+const database = require("../services/user.database");
 
-router.route("/users/:id").get(async (req, res) => {
+router.get("/users/:id", async (req, res) => {
     try {
-        const user = database.getUser(req.params.id);
+        const user = database.getUser(req.body.id);
         res.send(user);
     } catch (error) {
         console.log(error);
