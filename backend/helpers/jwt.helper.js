@@ -17,7 +17,7 @@ exports.generateToken = async (payload, secretSignature, tokenLife) => {
             }
         );
     } catch (error) {
-        console.log(`Error in generate access token:  + ${error}`);
+        console.log(error);
         return null;
     }
 };

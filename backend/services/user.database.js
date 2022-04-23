@@ -4,57 +4,91 @@ const bcrypt = require("bcryptjs");
 const connection = mysql.createConnection(config.db);
 
 async function userSignIn(phoneNumber, password) {
-    try {
+    return new Promise(function (resolve, reject) {
         connection.query(
-            "SELECT * FROM test_user WHERE phoneNumber = ? AND password = ?",
-            [phoneNumber, password],
-            (error, result) => {
-                if (error) throw error;
-                console.log(result);
-                return result;
-            }
-        );
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-async function userSignUp(phoneNumber, password) {
-    try {
-        connection.query(
-            `INSERT INTO test_user (phoneNumber, password) VALUES ('${phoneNumber}', '${password}')`,
-            (error, result) => {
-                if (error) throw error;
-                // console.log(result);
-                return result;
-            }
-        );
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-async function checkUserExist(phoneNumber) {
-    try {
-        let exist = await connection.query(
             "SELECT * FROM test_user WHERE phoneNumber = ?",
             [phoneNumber],
             (error, result) => {
-                if (error) throw error;
-                return result.length > 0;
+                if (error) reject(error);
+                resolve(result);
             }
         );
+    }).then((result) => {
+        if (result.length == 0) {
+            return {
+                status: 401,
+                message: "Invalid user",
+            };
+        }
+        const isPasswordValid = bcrypt.compareSync(
+            password,
+            result[0].password
+        );
+        if (!isPasswordValid) {
+            return {
+                status: 401,
+                message: "Wrong password",
+            };
+        }
+        return {
+            status: 200,
+            message: "Login success",
+            body: result[0],
+        };
+    });
+}
 
-        console.log("Exist: " + exist);
+async function userSignUp(phoneNumber, password) {
+    return new Promise(function (resolve, reject) {
+        connection.query(
+            `INSERT INTO test_user (phoneNumber, password) VALUES ('${phoneNumber}', '${password}')`,
+            (error, result) => {
+                if (error) reject(error);
+                resolve(result);
+            }
+        );
+    }).then((result) => {
+        return true;
+    });
+}
 
-        return exist;
-    } catch (error) {
-        console.log(error);
-    }
+async function updateRefreshToken(phoneNumber, refreshToken) {
+    return new Promise(() => {
+        console.log("Refresh token adding...");
+        connection.query(
+            `UPDATE test_user
+            SET refreshToken = '${refreshToken}'
+            WHERE phoneNumber = ${phoneNumber}`,
+            (error, result) => {
+                if (error) return false;
+                console.log(result);
+            }
+        );
+    }).then(() => {
+        return true;
+    });
+}
+
+async function getUserByPhoneNumber(phoneNumber) {
+    return new Promise((resolve, reject) => {
+        connection.query(
+            `SELECT * FROM test_user WHERE phoneNumber = ${phoneNumber}`,
+            (error, result) => {
+                if (error) reject(error);
+                resolve(result);
+            }
+        );
+    }).then((result) => {
+        if (result.length == 0) {
+            return null;
+        }
+        return result;
+    });
 }
 
 module.exports = {
-    checkUserExist: checkUserExist,
     userSignIn: userSignIn,
     userSignUp: userSignUp,
+    getUserByPhoneNumber: getUserByPhoneNumber,
+    updateRefreshToken: updateRefreshToken,
 };
