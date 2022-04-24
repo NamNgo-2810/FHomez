@@ -1,5 +1,6 @@
 const config = require("../config");
 const jwtHelper = require("../helpers/jwt.helper");
+const twofaHelper = require("../helpers/2fa.helper");
 const database = require("../services/user.database");
 const bcrypt = require("bcryptjs");
 const randToken = require("rand-token");
@@ -121,4 +122,43 @@ exports.refreshToken = async (req, res) => {
     return res.json({
         accessToken,
     });
+};
+
+exports.OTPsender = async (req, res) => {
+    try {
+        const phoneNumber = req.body.phoneNumber;
+        console.log("Phone number: " + phoneNumber);
+        const service = "FHomez";
+        const secret = twofaHelper.generateUniqueSecret();
+
+        const OTPtoken = twofaHelper.generateOTPToken(
+            phoneNumber,
+            service,
+            secret
+        );
+
+        const sendOTPToken = await twofaHelper.sendOTPToken(phoneNumber);
+
+        console.log(sendOTPToken);
+
+        if (!sendOTPToken) {
+            return res.send("OTP sent failed. Try again");
+        }
+
+        return res.send("OTP sent success");
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+exports.OTPverifier = async (req, res) => {
+    try {
+        const phoneNumber = req.body.phoneNumber;
+        const otpToken = req.body.OTPtoken;
+        const isValid = twofaHelper.verifyOTPToken(phoneNumber, otpToken);
+
+        return res.status(200).json({ isValid });
+    } catch (error) {
+        console.log(error);
+    }
 };

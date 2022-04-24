@@ -1,5 +1,5 @@
+const twilio = require("twilio");
 const otplib = require("otplib");
-const fast2sms = require("fast-two-sms");
 const config = require("../config");
 const { authenticator } = otplib;
 
@@ -11,23 +11,36 @@ const generateOTPToken = (phoneNumber, service, secret) => {
     return authenticator.keyuri(phoneNumber, service, secret);
 };
 
-const sendOTPToken = (phoneNumber, OTPToken, res) => {
-    const option = {
-        authorization: config.auth.FAST_2_API_KEY,
-        message: `Your OTP for FHomez: ${OTPToken}`,
-        number: phoneNumber,
-    };
+const sendOTPToken = async (phoneNumber) => {
+    console.log(`Sending to ${phoneNumber}...`);
+    const accountSid = config.plugin.TWILIO_ACCOUNT_SID;
+    const authToken = config.plugin.TWILIO_AUTH_TOKEN;
+    const client = twilio(accountSid, authToken);
 
-    fast2sms
-        .sendMessage(option)
-        .then(() => {
-            res.send("SMS OTP code sent successfully");
-        })
-        .catch(res.send("Something wrong. Try again"));
+    return client.verify
+        .services(config.plugin.TWILIO_SERVICE_SID)
+        .verifications.create({ to: phoneNumber, channel: "sms" })
+        .then((verification) => {
+            console.log(verification.status);
+        });
 };
 
-const verifyOTPToken = (token, secret) => {
-    return authenticator.verify({ token, secret });
+const verifyOTPToken = async (phoneNumber, OTPToken) => {
+    // return authenticator.verify({ token, secret });
+    console.log("Verifying...");
+    const accountSid = config.plugin.TWILIO_ACCOUNT_SID;
+    const authToken = config.plugin.TWILIO_AUTH_TOKEN;
+    const client = twilio(accountSid, authToken);
+
+    const check = await client.verify
+        .services(config.plugin.TWILIO_SERVICE_SID)
+        .verificationChecks.create({ to: phoneNumber, code: OTPToken })
+        .catch((e) => {
+            console.log(e);
+        });
+
+    console.log("Verified");
+    return check;
 };
 
 module.exports = {

@@ -13,7 +13,11 @@ const config = {
         REFRESH_TOKEN_SECRET: "",
         REFRESH_TOKEN_SIZE: 20,
         SALT: 12,
-        FAST_2_API_KEY: "",
+    },
+    plugin: {
+        TWILIO_ACCOUNT_SID: "ACef793fbcbcc837292304e307da84021a",
+        TWILIO_AUTH_TOKEN: "b52cc8039fd32eaaf9d59b0810d1ee38",
+        TWILIO_SERVICE_SID: "VA90e2ee9b4f833f4da59fef79cabe8f5b",
     },
     url: "http://localhost:5000",
 };
