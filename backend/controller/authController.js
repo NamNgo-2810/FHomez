@@ -25,6 +25,46 @@ exports.signup = async (req, res) => {
                 .send("Phone number was registered. Try another");
         }
 
+        req.session.phoneNumber = phoneNumber;
+        req.session.hashPassword = hashPassword;
+
+        return res.redirect("/sender");
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+exports.OTPsender = async (req, res) => {
+    try {
+        const phoneNumber = req.session.phoneNumber;
+
+        const sendOTPToken = await twofaHelper.sendOTPToken(phoneNumber);
+
+        console.log(sendOTPToken);
+
+        if (!sendOTPToken) {
+            return res.send("OTP sent failed. Try again");
+        }
+
+        res.send("OTP sent success");
+
+        return res.redirect("/verifier");
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+exports.OTPverifier = async (req, res) => {
+    try {
+        const phoneNumber = req.session.phoneNumber;
+        const hashPassword = req.session.hashPassword;
+        const otpToken = req.body.OTPtoken;
+        const isValid = twofaHelper.verifyOTPToken(phoneNumber, otpToken);
+
+        if (!isValid) {
+            return res.send("Invalid OTP");
+        }
+
         const user = await database.userSignUp(phoneNumber, hashPassword);
 
         if (user) {
@@ -122,43 +162,4 @@ exports.refreshToken = async (req, res) => {
     return res.json({
         accessToken,
     });
-};
-
-exports.OTPsender = async (req, res) => {
-    try {
-        const phoneNumber = req.body.phoneNumber;
-        console.log("Phone number: " + phoneNumber);
-        const service = "FHomez";
-        const secret = twofaHelper.generateUniqueSecret();
-
-        const OTPtoken = twofaHelper.generateOTPToken(
-            phoneNumber,
-            service,
-            secret
-        );
-
-        const sendOTPToken = await twofaHelper.sendOTPToken(phoneNumber);
-
-        console.log(sendOTPToken);
-
-        if (!sendOTPToken) {
-            return res.send("OTP sent failed. Try again");
-        }
-
-        return res.send("OTP sent success");
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-exports.OTPverifier = async (req, res) => {
-    try {
-        const phoneNumber = req.body.phoneNumber;
-        const otpToken = req.body.OTPtoken;
-        const isValid = twofaHelper.verifyOTPToken(phoneNumber, otpToken);
-
-        return res.status(200).json({ isValid });
-    } catch (error) {
-        console.log(error);
-    }
 };

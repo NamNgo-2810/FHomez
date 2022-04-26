@@ -1,15 +1,5 @@
 const twilio = require("twilio");
-const otplib = require("otplib");
 const config = require("../config");
-const { authenticator } = otplib;
-
-const generateUniqueSecret = () => {
-    return authenticator.generateSecret();
-};
-
-const generateOTPToken = (phoneNumber, service, secret) => {
-    return authenticator.keyuri(phoneNumber, service, secret);
-};
 
 const sendOTPToken = async (phoneNumber) => {
     console.log(`Sending to ${phoneNumber}...`);
@@ -26,7 +16,6 @@ const sendOTPToken = async (phoneNumber) => {
 };
 
 const verifyOTPToken = async (phoneNumber, OTPToken) => {
-    // return authenticator.verify({ token, secret });
     console.log("Verifying...");
     const accountSid = config.plugin.TWILIO_ACCOUNT_SID;
     const authToken = config.plugin.TWILIO_AUTH_TOKEN;
@@ -40,12 +29,10 @@ const verifyOTPToken = async (phoneNumber, OTPToken) => {
         });
 
     console.log("Verified");
-    return check;
+    return true;
 };
 
 module.exports = {
-    generateUniqueSecret: generateUniqueSecret,
-    generateOTPToken: generateOTPToken,
     sendOTPToken: sendOTPToken,
     verifyOTPToken: verifyOTPToken,
 };
