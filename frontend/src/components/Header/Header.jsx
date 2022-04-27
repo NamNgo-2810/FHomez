@@ -40,7 +40,7 @@ function Header() {
             </li>
             <li class="nav-item">
               <Link class="nav-link" to="/login">
-                <button style={{width: '125px',backgroundColor:''}} className="btn btn-block">Đăng nhập</button>
+                <button style={{width: '125px',backgroundColor:'#f6dddf'}} className="btn btn-block">Đăng nhập</button>
               </Link>
             </li>
             <li class="nav-item">
