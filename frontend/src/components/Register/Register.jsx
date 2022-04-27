@@ -6,7 +6,6 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { FaSignInAlt, FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "./Register.module.scss";
 
-console.log(styles)
 // Handle message error validation
 const validationSchema = yup.object().shape({
   phoneNumber: yup
@@ -31,6 +30,7 @@ const validationSchema = yup.object().shape({
     .required("Mật khẩu không được để trống")
     .oneOf([yup.ref("password"), null], "Mật khẩu mới nhập không trùng khớp"),
 });
+
 
 function Register() {
   // Declare state
@@ -75,29 +75,41 @@ function Register() {
               />
               <span style={{ color: "red" }}>{errors.username?.message}</span>
             </Form.Group>
-            <Form.Group className={"mb-3 " + styles['p-relative']}>
+            <Form.Group className={"mb-3 " + styles["p-relative"]}>
               <Form.Control
-                type={showPass1 ? "text" : "password" }
+                type={showPass1 ? "text" : "password"}
                 {...register("password", { required: true })}
                 placeholder="Nhập mật khẩu"
               />
               {showPass1 ? (
-                <FaEye className={styles['fa-eye']} onClick={() => setShowPass1(!showPass1)} />
+                <FaEye
+                  className={styles["fa-eye"]}
+                  onClick={() => setShowPass1(!showPass1)}
+                />
               ) : (
-                <FaEyeSlash className={styles['fa-eye']} onClick={() => setShowPass1(!showPass1)} />
+                <FaEyeSlash
+                  className={styles["fa-eye"]}
+                  onClick={() => setShowPass1(!showPass1)}
+                />
               )}
               <span style={{ color: "red" }}>{errors.password?.message}</span>
             </Form.Group>
-            <Form.Group className={"mb-3 " + styles['p-relative']}>
+            <Form.Group className={"mb-3 " + styles["p-relative"]}>
               <Form.Control
                 type={showPass2 ? "text" : "password"}
                 {...register("rePassword", { required: true })}
                 placeholder="Nhập lại mật khẩu"
               />
               {showPass2 ? (
-                <FaEye className={styles['fa-eye']} onClick={() => setShowPass2(!showPass2)} />
+                <FaEye
+                  className={styles["fa-eye"]}
+                  onClick={() => setShowPass2(!showPass2)}
+                />
               ) : (
-                <FaEyeSlash className={styles['fa-eye']} onClick={() => setShowPass2(!showPass2)} />
+                <FaEyeSlash
+                  className={styles["fa-eye"]}
+                  onClick={() => setShowPass2(!showPass2)}
+                />
               )}
               <span style={{ color: "red" }}>{errors.rePassword?.message}</span>
             </Form.Group>
@@ -108,12 +120,13 @@ function Register() {
               </Button>
             </Form.Group>
           </Form>
+          
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
           {/* Need handle open sign in form */}
           Đã có tài khoản ?{" "}
           <span className="text-info">
-            <span>Đăng nhập</span>
+            <span style={{ cursor: "pointer" }}>Đăng nhập</span>
           </span>
         </Modal.Footer>
       </Modal>
