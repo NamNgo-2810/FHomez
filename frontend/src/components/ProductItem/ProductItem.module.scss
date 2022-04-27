@@ -1,0 +1,48 @@
+$primary-color: #015f95;
+$secondary-color:#38a343;
+$text-color: #888;
+
+
+
+.container {
+    width: 100%;
+    height: auto;
+
+    .productImage {
+        width: 40%;
+        height: 100%;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .productInfo {
+        width: 60%;
+        height: 100%;
+
+        .productTitle {
+            color : $primary-color;
+            text-decoration: none;
+        }
+        & p {
+            color: $text-color;
+            text-align: start;
+            font-size: 14px;
+            height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        & b {
+            color: $secondary-color;
+        }
+
+        .otherProductInfo {
+            width: 100%;
+        }
+    }
+}
