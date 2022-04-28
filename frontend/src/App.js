@@ -10,21 +10,22 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home/>}>
+          <Route index element={<Home />} />
+          <Route path="signup" element={<Register />}>
+              <Route path="verifyOTP" element={<Register />}></Route>
+          </Route>
+          <Route path="login" element={<Login />}></Route>
 
-            {/* <Route index element={<Home />} />
-            Path lồng nhau 
+          {/* Path lồng nhau 
             <Route path="teams" element={<Teams />}>
               <Route path=":teamId" element={<Team />} />
               <Route path="new" element={<NewTeamForm />} />
               <Route index element={<LeagueStandings />} />
             </Route> */}
-          </Route>
         </Routes>
       </BrowserRouter>
 
       {/* <ProductItem id="1" src="https://img.thuephongtro.com/images/thumb/2020/04/29/20200429120046-0zgfo.jpg" title="dfdfdfdfd" desc="hello" /> */}
-
     </div>
   );
 }

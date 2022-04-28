@@ -12,6 +12,7 @@ function ProductList() {
 
   return (
     <div className="col-8">
+      dffdf
       {products &&
         products.map((product) => 
           <ProductItem
