@@ -1,5 +1,13 @@
+
+
 export const productService = {
-    getAll,
+    getPerPage,
     getById,
     search
+}
+
+
+const getPerPage = () => {
+
+
 }
