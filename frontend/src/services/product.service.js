@@ -1,5 +1,13 @@
+import axiosClient from "./axiosClient";
+
 export const productService = {
-    getAll,
+    getPerPage,
     getById,
     search
+}
+
+
+const getPerPage = (page) => {
+
+
 }
