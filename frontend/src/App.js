@@ -2,8 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
-import ProductItem from "./components/ProductItem/ProductItem";
-import Home from "./containers/Home";
+import UploadForm from "./components/UploadForm/UploadForm";
 
 function App() {
   return (
@@ -12,16 +11,16 @@ function App() {
         <Routes>
           <Route index element={<Home />} />
           <Route path="signup" element={<Register />}>
-              <Route path="verifyOTP" element={<Register />}></Route>
+            <Route path="verifyOTP" element={<Register />}></Route>
           </Route>
           <Route path="login" element={<Login />}></Route>
 
-          {/* Path lồng nhau 
-            <Route path="teams" element={<Teams />}>
-              <Route path=":teamId" element={<Team />} />
-              <Route path="new" element={<NewTeamForm />} />
-              <Route index element={<LeagueStandings />} />
-            </Route> */}
+          {/* Path lồng nhau  */}
+          <Route path="teams" element={<Teams />}>
+            <Route path=":teamId" element={<Team />} />
+            <Route path="new" element={<NewTeamForm />} />
+            <Route index element={<LeagueStandings />} />
+          </Route>
         </Routes>
       </BrowserRouter>
 
