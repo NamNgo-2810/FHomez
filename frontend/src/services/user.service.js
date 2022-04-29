@@ -1,5 +1,7 @@
-// Handle all backend api call 
+import axiosClient from "./axiosClient";
 
+
+// Handle all backend api call 
 export const userService = {
     register,
     login,
@@ -12,7 +14,6 @@ export const userService = {
 };
 
 const register = (username,password,rePassword) => {
-
 }
 
 

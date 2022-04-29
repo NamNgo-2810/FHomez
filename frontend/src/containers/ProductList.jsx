@@ -5,9 +5,7 @@ function ProductList() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    async function fetchProduct() {}
-
-    fetchProduct();
+    
   });
 
   return (

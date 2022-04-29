@@ -1,4 +1,4 @@
-
+import axiosClient from "./axiosClient";
 
 export const productService = {
     getPerPage,
@@ -7,7 +7,7 @@ export const productService = {
 }
 
 
-const getPerPage = () => {
+const getPerPage = (page) => {
 
 
 }
