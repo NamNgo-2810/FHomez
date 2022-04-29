@@ -19,7 +19,6 @@
         "jsonwebtoken": "^8.5.1",
         "mysql": "^2.18.1",
         "nodemon": "^2.0.15",
-        "otplib": "^12.0.1",
         "rand-token": "^1.0.1",
         "twilio": "^3.76.1"
     }
