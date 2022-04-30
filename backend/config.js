@@ -3,7 +3,7 @@ export const config = {
         host: "http://tidb.e6c3a535.8a5ae6bc.ap-northeast-1.prod.aws.tidbcloud.com/",
         user: "root",
         password: "FHomez2018",
-        database: "test_node",
+        database: "test",
     },
     auth: {
         TOKEN_KEY: "namdeptrai",
