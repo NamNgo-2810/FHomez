@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-    storage,
-    ref,
-    uploadBytesResumable,
-    getDownloadURL,
-} from "../../services/home.service";
+import { storage } from "../../services/firebase.service";
 
 const UploadForm = () => {
     const [images, setImages] = useState([]);
@@ -21,17 +16,8 @@ const UploadForm = () => {
 
     const handleUpload = () => {
         const promises = [];
-        const metadata = {
-            contentType: "image/jpeg",
-        };
-
         images.map((image) => {
-            const storageRef = ref(storage, image.name);
-            const uploadTask = uploadBytesResumable(
-                storageRef,
-                image,
-                metadata
-            );
+            const uploadTask = storage.ref(`images/${image.name}`).put(image);
             promises.push(uploadTask);
             uploadTask.on(
                 "state_changed",
@@ -44,17 +30,25 @@ const UploadForm = () => {
                 (error) => {
                     console.log(error);
                 },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(
-                        (downloadURL) => {
-                            setUrls((prevState) => [...prevState, downloadURL]);
-                            console.log("File available at", downloadURL);
-                        }
-                    );
+                async () => {
+                    await storage
+                        .ref("images")
+                        .child(image.name)
+                        .getDownloadURL()
+                        .then((urls) => {
+                            setUrls((prevState) => [...prevState, urls]);
+                        });
                 }
             );
         });
+
+        Promise.all(promises)
+            .then(() => alert("All images uploaded"))
+            .catch((err) => console.log(err));
     };
+
+    console.log("images: ", images);
+    console.log("urls", urls);
 
     return (
         <div>
