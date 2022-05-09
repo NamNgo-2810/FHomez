@@ -1,7 +1,5 @@
-const mysql = require("mysql");
-const config = require("../config");
 const bcrypt = require("bcryptjs");
-const connection = mysql.createConnection(config.db);
+const connection = require("../database");
 
 async function userSignIn(phoneNumber, password) {
     return new Promise(function (resolve, reject) {
