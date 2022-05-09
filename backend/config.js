@@ -4,6 +4,7 @@ const config = {
         user: "root",
         password: "FHomez2018",
         database: "test",
+        port: "4000",
     },
     auth: {
         TOKEN_KEY: "namdeptrai",
@@ -27,6 +28,11 @@ const config = {
         MESSAGEING_SENDER_ID: "",
         APP_ID: "",
         MEASUREMENT_ID: "",
+    },
+    mongo: {
+        USERNAME: "namngo2810",
+        PASSWORD: "P5kATl2vDjnALWMz",
+        URI: "mongodb+srv://namngo2810:P5kATl2vDjnALWMz@cluster0.stfix.mongodb.net/FHomez?retryWrites=true&w=majority",
     },
     url: "http://localhost:5000",
 };

@@ -1,6 +1,4 @@
-const mysql = require("mysql");
-const config = require("../config");
-const connection = mysql.createConnection(config.db);
+const connection = require("../database");
 
 async function getAllHome() {
     return new Promise((resolve, reject) => {
