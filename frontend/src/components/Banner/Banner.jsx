@@ -20,11 +20,11 @@ function Banner() {
             Việc tìm kiếm một nhà trọ lý tưởng với bạn sẽ trở nên đơn giản hơn bao giờ hết. 👉👈
             <br />
             <button className="banner_intro_button_explore">
-              <Link to="/productItem"
-              className="banner_intro_button_explore_toItemList">
+              {/* <Link to="/productItem"
+              className="banner_intro_button_explore_toItemList"> */}
               Khám phá ngay 👈
               <i aria-hidden="true"></i>
-              </Link>
+              {/* </Link> */}
             </button>
           </div>
         </div>

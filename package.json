@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "multi-range-slider-react": "^1.0.7",
     "react-select": "^5.3.1"
   }
 }
