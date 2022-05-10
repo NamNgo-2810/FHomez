@@ -1,13 +1,17 @@
 import React from 'react'
 import { Link } from "react-router-dom";
-import styles from "./Banner.module.scss";
+// import styles from "./Banner.module.scss";
 import bannerImg from "./bannerimg.jpg"
+import styles from "./Banner.css"
 
+// style={{ backgroundColor: '#f6dddf', padding: '15px', display:'flex', flexDirection:'column'}}
 function Banner() {
   return (
     <div className="rowBanner">
-      <div className="banner_container"> 
-        <img src={bannerImg} alt="SampleRoom" className="banner_illustration" style={{width:'50%', height:'70%'}}></img>
+      <div className="banner_container">
+        <div className="banner_illustration">
+          <img className="banner_img" src={bannerImg} alt="SampleRoom" ></img>
+        </div>        
         <div className="banner_introduction">
           <div className="banner_intro_title">FHomezRE</div>
           <div className="banner_intro_description">
