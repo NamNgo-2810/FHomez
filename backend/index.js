@@ -12,7 +12,5 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/home", homeRoutes);
 
-// require("./routes/authRoute")(app);
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log("Listening on port " + PORT));

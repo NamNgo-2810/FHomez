@@ -1,4 +1,8 @@
-const config = require("../config");
+const database = require("../services/home.database");
+
+exports.getAllHome = async (req, res) => {
+    const result = await database.getAllHome();
+};
 
 exports.addHome = async (req, res) => {
     // TO DO: Insert home's info to database
