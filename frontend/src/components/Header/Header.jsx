@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "./Header.module.scss";
+// import styles from "./Header.module.scss";
 
 function Header() {
   return (
@@ -18,7 +18,7 @@ function Header() {
             alt=""
             width="60"
             height="48"
-            className="d-inline-block align-text-bottom"
+            className="d-inline-block align-text-bottom rounded"
           />
           FHomez
         </Link>
