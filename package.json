@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "multi-range-slider-react": "^1.0.7",
+    "multiselect-react-dropdown": "^2.0.22",
+    "react-multiple-select-dropdown-lite": "^2.0.5",
+    "react-select": "^5.3.2"
+  }
+}

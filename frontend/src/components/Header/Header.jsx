@@ -18,12 +18,12 @@ function Header() {
             alt=""
             width="60"
             height="48"
-            className="d-inline-block align-text-bottom rounded"
+            className="d-inline-block align-text-bottom"
           />
           FHomez
         </Link>
         <button
-          className="navbar-toggler"
+          className="navbar-toggler d-sm-none"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarMobile"
@@ -34,35 +34,20 @@ function Header() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarMobile">
-          <ul className="navbar-nav mr-auto w-100 justify-content-end">
+          <ul className="navbar-nav mr-auto w-100 flex-row justify-content-end">
             <li className="nav-item active">
               <Link className="nav-link" to="/signup">
-                <button
-                  style={{ width: "125px" }}
-                  className="btn btn-light btn-block"
-                >
-                  Đăng kí
-                </button>
+                <button style={{width: '125px'}} className="btn btn-light btn-block">Đăng kí</button>
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/login">
-                <button
-                  style={{ width: "125px", backgroundColor: "#f6dddf" }}
-                  className="btn btn-block"
-                >
-                  Đăng nhập
-                </button>
+                <button style={{width: '125px',backgroundColor:'#f6dddf'}} className="btn btn-block">Đăng nhập</button>
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/login">
-                <button
-                  style={{ width: "125px" }}
-                  className="btn btn-primary btn-block"
-                >
-                  Đăng bài
-                </button>
+                <button style={{width: '125px'}} className="btn btn-primary btn-block">Đăng bài</button>
               </Link>
             </li>
           </ul>
