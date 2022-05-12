@@ -3,26 +3,27 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import UploadForm from "./components/UploadForm/UploadForm";
-import ChatForm from "./components/Chat/Chat";
+import Chat from "./components/Chat/Chat";
 
 function App() {
     return (
         <div className="App">
             <BrowserRouter>
                 <Routes>
-                    <Route index element={<Home />} />
+                    {/* <Route index element={<Home />} /> */}
                     <Route path="signup" element={<Register />}>
                         <Route path="verifyOTP" element={<Register />}></Route>
                     </Route>
                     <Route path="login" element={<Login />}></Route>
 
                     {/* Path lồng nhau  */}
-                    <Route path="teams" element={<Teams />}>
+                    {/* <Route path="teams" element={<Teams />}>
                         <Route path=":teamId" element={<Team />} />
                         <Route path="new" element={<NewTeamForm />} />
                         <Route index element={<LeagueStandings />} />
-                    </Route>
+                    </Route> */}
                     <Route path="upload" element={<UploadForm />} />
+                    <Route path="chat" element={<Chat />} />
                 </Routes>
             </BrowserRouter>
 

@@ -1,5 +1,5 @@
 import React from "react";
-import "./ChatOnline.module.scss";
+import "./ChatOnline.css";
 
 function ChatOnline() {
     return (

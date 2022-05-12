@@ -25,7 +25,8 @@
 
 .messageBottom {
     font-size: 12px;
-    margin-top: 10px;
+    margin-top: 5px;
+    align-self: start;
 }
 
 .message.own {
@@ -35,4 +36,10 @@
 .message.own .messageText {
     background-color: lightgray;
     color: black;
+}
+
+.message.own .messageBottom {
+    font-size: 12px;
+    margin-top: 5px;
+    align-self: end;
 }
