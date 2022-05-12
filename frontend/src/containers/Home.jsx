@@ -14,7 +14,7 @@ function Home() {
             <Search></Search>
             <ProductList></ProductList>
         </div>
-        <Footer></Footer>        
+        <Footer></Footer>   
     </div>
   )
 }

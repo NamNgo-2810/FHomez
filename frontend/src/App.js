@@ -2,27 +2,39 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
+import Home from "./containers/Home";
 import UploadForm from "./components/UploadForm/UploadForm";
+import { useContext, useMemo, useState } from "react";
+import AuthContext from "./contexts/AuthContext";
 
 function App() {
-    return (
-        <div className="App">
-            {/* <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />}>
+  const [currentUser, setCurrentUser] = useState(null);
+
+  const authCtxValue = useMemo(
+    () => ({
+      user: currentUser,
+      setUser: (user) => {
+        setCurrentUser(user);
+      },
+    }),
+    [currentUser]
+  );
+  return (
+    <AuthContext.Provider value={authCtxValue}>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
             <Route index element={<Home />} />
-            Path lồng nhau 
-            <Route path="teams" element={<Teams />}>
-              <Route path=":teamId" element={<Team />} />
-              <Route path="new" element={<NewTeamForm />} />
-              <Route index element={<LeagueStandings />} />
+            <Route path="signup" element={<Register />}>
+              <Route path="verifyOTP" element={<Register />}></Route>
             </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter> */}
-            <UploadForm></UploadForm>
-        </div>
-    );
+            <Route path="login" element={<Login />}></Route>
+            {/* <PrivateRoute roles={['admin']}></PrivateRoute> */}
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </AuthContext.Provider>
+  );
 }
 
 export default App;

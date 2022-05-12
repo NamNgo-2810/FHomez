@@ -1,11 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "./Header.module.scss";
+// import styles from "./Header.module.scss";
 
 function Header() {
   return (
-    <div className="row navbar navbar-expand-sm navbar-light bg-light px-8">
-      <div style={{padding:'0px 32px'}} className="container">
+    // navbar-expand-sm -> Các phần tử hiện thị theo chiều ngang ở màn hình > sm và theo chiều dọc ở màn hình sm 
+
+    <div style={{ padding: "0px 32px" }} className="row navbar navbar-expand-sm navbar-light bg-light">
+      <div  className="container">
         <Link
           className="navbar-brand fs-2 fw-normal"
           to="/"
@@ -16,12 +18,12 @@ function Header() {
             alt=""
             width="60"
             height="48"
-            class="d-inline-block align-text-bottom"
+            className="d-inline-block align-text-bottom"
           />
           FHomez
         </Link>
         <button
-          class="navbar-toggler d-sm-none"
+          className="navbar-toggler d-sm-none"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarMobile"
@@ -29,22 +31,22 @@ function Header() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarMobile">
           <ul className="navbar-nav mr-auto w-100 flex-row justify-content-end">
-            <li class="nav-item active">
-              <Link class="nav-link" to="/signup">
+            <li className="nav-item active">
+              <Link className="nav-link" to="/signup">
                 <button style={{width: '125px'}} className="btn btn-light btn-block">Đăng kí</button>
               </Link>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/login">
+            <li className="nav-item">
+              <Link className="nav-link" to="/login">
                 <button style={{width: '125px',backgroundColor:'#f6dddf'}} className="btn btn-block">Đăng nhập</button>
               </Link>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/login">
+            <li className="nav-item">
+              <Link className="nav-link" to="/login">
                 <button style={{width: '125px'}} className="btn btn-primary btn-block">Đăng bài</button>
               </Link>
             </li>
@@ -52,6 +54,43 @@ function Header() {
         </div>
       </div>
     </div>
+
+    // <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
+    //   <a className="navbar-brand" href="#">
+    //     o7planning
+    //   </a>
+
+    //   <button
+    //     className="navbar-toggler"
+    //     type="button"
+    //     data-bs-toggle="collapse"
+    //     data-bs-target="#collapsibleNavbar"
+
+      
+    //   >
+    //     <span className="navbar-toggler-icon"></span>
+    //   </button>
+
+    //   <div className="collapse navbar-collapse" id="collapsibleNavbar">
+    //     <ul className="navbar-nav">
+    //       <li className="nav-item">
+    //         <a className="nav-link" href="#">
+    //           Javascript
+    //         </a>
+    //       </li>
+    //       <li className="nav-item">
+    //         <a className="nav-link" href="#">
+    //           Css
+    //         </a>
+    //       </li>
+    //       <li className="nav-item">
+    //         <a className="nav-link" href="#">
+    //           Bootstrap
+    //         </a>
+    //       </li>
+    //     </ul>
+    //   </div>
+    // </nav>
   );
 }
 
