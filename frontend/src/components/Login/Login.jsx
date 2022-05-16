@@ -71,16 +71,16 @@ function Login() {
               </Form.Text>
             </Form.Group>
             <Form.Group className="d-grid gap-2">
-              <Button className="sign-in" type="submit">
+              <Button className={styles.signIn} type="submit">
                 <FaSignInAlt className="me-1 mb-1"/>
                 Đăng nhập
               </Button>
               <hr />
-              <Button className="f-sign-in d-flex align-items-center justify-content-center">
+              <Button className={`${styles.fSignIn} d-flex align-items-center justify-content-center`}>
                 <FaFacebookF />
                 Đăng nhập bằng facebook
               </Button>
-              <Button className="g-sign-in d-flex align-items-center justify-content-center">
+              <Button className={`${styles.gSignIn} d-flex align-items-center justify-content-center`}>
                 <FaGoogle className="me-1 ms-1" /> 
                 Đăng nhập bằng google
               </Button>
