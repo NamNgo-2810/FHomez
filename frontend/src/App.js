@@ -5,7 +5,7 @@ import Register from "./components/Register/Register";
 import Home from "./containers/Home";
 import UploadForm from "./components/UploadForm/UploadForm";
 import Chat from "./components/Chat/Chat";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import AuthContext from "./contexts/AuthContext";
 
 function App() {

@@ -16,7 +16,7 @@ const UploadForm = () => {
 
     const handleUpload = () => {
         const promises = [];
-        images.map((image) => {
+        images.forEach((image) => {
             const uploadTask = storage.ref(`images/${image.name}`).put(image);
             promises.push(uploadTask);
             uploadTask.on(
@@ -64,7 +64,7 @@ const UploadForm = () => {
                     key={i}
                     style={{ width: "500px" }}
                     src={url || "http://via.placeholder.com/300"}
-                    alt="firebase-image"
+                    alt="avatar"
                 />
             ))}
         </div>

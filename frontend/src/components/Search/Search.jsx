@@ -26,7 +26,7 @@ const Search = () => {
         </div>
         <div className="searchbar_items">          
           {/* Search by geographical location */}
-          <hr role={"separator"} className="searchbar_item_divider" />
+          <hr className="searchbar_item_divider" />
           <div className="searchbar_item">
             <div className="searchbar_item_title">Vị trí</div>
             <div className="searchbar_item_input">
@@ -49,7 +49,7 @@ const Search = () => {
             </div>
           </div>
           {/* Search by price */}
-          <hr role={"separator"} className="searchbar_item_divider" />
+          <hr className="searchbar_item_divider" />
           <div className="searchbar_item">
             <div className="searchbar_item_title">Giá thuê/tháng (nghìn đồng)</div>
             <div className="searchbar_item_input">
@@ -74,7 +74,7 @@ const Search = () => {
             </div>
           </div>
           {/* Search by room class */}
-          <hr role={"separator"} className="searchbar_item_divider" />
+          <hr className="searchbar_item_divider" />
           <div className="searchbar_item">
             <div className="searchbar_item_title">Loại phòng</div>
             <div className="searchbar_item_input">
@@ -87,7 +87,7 @@ const Search = () => {
           </div>
 
           {/* Search by area */}
-          <hr role={"separator"} className="searchbar_item_divider" />
+          <hr className="searchbar_item_divider" />
           <div className="searchbar_item">
           <div className="searchbar_item_title">Diện tích</div>
             <div className="searchbar_item_input">
@@ -112,7 +112,7 @@ const Search = () => {
             </div>
           </div>
           {/* Search by facilities */}
-          <hr role={"separator"} className="searchbar_item_divider" />
+          <hr className="searchbar_item_divider" />
           <div className="searchbar_item">
           <div className="searchbar_item_title">Cơ sở vật chất</div>
             <div className="searchbar_item_input">

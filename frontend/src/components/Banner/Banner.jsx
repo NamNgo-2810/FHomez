@@ -1,8 +1,6 @@
 import React from 'react'
-import { Link } from "react-router-dom";
-// import styles from "./Banner.module.scss";
 import bannerImg from "./bannerimg.jpg"
-import styles from "./Banner.css"
+import "./Banner.css"
 
 // style={{ backgroundColor: '#f6dddf', padding: '15px', display:'flex', flexDirection:'column'}}
 function Banner() {
