@@ -1,0 +1,40 @@
+.colSearch {
+    margin-top: 25px;
+    text-align: left;
+    width: 60%;
+    margin-left: 10px;
+    border-radius: 10px;
+    border-color: crimson;
+    border: 10px;
+}
+
+.colSearch .searchbar_title {
+    text-align: center;
+}
+
+
+
+
+
+.colSearch .searchbar_items .searchbar_items_button_execute {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    padding: 7px 15px;
+
+    background-color: #f6dddf;
+    color: #687a80;
+    font-weight: 400;
+    transition-property: background-color, color;
+    border-radius: 10px;
+    border-color: #f6dddf;
+}
+
+.colSearch .searchbar_items .searchbar_items_button_execute:hover {
+    
+    background-color: #df9c9d;
+    color: #f7f7f7;
+    font-weight: 600;
+    transition-property: background-color, color;
+    border-radius: 10px;
+    border-color: whitesmoke;
+}
