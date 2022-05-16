@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import Conversation from "../Conversation/Conversation";
 import Message from "../Message/Message";
 import ChatOnline from "../ChatOnline/ChatOnline";
+import { io } from "socket.io-client";
 import "./Chat.css";
 
 function Chat() {
     const [conversations, setConversations] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
     const [messages, setMessages] = useState([]);
+    const { register, handleSubmit, reset } = useForm({
+        defaultValues: {
+            message: undefined,
+        },
+    });
+    const scrollRef = useRef();
+    const socket = useRef(io("ws://localhost:8900"));
+    const [arrivalMessage, setArrivalMessage] = useState(null);
 
     const user = {
         id: "123",
@@ -17,6 +27,67 @@ function Chat() {
         username: "Nam",
     };
 
+    const onSend = async (e) => {
+        const newMessage = {
+            sender: user.id,
+            text: e.message,
+            conversationId: currentChat._id,
+        };
+        reset({
+            message: "",
+        });
+
+        const receiverId = currentChat.members.find(
+            (member) => member !== user.id
+        );
+
+        socket.current.emit("sendMessage", {
+            senderId: user.id,
+            receiverId: receiverId,
+            text: newMessage.text,
+        });
+
+        try {
+            const res = await axios.post(
+                `http://localhost:5000/api/chat/message/send`,
+                newMessage
+            );
+            setMessages([...messages, res.data]);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        socket.current = io("ws://localhost:8900");
+        socket.current.on("getMessage", (data) => {
+            setArrivalMessage({
+                sender: data.senderId,
+                text: data.text,
+                createdAt: Date.now(),
+            });
+        });
+    }, []);
+
+    useEffect(() => {
+        arrivalMessage &&
+            currentChat?.members.includes(arrivalMessage.sender) &&
+            setMessages((prev) => [...prev, arrivalMessage]);
+    }, [arrivalMessage, currentChat]);
+
+    useEffect(() => {
+        socket.current.emit("addUser", user.id);
+        socket.current.on("getUsers", (users) => {
+            console.log(users);
+        });
+    }, [user]);
+
+    useEffect(() => {
+        scrollRef.current?.scrollIntoView({
+            behavior: "smooth",
+        });
+    }, [messages]);
+
     useEffect(() => {
         const getConversations = async () => {
             try {
@@ -24,6 +95,7 @@ function Chat() {
                     `http://localhost:5000/api/chat/conversation?userId=${user.id}`
                 );
                 setConversations(res.data);
+                setCurrentChat(res.data[0]);
             } catch (error) {
                 console.log(error);
             }
@@ -67,19 +139,28 @@ function Chat() {
                 <div className="chatBoxWrapper">
                     <div className="chatBoxTop">
                         {messages.map((message) => (
-                            <Message
-                                key={23}
-                                message={message}
-                                own={message.sender === user.username}
-                            />
+                            <div ref={scrollRef}>
+                                <Message
+                                    key={message._id}
+                                    message={message}
+                                    own={message.sender === user.id}
+                                />
+                            </div>
                         ))}
                     </div>
                     <div className="chatBoxBottom">
                         <textarea
                             className="chatMessageInput"
                             placeholder="Aa"
+                            defaultValue=""
+                            {...register("message")}
                         ></textarea>
-                        <button className="chatSubmitButton">Send</button>
+                        <button
+                            className="chatSubmitButton"
+                            onClick={handleSubmit(onSend)}
+                        >
+                            Send
+                        </button>
                     </div>
                 </div>
             </div>

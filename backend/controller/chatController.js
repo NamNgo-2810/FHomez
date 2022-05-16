@@ -37,7 +37,6 @@ exports.sendMessage = async (req, res) => {
 };
 
 exports.getMessages = async (req, res) => {
-    console.log("Running");
     try {
         const messages = await Message.find({
             conversationId: req.query.conversationId,

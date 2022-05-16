@@ -18,8 +18,8 @@
 .messageText {
     padding: 10px;
     border-radius: 20px;
-    color: white;
-    background-color: #1877f2;
+    color: black;
+    background-color: lightgray;
     max-width: 300px;
 }
 
@@ -34,8 +34,8 @@
 }
 
 .message.own .messageText {
-    background-color: lightgray;
-    color: black;
+    background-color: #1877f2;
+    color: white;
 }
 
 .message.own .messageBottom {
