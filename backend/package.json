@@ -14,6 +14,7 @@
         "@vonage/server-sdk": "^2.10.7-beta-2",
         "bcryptjs": "^2.4.3",
         "cookie-session": "^2.0.0",
+        "cors": "^2.8.5",
         "express": "^4.17.3",
         "express-session": "^1.17.2",
         "jsonwebtoken": "^8.5.1",

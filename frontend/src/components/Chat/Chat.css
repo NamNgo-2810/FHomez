@@ -1,4 +1,5 @@
 .chat {
+    display: flex;
     height: calc(100vh - 70px);
 }
 
@@ -40,11 +41,12 @@
     width: 80%;
     height: 30px;
     padding: 2px;
+    border-radius: 10px;
 }
 
 .chatSubmitButton {
-    width: 15px;
-    height: 5px;
+    width: 60px;
+    height: 30px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
