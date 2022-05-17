@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { Button, Form, Modal } from "react-bootstrap";
 import { FaFacebookF, FaGoogle, FaSignInAlt } from "react-icons/fa";
 import styles from "./Login.module.scss";
+import { Link } from "react-router-dom";
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
@@ -91,7 +92,7 @@ function Login() {
           {/* Need handle open sign up form */}
           Chưa có tài khoản ?{" "}
           <span className="text-info">
-            <span>Đăng kí</span>
+            <Link to="/signup" style={{ cursor: "pointer",textDecoration:'none' }}>Đăng kí</Link>
           </span>
         </Modal.Footer>
       </Modal>

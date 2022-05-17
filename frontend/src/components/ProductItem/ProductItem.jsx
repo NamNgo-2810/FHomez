@@ -11,12 +11,20 @@ function ProductItem({
   price,
   area,
   location,
-  createdAt,
+  createdAt
 }) {
   return (
       <div className={styles.container + " d-flex"}>
         <Link to={`/products/${id}`} className={styles.productImage}>
-          <img src={src} alt={title} />
+            <img src={src} alt={title} />
+            {
+              {
+                0: null,
+                1: <div className={`${styles.typeNews} ${styles.hotBg}`}>{"HOT".toUpperCase()}</div>,
+                2: <div className={`${styles.typeNews} ${styles.vipBg}`}>{"VIP".toUpperCase()}</div>
+              }[1]
+            }
+            
         </Link>
         <div
           className={

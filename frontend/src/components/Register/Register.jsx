@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { Button, Form, Modal } from "react-bootstrap";
 import { FaSignInAlt, FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "./Register.module.scss";
+import { Link } from "react-router-dom";
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
@@ -126,7 +127,7 @@ function Register() {
           {/* Need handle open sign in form */}
           Đã có tài khoản ?{" "}
           <span className="text-info">
-            <span style={{ cursor: "pointer" }}>Đăng nhập</span>
+            <Link to='/login' style={{ cursor: "pointer",textDecoration:'none' }}>Đăng nhập</Link>
           </span>
         </Modal.Footer>
       </Modal>

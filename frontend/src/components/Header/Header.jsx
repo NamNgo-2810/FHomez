@@ -6,7 +6,7 @@ function Header() {
   return (
     // navbar-expand-sm -> Các phần tử hiện thị theo chiều ngang ở màn hình > sm và theo chiều dọc ở màn hình sm 
 
-    <div style={{ padding: "0px 32px" }} className="row navbar navbar-expand-sm navbar-light bg-light">
+    <div style={{ padding: "0px 32px",height:'80px',position:'fixed',top:'0'}} className="row container-fluid navbar navbar-expand-sm navbar-light bg-light">
       <div  className="container">
         <Link
           className="navbar-brand fs-2 fw-normal"

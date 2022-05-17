@@ -15,36 +15,40 @@ const UploadForm = () => {
     };
 
     const handleUpload = () => {
-        const promises = [];
-        images.forEach((image) => {
-            const uploadTask = storage.ref(`images/${image.name}`).put(image);
-            promises.push(uploadTask);
-            uploadTask.on(
-                "state_changed",
-                (snapshot) => {
-                    const progress = Math.round(
-                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                    );
-                    setProgress(progress);
-                },
-                (error) => {
-                    console.log(error);
-                },
-                async () => {
-                    await storage
-                        .ref("images")
-                        .child(image.name)
-                        .getDownloadURL()
-                        .then((urls) => {
-                            setUrls((prevState) => [...prevState, urls]);
-                        });
-                }
-            );
-        });
-
-        Promise.all(promises)
-            .then(() => alert("All images uploaded"))
-            .catch((err) => console.log(err));
+        if(images.length !== 0) {
+            const promises = [];
+            images.forEach((image) => {
+                const uploadTask = storage.ref(`images/${image.name}`).put(image);
+                promises.push(uploadTask);
+                uploadTask.on(
+                    "state_changed",
+                    (snapshot) => {
+                        const progress = Math.round(
+                            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                        );
+                        setProgress(progress);
+                    },
+                    (error) => {
+                        console.log(error);
+                    },
+                    async () => {
+                        await storage
+                            .ref("images")
+                            .child(image.name)
+                            .getDownloadURL()
+                            .then((urls) => {
+                                setUrls((prevState) => [...prevState, urls]);
+                            });
+                    }
+                );
+            });
+    
+            Promise.all(promises)
+                .then(() => alert("All images uploaded"))
+                .catch((err) => console.log(err));
+        }else {
+            alert("Pls choose at least 1 image")
+        }
     };
 
     console.log("images: ", images);
