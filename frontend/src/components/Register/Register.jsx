@@ -33,14 +33,11 @@ const validationSchema = yup.object().shape({
 });
 
 
-function Register() {
+function Register({show,setShow}) {
   // Declare state
-  const [show, setShow] = useState(true);
   const [showPass1, setShowPass1] = useState(false);
   const [showPass2, setShowPass2] = useState(false);
 
-  // Make a button to show modal login
-  // const handleShow = () => setShow(true);
 
   // react-hook-form
   const {

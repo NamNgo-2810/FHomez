@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -19,13 +19,8 @@ const validationSchema = yup.object().shape({
   password: yup.string().required("Mật khẩu không được để trống"),
 });
 
-function Login() {
-  // Declare state
-  const [show, setShow] = useState(true);
-  const handleClose = () => setShow(false);
-
-  // Make a button to show modal login
-  // const handleShow = () => setShow(true);
+function Login({show,setShow}) {
+  
 
   // react-hook-form
   const {
@@ -37,7 +32,7 @@ function Login() {
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} className={styles.modal}>
+      <Modal show={show} onHide={() => setShow(false)} className={styles.modal}>
         <Modal.Header closeButton>
           <Modal.Title>Đăng nhập</Modal.Title>
         </Modal.Header>

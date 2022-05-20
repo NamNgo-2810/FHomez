@@ -35,7 +35,7 @@ function ProductList() {
         </Card.Body>
       </Card> : 
       products &&
-        products.map((product) => (
+        products.map((product,i) => (
           <ProductItem
             key={product.id}
             id={product.id}
