@@ -5,9 +5,14 @@ exports.getAllHome = async (req, res) => {
     res.status(200).json(result);
 };
 
+exports.getByHomeID = async (req, res) => {
+    const result = await database.getByHomeID(req.body);
+    res.status(200).json(result);
+};
+
 exports.addHome = async (req, res) => {
     // TO DO: Insert home's info to database
-    const result = await database.getAllHome(req.body);
+    const result = await database.addHome(req.body);
     res.status(200).json(req.body);
 };
 
@@ -17,6 +22,8 @@ exports.updateHome = async (req, res) => {
 
 exports.deleteHome = async (req, res) => {
     // TO DO: Delete home from database
+    const result = await database.deleteHome(req.body);
+    res.status(200).json(req.body);
 };
 
 exports.rateHome = async (req, res) => {
