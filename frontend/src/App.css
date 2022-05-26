@@ -8,6 +8,10 @@
   text-align: center;
 }
 
+.row {
+  margin: 0px!important;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

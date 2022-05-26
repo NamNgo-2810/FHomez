@@ -1,7 +1,5 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./components/Login/Login";
-import Register from "./components/Register/Register";
 import Home from "./containers/Home";
 import UploadForm from "./components/UploadForm/UploadForm";
 import Chat from "./components/Chat/Chat";
@@ -29,10 +27,6 @@ function App() {
           <Header></Header>
           <Routes>
             <Route index element={<Home />} />
-            <Route path="signup" element={<Register />}>
-              <Route path="verifyOTP" element={<Register />}></Route>
-            </Route>
-            <Route path="login" element={<Login />}></Route>
             {/* <PrivateRoute roles={['admin']}></PrivateRoute> */}
             <Route path="upload" element={<UploadForm />} />
             <Route path="chat" element={<Chat />} />
