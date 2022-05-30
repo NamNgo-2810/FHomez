@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controller/homeController");
-const middleware = require("../middleware/auth");
+const middleware = require("../../auth_service/middleware/auth");
 
-router.post("/add_home",  controller.addHome);
+router.post("/add_home", controller.addHome);
 router.post("/update_home", middleware.isAuth, controller.updateHome);
 router.post("/delete_home", middleware.isAuth, controller.deleteHome);
 router.post("/rate_home", middleware.isAuth, controller.rateHome);

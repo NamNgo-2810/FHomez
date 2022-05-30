@@ -1,6 +1,6 @@
 const jwtHelper = require("../helpers/jwt.helper");
 const config = require("../config");
-const database = require("../services/user.database");
+const database = require("../user.database");
 
 const isAuth = async (req, res, next) => {
     const accessTokenFromHeader = req.headers.x_authorization;

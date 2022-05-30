@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const connection = require("../database");
+const connection = require("../chat_service/database");
 
 async function userSignIn(phoneNumber, password) {
     return new Promise(function (resolve, reject) {

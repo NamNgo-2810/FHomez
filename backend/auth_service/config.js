@@ -20,21 +20,7 @@ const config = {
         TWILIO_AUTH_TOKEN: "b52cc8039fd32eaaf9d59b0810d1ee38",
         TWILIO_SERVICE_SID: "VA90e2ee9b4f833f4da59fef79cabe8f5b",
     },
-    firebase: {
-        API_KEY: "",
-        DATABASE_URL: "",
-        PROJECT_ID: "",
-        STORAGE_BUCKET: "",
-        MESSAGEING_SENDER_ID: "",
-        APP_ID: "",
-        MEASUREMENT_ID: "",
-    },
-    mongo: {
-        USERNAME: "namngo2810",
-        PASSWORD: "P5kATl2vDjnALWMz",
-        URI: "mongodb+srv://namngo2810:P5kATl2vDjnALWMz@cluster0.stfix.mongodb.net/FHomez?retryWrites=true&w=majority",
-    },
-    url: "http://localhost:5000",
+    url: "http://localhost:8000",
 };
 
 module.exports = config;

@@ -1,7 +1,7 @@
-const config = require("../config");
-const jwtHelper = require("../helpers/jwt.helper");
-const twofaHelper = require("../helpers/2fa.helper");
-const database = require("../services/user.database");
+const config = require("./config");
+const jwtHelper = require("./helpers/jwt.helper");
+const twofaHelper = require("./helpers/2fa.helper");
+const database = require("./user.database");
 const bcrypt = require("bcryptjs");
 const randToken = require("rand-token");
 

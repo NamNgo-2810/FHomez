@@ -1,6 +1,6 @@
-const config = require("../config");
-const Conversation = require("../models/Conversation");
-const Message = require("../models/Message");
+const config = require("./config");
+const Conversation = require("./models/Conversation");
+const Message = require("./models/Message");
 
 exports.createNewConversation = async (req, res) => {
     const newConversation = new Conversation({
