@@ -1,0 +1,25 @@
+.container {
+    height: auto;
+    padding-top: 180px;
+
+    h3 {
+        background-color: rgb(246, 221, 223);
+        font-weight: normal;
+        text-align: start;
+        height: 40px;
+    }
+
+    // hide arrow input type number 
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0;
+        /* <-- Apparently some margin are still there even though it's hidden */
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+    }
+}
