@@ -18,6 +18,8 @@ exports.addHome = async (req, res) => {
 
 exports.updateHome = async (req, res) => {
     // TO DO: Update home's info
+    const result = await database.updateHome(req.body);
+    res.status(200).json(req.body);
 };
 
 exports.deleteHome = async (req, res) => {
