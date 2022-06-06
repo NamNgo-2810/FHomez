@@ -163,3 +163,29 @@ exports.refreshToken = async (req, res) => {
         accessToken,
     });
 };
+
+exports.getUserById = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const response = await database.getUserById(userId);
+
+        if (response.status != 200) {
+            return res.status(400).send("Bad request");
+        }
+
+        const user = response.body;
+
+        return res.json(user);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+exports.updateUserInfo = async (req, res) => {
+    try {
+        const data = req.body;
+        const response = await database.updateUserInfo(data);
+    } catch (error) {
+        console.log(error);
+    }
+};

@@ -1,4 +1,4 @@
-const database = require("../../services/review.database");
+const database = require("../services/review.database");
 
 exports.getCommentByMotel = async (req, res) => {
     try {
