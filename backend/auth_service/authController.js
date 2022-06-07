@@ -28,7 +28,7 @@ exports.signup = async (req, res) => {
         req.session.phoneNumber = phoneNumber;
         req.session.hashPassword = hashPassword;
 
-        return res.redirect("/sender");
+        return res.redirect("/send");
     } catch (error) {
         console.log(error);
     }
