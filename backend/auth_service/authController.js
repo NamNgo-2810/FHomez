@@ -28,7 +28,7 @@ exports.signup = async (req, res) => {
         req.session.phoneNumber = phoneNumber;
         req.session.hashPassword = hashPassword;
 
-        return res.redirect("/sender");
+        return res.status(200).send("Redirect to OTP sender");
     } catch (error) {
         console.log(error);
     }
@@ -46,9 +46,7 @@ exports.OTPsender = async (req, res) => {
             return res.send("OTP sent failed. Try again");
         }
 
-        res.send("OTP sent success");
-
-        return res.redirect("/verifier");
+        return res.status(200).send("OTP sent success");
     } catch (error) {
         console.log(error);
     }
