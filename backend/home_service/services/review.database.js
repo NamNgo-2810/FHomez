@@ -16,7 +16,7 @@ async function getCommentByMotel(motel_id) {
 
 async function addReview(data) {
     return new Promise((resolve, reject) => {
-        connection.query(`INSERT INTO review(motel_id, user_id, comment, rate)
+        connection.query(`INSERT INTO review (motel_id, user_id, comment, rate))
          VALUES ('${data.motel_id}','${data.user_id}','${data.comment}','${data.rate}');`, (error, result) => {
             if (error) reject(error);
             resolve(result);
@@ -29,9 +29,9 @@ async function addReview(data) {
         return result;
     });
 }
-async function deleteComment(motel_id, user_id) {
+async function deleteComment(review_id) {
     return new Promise((resolve, reject) => {
-        connection.query(`DELETE FROM motel WHERE motel_id = ${motel_id} AND user_id = ${user_id}`, (error, result) => {
+        connection.query(`DELETE FROM review WHERE review_id = '${data.review_id}'`, (error, result) => {
             if (error) reject(error);
             resolve(result);
         });

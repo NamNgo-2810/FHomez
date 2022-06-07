@@ -3,7 +3,7 @@ const config = {
         host: "tidb.e6c3a535.8a5ae6bc.ap-northeast-1.prod.aws.tidbcloud.com",
         user: "root",
         password: "FHomez2018",
-        database: "test",
+        database: "testt",
         port: "4000",
     },
     auth: {
