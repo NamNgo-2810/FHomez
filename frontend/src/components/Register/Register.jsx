@@ -4,8 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button, Form, Modal } from "react-bootstrap";
 import { FaSignInAlt, FaEye, FaEyeSlash } from "react-icons/fa";
-import styles from "./Register.module.scss";
-import { Link } from "react-router-dom";
+import { userService } from "../../services/user.service.js";
+import styles from "./Register.module.scss"
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
@@ -32,12 +32,10 @@ const validationSchema = yup.object().shape({
     .oneOf([yup.ref("password"), null], "Mật khẩu mới nhập không trùng khớp"),
 });
 
-
-function Register({show,setShow}) {
+function Register({ setShow }) {
   // Declare state
   const [showPass1, setShowPass1] = useState(false);
   const [showPass2, setShowPass2] = useState(false);
-
 
   // react-hook-form
   const {
@@ -45,16 +43,19 @@ function Register({show,setShow}) {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    userService.register(data);
+    setShow(0)
+  };
 
   return (
     <>
-      <Modal show={show} onHide={() => setShow(false)}>
+      <Modal show={true} onHide={() => setShow(0)}>
         <Modal.Header closeButton>
           <Modal.Title>Đăng kí</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Group className="mb-3">
               <Form.Control
                 type="tel"
@@ -118,13 +119,16 @@ function Register({show,setShow}) {
               </Button>
             </Form.Group>
           </Form>
-          
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
           {/* Need handle open sign in form */}
           Đã có tài khoản ?{" "}
-          <span className="text-info">
-            <Link to='/login' style={{ cursor: "pointer",textDecoration:'none' }}>Đăng nhập</Link>
+          <span
+            className="text-info"
+            style={{ cursor: "pointer" }}
+            onClick={() => setShow(2)}
+          >
+            Đăng nhập
           </span>
         </Modal.Footer>
       </Modal>

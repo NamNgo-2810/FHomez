@@ -4,12 +4,12 @@ import Home from "./containers/Home";
 import UploadForm from "./components/UploadForm/UploadForm";
 import Chat from "./components/Chat/Chat";
 import { useMemo, useState } from "react";
-import AuthContext from "./contexts/AuthContext";
+import AuthContext from "./contexts/AuthContext.js";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(localStorage.jwt);
 
   const authCtxValue = useMemo(
     () => ({
