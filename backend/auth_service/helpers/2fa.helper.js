@@ -7,29 +7,35 @@ const sendOTPToken = async (phoneNumber) => {
     const authToken = config.twilio.TWILIO_AUTH_TOKEN;
     const client = twilio(accountSid, authToken);
 
+    let success = false;
+
     return client.verify
         .services(config.twilio.TWILIO_SERVICE_SID)
         .verifications.create({ to: phoneNumber, channel: "sms" })
         .then((verification) => {
-            console.log(verification.status);
+            success = verification.status === "pending";
+        })
+        .then(() => {
+            return success;
         });
 };
 
 const verifyOTPToken = async (phoneNumber, OTPToken) => {
-    console.log("Verifying...");
+    console.log(`Verifying to ${phoneNumber}...`);
     const accountSid = config.twilio.TWILIO_ACCOUNT_SID;
     const authToken = config.twilio.TWILIO_AUTH_TOKEN;
     const client = twilio(accountSid, authToken);
+    let success = false;
 
-    const check = await client.verify
+    return client.verify
         .services(config.twilio.TWILIO_SERVICE_SID)
         .verificationChecks.create({ to: phoneNumber, code: OTPToken })
-        .catch((e) => {
-            console.log(e);
+        .then((verification_check) => {
+            success = verification_check.status === "approved";
+        })
+        .then(() => {
+            return success;
         });
-
-    console.log("Verified");
-    return true;
 };
 
 module.exports = {

@@ -36,11 +36,9 @@ exports.signup = async (req, res) => {
 
 exports.OTPsender = async (req, res) => {
     try {
-        const phoneNumber = req.session.phoneNumber;
+        const phoneNumber = req.session.phoneNumber || req.body.phoneNumber;
 
         const sendOTPToken = await twofaHelper.sendOTPToken(phoneNumber);
-
-        console.log(sendOTPToken);
 
         if (!sendOTPToken) {
             return res.send("OTP sent failed. Try again");
@@ -54,10 +52,10 @@ exports.OTPsender = async (req, res) => {
 
 exports.OTPverifier = async (req, res) => {
     try {
-        const phoneNumber = req.session.phoneNumber;
+        const phoneNumber = req.session.phoneNumber || req.body.phoneNumber;
         const hashPassword = req.session.hashPassword;
         const otpToken = req.body.OTPtoken;
-        const isValid = twofaHelper.verifyOTPToken(phoneNumber, otpToken);
+        const isValid = await twofaHelper.verifyOTPToken(phoneNumber, otpToken);
 
         if (!isValid) {
             return res.send("Invalid OTP");
