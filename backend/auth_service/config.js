@@ -16,9 +16,9 @@ const config = {
         SALT: 12,
     },
     twilio: {
-        TWILIO_ACCOUNT_SID: "ACef793fbcbcc837292304e307da84021a",
-        TWILIO_AUTH_TOKEN: "b52cc8039fd32eaaf9d59b0810d1ee38",
-        TWILIO_SERVICE_SID: "VA90e2ee9b4f833f4da59fef79cabe8f5b",
+        TWILIO_ACCOUNT_SID: "",
+        TWILIO_AUTH_TOKEN: "",
+        TWILIO_SERVICE_SID: "",
     },
     url: "http://localhost:8000",
 };
