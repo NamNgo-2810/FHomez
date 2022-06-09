@@ -1,6 +1,6 @@
 const jwtHelper = require("../helpers/jwt.helper");
-const config = require("../config");
 const database = require("../user.database");
+require("dotenv").config();
 
 const isAuth = async (req, res, next) => {
     const accessTokenFromHeader = req.headers.x_authorization;
@@ -8,7 +8,7 @@ const isAuth = async (req, res, next) => {
         return res.status(401).send("Access token not found.");
     }
 
-    const accessTokenSecret = config.auth.ACCESS_TOKEN_SECRET;
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
     const verified = await jwtHelper.verifyToken(
         accessTokenFromHeader,
         accessTokenSecret

@@ -1,9 +1,9 @@
-const config = require("./config");
 const jwtHelper = require("./helpers/jwt.helper");
 const twofaHelper = require("./helpers/2fa.helper");
 const database = require("./user.database");
 const bcrypt = require("bcryptjs");
 const randToken = require("rand-token");
+require("dotenv").config();
 
 exports.signup = async (req, res) => {
     try {
@@ -14,7 +14,7 @@ exports.signup = async (req, res) => {
 
         const hashPassword = bcrypt.hashSync(
             req.body.password,
-            config.auth.SALT
+            process.env.SALT
         );
 
         const exist = await database.getUserByPhoneNumber(phoneNumber);
@@ -87,15 +87,15 @@ exports.login = async (req, res) => {
 
         const accessToken = await jwtHelper.generateToken(
             user,
-            config.auth.ACCESS_TOKEN_SECRET,
-            config.auth.ACCESS_TOKEN_LIFE
+            process.env.ACCESS_TOKEN_SECRET,
+            process.env.ACCESS_TOKEN_LIFE
         );
 
         if (!accessToken) {
             return res.status(401).send("Login failed, please try again");
         }
 
-        let refreshToken = randToken.generate(config.auth.REFRESH_TOKEN_SIZE);
+        let refreshToken = randToken.generate(process.env.REFRESH_TOKEN_SIZE);
 
         if (!user.refreshToken) {
             await database.updateRefreshToken(phoneNumber, refreshToken);
@@ -126,7 +126,7 @@ exports.refreshToken = async (req, res) => {
 
     const decoded = jwtHelper.decodeToken(
         accessTokenFromHeader,
-        config.auth.ACCESS_TOKEN_SECRET
+        process.env.ACCESS_TOKEN_SECRET
     );
 
     if (!decoded) {
@@ -147,8 +147,8 @@ exports.refreshToken = async (req, res) => {
 
     const accessToken = await jwtHelper.generateToken(
         dataForAccessToken,
-        config.auth.ACCESS_TOKEN_SECRET,
-        config.auth.ACCESS_TOKEN_LIFE
+        process.env.ACCESS_TOKEN_SECRET,
+        process.env.ACCESS_TOKEN_LIFE
     );
 
     if (!accessToken) {
