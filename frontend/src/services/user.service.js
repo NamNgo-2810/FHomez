@@ -27,11 +27,23 @@ const sendMessages = (sender, receiver, message) => {
     console.log(message);
 };
 
+
+
+const register = (username, password, rePassword) => {};
+
+const login = (username, password, rePassword) => {};
+
+const logOut = () => {
+    delete localStorage.jwt
+};
+
+
+
 // Handle all backend api call
 export const userService = {
     // register,
     // login,
-    // logout,
+    logOut,
     // verifyOTP,
     // getAll, // Lấy tất cả bài đăng
     // getById, // Dùng id lấy chi tiết bài đăng
@@ -40,7 +52,3 @@ export const userService = {
     getMessages,
     sendMessages,
 };
-
-const register = (username, password, rePassword) => {};
-
-const login = (username, password, rePassword) => {};

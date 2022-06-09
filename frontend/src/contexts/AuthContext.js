@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-const AuthContext = createContext(localStorage.jwt)
+const AuthContext = createContext({user: null,setUser: {}})
 
 
 
