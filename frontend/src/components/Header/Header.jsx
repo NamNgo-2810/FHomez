@@ -4,6 +4,13 @@ import Login from "../Login/Login";
 import Register from "../Register/Register";
 import AuthContext from "../../contexts/AuthContext.js";
 import {userService} from '../../services/user.service.js'
+import {
+  FaCommentDollar,
+  FaAddressBook,
+  FaSignOutAlt,
+  FaFolderPlus,
+} from "react-icons/fa";
+
 
 function Header() {
   const [show, setShow] = useState(0);
@@ -36,15 +43,15 @@ function Header() {
             {user ? (
               <>
                 <li className="nav-item">
-                  <div class="dropdown">
+                  <div className="dropdown">
                     <img
                       src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
                       style={{
                         borderRadius: "50%",
                         width: "70px",
-                        height: "65px",
+                        height: "60px",
                       }}
-                      class="btn"
+                      className="btn"
                       id="dropdownMenuButton1"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
@@ -53,12 +60,26 @@ function Header() {
                     <ul
                       className="dropdown-menu"
                       aria-labelledby="dropdownMenuButton1"
+                      style={{ fontSize: "16px" }}
                     >
-                      <Link to="/upload">
-                        <button className="dropdown-item">Đăng bài</button>
+                      <Link to="/account" style={{ textDecoration: "none" }}>
+                        <button className="dropdown-item">
+                          <FaAddressBook /> Quản lí tài khoản
+                        </button>
                       </Link>
-
-                      <button className="dropdown-item" onClick={() => userService.logOut()}>Đăng xuất</button>
+                      <hr />
+                      <Link to="/upload" style={{ textDecoration: "none" }}>
+                        <button className="dropdown-item">
+                          {" "}
+                          <FaFolderPlus /> Đăng bài
+                        </button>
+                      </Link>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => userService.logOut()}
+                      >
+                        <FaSignOutAlt /> Đăng xuất
+                      </button>
                     </ul>
                   </div>
                 </li>
