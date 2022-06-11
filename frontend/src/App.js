@@ -1,10 +1,9 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Chat from "./components/Chat/Chat";
-import { Suspense, useMemo, useState,lazy } from "react";
+import { Suspense, useMemo, useState, lazy } from "react";
 import AuthContext from "./contexts/AuthContext.js";
 import Hypnosis from "react-cssfx-loading/lib/Hypnosis";
-
 
 const Home = lazy(() => import("./containers/Home"));
 const UploadForm = lazy(() => import("./components/UploadForm/UploadForm"));
@@ -12,11 +11,12 @@ const Header = lazy(() => import("./components/Header/Header"));
 const Footer = lazy(() => import("./components/Footer/Footer"));
 const Info = lazy(() => import("./components/Info/Info"));
 const NewsManager = lazy(() => import("./components/NewsManager/NewsManager"));
-const AccountManager = lazy(() => import("./components/AccountManager/AccountManager"));
+const AccountManager = lazy(() =>
+  import("./components/AccountManager/AccountManager")
+);
 
 function App() {
-
-  // Create localStorage.jwt to fake sign in 
+  // Create localStorage.jwt to fake sign in
   const [currentUser, setCurrentUser] = useState(localStorage.jwt);
 
   const authCtxValue = useMemo(
@@ -30,23 +30,24 @@ function App() {
   );
   return (
     <AuthContext.Provider value={authCtxValue}>
-      <div className="App">
-        <BrowserRouter>
-          <Header></Header>
-          <Suspense
-            fallback={
-              <Hypnosis
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  position: "absolute",
-                  top: "0",
-                  backgroundColor: "#222",
-                  zIndex: "9999",
-                }}
-              />
-            }
-          >
+      <Suspense
+        fallback={
+          <Hypnosis
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              top: "0",
+              backgroundColor: "#222",
+              zIndex: "9999",
+            }}
+          />
+        }
+      >
+        <div className="App">
+          <BrowserRouter>
+            <Header></Header>
+
             <Routes>
               <Route index element={<Home />} />
               {/* <PrivateRoute roles={['admin']}></PrivateRoute> */}
@@ -58,10 +59,11 @@ function App() {
                 <Route path="lich-su-nap-tien" element={<NewsManager />} />
               </Route>
             </Routes>
-          </Suspense>
-          <Footer></Footer>
-        </BrowserRouter>
-      </div>
+
+            <Footer></Footer>
+          </BrowserRouter>
+        </div>
+      </Suspense>
     </AuthContext.Provider>
   );
 }
