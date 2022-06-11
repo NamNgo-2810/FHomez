@@ -2,10 +2,9 @@ import React from 'react'
 import bannerImg from "./bannerimg.jpg"
 import "./Banner.css"
 
-// style={{ backgroundColor: '#f6dddf', padding: '15px', display:'flex', flexDirection:'column'}}
 function Banner() {
   return (
-    <div className="rowBanner">
+    <div className="rowBanner row">
       <div className="banner_container">
         <div className="banner_illustration">
           <img className="banner_img" src={bannerImg} alt="SampleRoom" ></img>

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button, Form, Modal } from "react-bootstrap";
 import { FaFacebookF, FaGoogle, FaSignInAlt } from "react-icons/fa";
 import styles from "./Login.module.scss";
+import AuthContext from '../../contexts/AuthContext.js'
+
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
@@ -18,25 +20,25 @@ const validationSchema = yup.object().shape({
   password: yup.string().required("Mật khẩu không được để trống"),
 });
 
-function Login() {
-  // Declare state
-  const [show, setShow] = useState(true);
-  const handleClose = () => setShow(false);
-
-  // Make a button to show modal login
-  // const handleShow = () => setShow(true);
-
+function Login({ setShow }) {
   // react-hook-form
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
-  const onSubmit = (data) => console.log(data);
+  const {setUser} = useContext(AuthContext)
+
+  
+  const onSubmit = (data) => {
+    console.log(data)
+    setUser(true)
+    setShow(0)
+  };
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} className={styles.modal}>
+      <Modal show={true} onHide={() => setShow(0)} className={styles.modal}>
         <Modal.Header closeButton>
           <Modal.Title>Đăng nhập</Modal.Title>
         </Modal.Header>
@@ -72,16 +74,20 @@ function Login() {
             </Form.Group>
             <Form.Group className="d-grid gap-2">
               <Button className={styles.signIn} type="submit">
-                <FaSignInAlt className="me-1 mb-1"/>
+                <FaSignInAlt className="me-1 mb-1" />
                 Đăng nhập
               </Button>
               <hr />
-              <Button className={`${styles.fSignIn} d-flex align-items-center justify-content-center`}>
+              <Button
+                className={`${styles.fSignIn} d-flex align-items-center justify-content-center`}
+              >
                 <FaFacebookF />
                 Đăng nhập bằng facebook
               </Button>
-              <Button className={`${styles.gSignIn} d-flex align-items-center justify-content-center`}>
-                <FaGoogle className="me-1 ms-1" /> 
+              <Button
+                className={`${styles.gSignIn} d-flex align-items-center justify-content-center`}
+              >
+                <FaGoogle className="me-1 ms-1" />
                 Đăng nhập bằng google
               </Button>
             </Form.Group>
@@ -90,8 +96,12 @@ function Login() {
         <Modal.Footer className="justify-content-center">
           {/* Need handle open sign up form */}
           Chưa có tài khoản ?{" "}
-          <span className="text-info">
-            <span>Đăng kí</span>
+          <span
+            className="text-info"
+            style={{ cursor: "pointer" }}
+            onClick={() => setShow(1)}
+          >
+            Đăng kí
           </span>
         </Modal.Footer>
       </Modal>

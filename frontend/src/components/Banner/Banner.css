@@ -1,13 +1,12 @@
 .rowBanner {
-    margin-top: 3%;
     margin-bottom: 2%;
+    height: 750px;
 }
 
 @media only screen and (min-width: 960px) {
     .banner_container {
         height: calc(100vh - 87.5px);
         padding: 0px;
-        margin: -12px;
         background-color: #f6dddf;
         justify-content: center;
         display: flex;
@@ -16,17 +15,9 @@
     }
 }
 
-/* .banner_container {
-    padding: 15px 0;
-    background-color: #f6dddf;
-    display: flex;
-    flex-direction: column;
-} */
 
 .banner_container .banner_illustration {
-    /* align-items: flex-start; */
     width: 40%;
-    
 }
 
 .banner_container .banner_illustration .banner_img {
@@ -38,10 +29,8 @@
 .banner_container .banner_introduction {
     width: 60%;
     text-align: left;
-    margin-top: 5%;
+    margin-top: 12%;
     color: #687a80;
-    /* padding-right: 10px;
-    margin-right: 10px; */
 }
 
 .banner_container .banner_introduction .banner_intro_title {
@@ -56,6 +45,7 @@
 }
 
 .banner_container .banner_introduction .banner_intro_description {
+    width: 90%;
     border-radius: 10px;
     font-size: 1.4em;
     margin-top: 10px;
@@ -68,7 +58,6 @@
     margin-top: 15px;
     font-size: 1.2rem;
     padding: 7px 15px;
-
     background-color: #f6dddf;
     color: #687a80;
     font-weight: 400;

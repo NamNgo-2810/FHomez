@@ -1,7 +1,9 @@
 $primary-color: #015f95;
 $secondary-color:#38a343;
 $text-color: #888;
-
+$hot-bg: #bf0a0a;
+$vip-bg: #f60;
+$post-type-font-size:13px;
 
 
 .container {
@@ -9,15 +11,36 @@ $text-color: #888;
     height: 250px;
     border: 1px solid black;
     border-radius: 16px;
-    padding: 24px 0px;
+    padding: 24px 32px;
 
     .productImage {
-        width: 40%;
-        height: 90%;
-
+        width: 36%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        
         img {
-            width: 80%;
+            width: 100%;
             height: 100%
+        }
+
+        .typeNews {
+            position: absolute;
+            top: -4px;
+            left: -34px;
+            width: 100px;
+            height: 36px;
+            transform: rotate(-45deg);
+            line-height: 36px;
+            color: white;
+            text-align: center;
+            font-size: $post-type-font-size
+        }
+        .hotBg {
+            background-color:$hot-bg
+        }
+        .vipBg {
+            background-color:$vip-bg
         }
     }
 
@@ -26,10 +49,11 @@ $text-color: #888;
         height: 100%;
 
         .productTitle {
-            color : $primary-color;
+            color: $primary-color;
             text-decoration: none;
             text-align: start;
         }
+
         & p {
             color: $text-color;
             text-align: start;
@@ -41,6 +65,7 @@ $text-color: #888;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
         }
+
         & b {
             color: $secondary-color;
         }
