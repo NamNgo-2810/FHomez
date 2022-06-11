@@ -1,12 +1,18 @@
-import React, { useState, useMemo } from "react";
-import { storage } from "../../services/firebase.service";
+import React, { useState, useMemo, useEffect } from "react";
 import styles from "./UploadForm.module.scss";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Alert } from "react-bootstrap";
-import PreviewImage from "./PreviewImage";
-import { firestore } from "../../services/firebase.service.js";
+import PreviewImage from "./PreviewImage.jsx";
+import {
+  storage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "../../services/firebase.service.js";
+import { provinceData } from "./Province.js";
+import { Link } from "react-router-dom";
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
@@ -33,60 +39,80 @@ const validationSchema = yup.object().shape({
     ),
   typeOfNews: yup.number().required("Loại tin không được để trống"),
   dayOfNews: yup.number().required("Số ngày đăng tin không được để trống"),
+  status: yup.number().default(0),
 });
 
 const UploadForm = () => {
   const [files, setFiles] = useState([]);
-  const [show, setShow] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
   const days = useMemo(() => Array.from(new Array(100), (x) => 1), []);
+
   // react-hook-form
   const {
     register,
+    watch,
+    getValues,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
-  const onSubmit = async (data) => {
 
+  const watchFields = watch(["district"], { district: "", subDistrict: "" });
+  const [subDistricts, setSubDistricts] = useState([]);
+  const [streets, setStreets] = useState([]);
+  useEffect(() => {
+    setSubDistricts(
+      provinceData.district.find((e) => e.name === watchFields[0])?.ward
+    );
+    setStreets(
+      provinceData.district.find((e) => e.name === watchFields[0])?.street
+    );
+  }, [watchFields]);
+
+  const onSubmit = async (data) => {
     if (files.length !== 0) {
       const promises = [];
       const uid = Date.now();
       files.forEach((file) => {
-        const uploadTask = storage.ref(`${uid}/${file.path}`).put(file);
-        promises.push(uploadTask);
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            console.log("ok");
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      });
-      Promise.all(promises)
-        .then(() => {
-          data.files = uid;
+        const uploadTask = uploadBytesResumable(
+          ref(storage, `${file.path}-${uid}`),
+          file
+        ).then((result) => {
+          return getDownloadURL(result.ref);
+        });
 
-          // store to firebase
-          firestore
-            .collection("posts")
-            .doc()
-            .set(data)
-            .then(() => {
-              console.log("success");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+        promises.push(uploadTask);
+      });
+
+      Promise.all(promises)
+        .then((result) => {
+          data.src = result;
+          // api store to my sql
+          //if success: Gọi onShowSuccess 
+          //if false: Gọi onShowError 
         })
-        .catch((err) => console.log(err));
     } else {
       alert("Pls choose at least 1 image");
     }
+  };
 
-    // reset form
-    // reset({ ...data });
+  const onShowSuccess = () => {
+    reset();
+    setSuccess(true);
+    setFiles([]);
+    setTimeout(() => {
+      setSuccess(false);
+    }, 2200);
+  };
+
+  const onShowError = () => {
+    reset();
+    setError(true);
+    setFiles([]);
+    setTimeout(() => {
+      setError(false);
+    }, 2200);
   };
 
   return (
@@ -99,9 +125,16 @@ const UploadForm = () => {
               <div className="col">
                 <label>Quận/Huyện(*)</label>
                 <select className="form-select" {...register("district")}>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
+                  <option
+                    label="--Chọn quận/huyện--"
+                    key="district-choose"
+                  ></option>
+                  {provinceData.district.map((e) => (
+                    <option
+                      key={e.id}
+                      value={e.name}
+                    >{`${e.pre} ${e.name}`}</option>
+                  ))}
                 </select>
                 <p style={{ color: "red" }}>{errors.district?.message}</p>
               </div>
@@ -111,18 +144,31 @@ const UploadForm = () => {
               <div className="col">
                 <label>Phường/Xã(*)</label>
                 <select className="form-select" {...register("subDistrict")}>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
+                  <option
+                    label="--Chọn phường/xã--"
+                    key="subDistrict-choose"
+                  ></option>
+                  {subDistricts &&
+                    subDistricts.map((e) => (
+                      <option
+                        key={e.id}
+                        value={e.name}
+                      >{`${e.pre} ${e.name}`}</option>
+                    ))}
                 </select>
                 <p style={{ color: "red" }}>{errors.subDistrict?.message}</p>
               </div>
               <div className="col">
                 <label>Đường/Phố(*)</label>
                 <select className="form-select" {...register("street")}>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
+                  <option label="--Chọn đường phố--"></option>
+                  {streets &&
+                    streets.map((e) => (
+                      <option
+                        key={e.id}
+                        value={e.name}
+                      >{`${e.pre} ${e.name}`}</option>
+                    ))}
                 </select>
                 <p style={{ color: "red" }}>{errors.street?.message}</p>
               </div>
@@ -166,9 +212,9 @@ const UploadForm = () => {
               <div className="col">
                 <label>Chuyên mục(*)</label>
                 <select className="form-select" {...register("category")}>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
+                  <option value="Phòng trọ đơn">Phòng trọ đơn</option>
+                  <option value="Chung cư mini">Chung cư mini</option>
+                  <option value="Nhà nguyên căn">Nhà nguyên căn</option>
                 </select>
                 <p style={{ color: "red" }}>{errors.category?.message}</p>
               </div>
@@ -319,7 +365,11 @@ const UploadForm = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>1</td>
+                    <td>
+                      {
+                        [30000,20000,2000][getValues("typeOfNews") - 1]
+                      }
+                    </td>
                     <td>2</td>
                     <td>3</td>
                   </tr>
@@ -378,14 +428,29 @@ const UploadForm = () => {
           right: "12px",
           bottom: "50px",
         }}
-        show={show}
+        show={success}
         variant="success"
-        onClose={() => setShow(false)}
-        dismissible
       >
         <p>
           Bài đăng sẽ được kiểm duyệt sớm nhất, bạn có thể kiểm tra trạng thái
-          bài đăng tại đây
+          bài đăng <Link to="/posts">tại đây</Link>
+        </p>
+      </Alert>
+      <Alert
+        style={{
+          width: "400px",
+          height: "auto",
+          textWrap: "wrap",
+          position: "fixed",
+          right: "12px",
+          bottom: "50px",
+        }}
+        show={error}
+        variant="error"
+      >
+        <p>
+          Có điều gì đó không đúng xảy ra khiến bài đăng không được gửi, hãy
+          kiểm tra và thử lại
         </p>
       </Alert>
     </>
