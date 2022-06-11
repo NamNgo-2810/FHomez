@@ -1,14 +1,17 @@
 import axios from "axios";
+import queryString from "query-string";
 
-const axiosClient = axios.create({
-    baseURL: "http://localhost:8000",
+
+const axiosAuth = axios.create({
+    baseURL: "http://localhost:8000/api/auth/",
     headers: {
         "Content-Type": "application/json",
     },
+    paramsSerializer: (params) => queryString.stringify(params)
 });
 
 // Add a request interceptor
-axiosClient.interceptors.request.use(
+axiosAuth.interceptors.request.use(
     function (config) {
         // Do something before request is sent
         return config;
@@ -20,7 +23,7 @@ axiosClient.interceptors.request.use(
 );
 
 // Add a response interceptor
-axiosClient.interceptors.response.use(function (response) {
+axiosAuth.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response.data;
@@ -31,4 +34,4 @@ axiosClient.interceptors.response.use(function (response) {
   });
 
 
-export default axiosClient;
+export default axiosAuth;

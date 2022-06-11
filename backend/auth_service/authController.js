@@ -6,9 +6,8 @@ const randToken = require("rand-token");
 require("dotenv").config();
 
 exports.signup = async (req, res) => {
-    console.log("Signup");
     try {
-        const { username, phoneNumber, password } = req.body.username;
+        const { username, phoneNumber, password } = req.body;
         const exist = await database.getUserByPhoneNumber(phoneNumber);
 
         if (exist !== null) {
@@ -29,6 +28,9 @@ exports.signup = async (req, res) => {
         req.session.phoneNumber = phoneNumber;
         req.session.password = password;
 
+        console.log(req.session)
+
+
         return res.status(200).send("OTP sent success");
     } catch (error) {
         console.log(error);
@@ -36,7 +38,9 @@ exports.signup = async (req, res) => {
 };
 
 exports.OTPverifier = async (req, res) => {
+    console.log(req.session)
     try {
+        console.log(req.session.password)
         const phoneNumber = req.session.phoneNumber || req.body.phoneNumber;
         const hashPassword = bcrypt.hashSync(req.session.password);
         const otpToken = req.body.OTPtoken;
