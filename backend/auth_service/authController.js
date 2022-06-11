@@ -9,35 +9,25 @@ exports.signup = async (req, res) => {
     console.log("Signup");
     try {
         const { username, phoneNumber, password } = req.body.username;
-
-        const hashPassword = bcrypt.hashSync(password);
-
         const exist = await database.getUserByPhoneNumber(phoneNumber);
 
         if (exist !== null) {
             return res.send("Phone number existed");
         }
 
-        req.session.username = username;
-        req.session.phoneNumber = phoneNumber;
-        req.session.hashPassword = hashPassword;
-
-        return res.status(200).send("Redirect to OTP sender");
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-exports.OTPsender = async (req, res) => {
-    try {
-        const phoneNumber = req.session.phoneNumber || req.body.phoneNumber;
         const formattedPhoneNumber = "+84" + phoneNumber.substring(1);
 
-        const sendOTPToken = await twofaHelper.sendOTPToken(phoneNumber);
+        const sendOTPToken = await twofaHelper.sendOTPToken(
+            formattedPhoneNumber
+        );
 
         if (!sendOTPToken) {
             return res.send("OTP sent failed. Try again");
         }
+
+        req.session.username = username;
+        req.session.phoneNumber = phoneNumber;
+        req.session.password = password;
 
         return res.status(200).send("OTP sent success");
     } catch (error) {
@@ -48,7 +38,7 @@ exports.OTPsender = async (req, res) => {
 exports.OTPverifier = async (req, res) => {
     try {
         const phoneNumber = req.session.phoneNumber || req.body.phoneNumber;
-        const hashPassword = req.session.hashPassword;
+        const hashPassword = bcrypt.hashSync(req.session.password);
         const otpToken = req.body.OTPtoken;
         const isValid = await twofaHelper.verifyOTPToken(phoneNumber, otpToken);
 

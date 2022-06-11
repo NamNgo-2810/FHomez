@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -6,6 +6,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { FaSignInAlt, FaEye, FaEyeSlash } from "react-icons/fa";
 import { userService } from "../../services/user.service.js";
 import styles from "./Register.module.scss";
+import AuthContext from "../../contexts/AuthContext.js";
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
@@ -47,13 +48,38 @@ function Register({ setShow }) {
         handleSubmit,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
-    const onSubmit = async (data) => {
-        const response = await userService.register(data);
-        console.log("response", response);
+
+    // step login
+    // 0 enter phone phoneNumber
+    // 1 enter OTP
+    const [step, setStep] = useState(0);
+    const [otp, setOTP] = useState("");
+    const { setUser } = useContext(AuthContext);
+
+    const requestOTP = async (data) => {
+        // call API sign up to get OTP
+        const response = userService.register(
+            "http://localhost:8000/api/auth",
+            data
+        );
+
         if (response.data === "Phone number existed") {
             setExistedPhoneNumber(true);
         }
-        // setShow(0);
+        // if true
+        setStep(1);
+    };
+
+    const verifyOTP = (otp) => {
+        setOTP(otp);
+        if (otp.length === 6) {
+            // Send OTP to verify
+
+            // if true
+            // setUser(user)
+            setShow(0);
+            // if false
+        }
     };
 
     return (
@@ -63,77 +89,133 @@ function Register({ setShow }) {
                     <Modal.Title>Đăng kí</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={handleSubmit(onSubmit)}>
-                        <Form.Group className="mb-3">
-                            <Form.Control
-                                type="tel"
-                                {...register("phoneNumber", { required: true })}
-                                placeholder="Nhập số điện thoại"
-                            />
-                            <span style={{ color: "red" }}>
-                                {existedPhoneNumber
-                                    ? "Phone number existed"
-                                    : errors.phoneNumber?.message}
-                            </span>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Control
-                                type="text"
-                                {...register("username", { required: true })}
-                                placeholder="Nhập họ và tên"
-                            />
-                            <span style={{ color: "red" }}>
-                                {errors.username?.message}
-                            </span>
-                        </Form.Group>
-                        <Form.Group className={"mb-3 " + styles["p-relative"]}>
-                            <Form.Control
-                                type={showPass1 ? "text" : "password"}
-                                {...register("password", { required: true })}
-                                placeholder="Nhập mật khẩu"
-                            />
-                            {showPass1 ? (
-                                <FaEye
-                                    className={styles["fa-eye"]}
-                                    onClick={() => setShowPass1(!showPass1)}
-                                />
-                            ) : (
-                                <FaEyeSlash
-                                    className={styles["fa-eye"]}
-                                    onClick={() => setShowPass1(!showPass1)}
-                                />
-                            )}
-                            <span style={{ color: "red" }}>
-                                {errors.password?.message}
-                            </span>
-                        </Form.Group>
-                        <Form.Group className={"mb-3 " + styles["p-relative"]}>
-                            <Form.Control
-                                type={showPass2 ? "text" : "password"}
-                                {...register("rePassword", { required: true })}
-                                placeholder="Nhập lại mật khẩu"
-                            />
-                            {showPass2 ? (
-                                <FaEye
-                                    className={styles["fa-eye"]}
-                                    onClick={() => setShowPass2(!showPass2)}
-                                />
-                            ) : (
-                                <FaEyeSlash
-                                    className={styles["fa-eye"]}
-                                    onClick={() => setShowPass2(!showPass2)}
-                                />
-                            )}
-                            <span style={{ color: "red" }}>
-                                {errors.rePassword?.message}
-                            </span>
-                        </Form.Group>
-                        <Form.Group className="d-grid gap-2">
-                            <Button className="sign-up" type="submit">
-                                <FaSignInAlt className="me-1 mb-1" />
-                                Đăng kí
-                            </Button>
-                        </Form.Group>
+                    <Form onSubmit={handleSubmit(requestOTP)}>
+                        {
+                            {
+                                0: (
+                                    <>
+                                        <Form.Group className="mb-3">
+                                            <Form.Control
+                                                type="tel"
+                                                {...register("phoneNumber", {
+                                                    required: true,
+                                                })}
+                                                placeholder="Nhập số điện thoại"
+                                            />
+                                            <span style={{ color: "red" }}>
+                                                {existedPhoneNumber
+                                                    ? "Phone number existed"
+                                                    : errors.phoneNumber
+                                                          ?.message}
+                                            </span>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3">
+                                            <Form.Control
+                                                type="text"
+                                                {...register("username", {
+                                                    required: true,
+                                                })}
+                                                placeholder="Nhập họ và tên"
+                                            />
+                                            <span style={{ color: "red" }}>
+                                                {errors.username?.message}
+                                            </span>
+                                        </Form.Group>
+                                        <Form.Group
+                                            className={
+                                                "mb-3 " + styles["p-relative"]
+                                            }
+                                        >
+                                            <Form.Control
+                                                type={
+                                                    showPass1
+                                                        ? "text"
+                                                        : "password"
+                                                }
+                                                {...register("password", {
+                                                    required: true,
+                                                })}
+                                                placeholder="Nhập mật khẩu"
+                                            />
+                                            {showPass1 ? (
+                                                <FaEye
+                                                    className={styles["fa-eye"]}
+                                                    onClick={() =>
+                                                        setShowPass1(!showPass1)
+                                                    }
+                                                />
+                                            ) : (
+                                                <FaEyeSlash
+                                                    className={styles["fa-eye"]}
+                                                    onClick={() =>
+                                                        setShowPass1(!showPass1)
+                                                    }
+                                                />
+                                            )}
+                                            <span style={{ color: "red" }}>
+                                                {errors.password?.message}
+                                            </span>
+                                        </Form.Group>
+                                        <Form.Group
+                                            className={
+                                                "mb-3 " + styles["p-relative"]
+                                            }
+                                        >
+                                            <Form.Control
+                                                type={
+                                                    showPass2
+                                                        ? "text"
+                                                        : "password"
+                                                }
+                                                {...register("rePassword", {
+                                                    required: true,
+                                                })}
+                                                placeholder="Nhập lại mật khẩu"
+                                            />
+                                            {showPass2 ? (
+                                                <FaEye
+                                                    className={styles["fa-eye"]}
+                                                    onClick={() =>
+                                                        setShowPass2(!showPass2)
+                                                    }
+                                                />
+                                            ) : (
+                                                <FaEyeSlash
+                                                    className={styles["fa-eye"]}
+                                                    onClick={() =>
+                                                        setShowPass2(!showPass2)
+                                                    }
+                                                />
+                                            )}
+                                            <span style={{ color: "red" }}>
+                                                {errors.rePassword?.message}
+                                            </span>
+                                        </Form.Group>
+                                        <Form.Group className="d-grid gap-2">
+                                            <Button
+                                                className="sign-up"
+                                                type="submit"
+                                            >
+                                                <FaSignInAlt className="me-1 mb-1" />
+                                                Đăng kí
+                                            </Button>
+                                        </Form.Group>
+                                    </>
+                                ),
+                                1: (
+                                    <Form.Group>
+                                        <Form.Control
+                                            type="text"
+                                            onChange={(e) =>
+                                                verifyOTP(e.target.value)
+                                            }
+                                            value={otp}
+                                            placeholder="Nhập mã OTP"
+                                        />
+                                    </Form.Group>
+                                ),
+                            }[step]
+                        }
                     </Form>
                 </Modal.Body>
                 <Modal.Footer className="justify-content-center">
