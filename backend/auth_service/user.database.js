@@ -36,10 +36,10 @@ async function userSignIn(phoneNumber, password) {
     });
 }
 
-async function userSignUp(phoneNumber, password) {
+async function userSignUp(username, phoneNumber, password) {
     return new Promise(function (resolve, reject) {
         connection.query(
-            `INSERT INTO user (phoneNumber, password) VALUES ('${phoneNumber}', '${password}')`,
+            `INSERT INTO user (username, phoneNumber, password) VALUES ('${username}, ${phoneNumber}', '${password}')`,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);
