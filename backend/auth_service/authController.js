@@ -6,43 +6,28 @@ const randToken = require("rand-token");
 require("dotenv").config();
 
 exports.signup = async (req, res) => {
+    console.log("Signup");
     try {
-        const { phoneNumber, password } = req.body;
-        if (!(phoneNumber && password)) {
-            res.status(400).send("All input is required");
-        }
-
-        const hashPassword = bcrypt.hashSync(
-            req.body.password,
-            process.env.SALT
-        );
-
+        const { username, phoneNumber, password } = req.body.username;
         const exist = await database.getUserByPhoneNumber(phoneNumber);
 
-        if (exist != null) {
-            return res
-                .status(400)
-                .send("Phone number was registered. Try another");
+        if (exist !== null) {
+            return res.send("Phone number existed");
         }
 
-        req.session.phoneNumber = phoneNumber;
-        req.session.hashPassword = hashPassword;
+        const formattedPhoneNumber = "+84" + phoneNumber.substring(1);
 
-        return res.status(200).send("Redirect to OTP sender");
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-exports.OTPsender = async (req, res) => {
-    try {
-        const phoneNumber = req.session.phoneNumber || req.body.phoneNumber;
-
-        const sendOTPToken = await twofaHelper.sendOTPToken(phoneNumber);
+        const sendOTPToken = await twofaHelper.sendOTPToken(
+            formattedPhoneNumber
+        );
 
         if (!sendOTPToken) {
             return res.send("OTP sent failed. Try again");
         }
+
+        req.session.username = username;
+        req.session.phoneNumber = phoneNumber;
+        req.session.password = password;
 
         return res.status(200).send("OTP sent success");
     } catch (error) {
@@ -53,7 +38,7 @@ exports.OTPsender = async (req, res) => {
 exports.OTPverifier = async (req, res) => {
     try {
         const phoneNumber = req.session.phoneNumber || req.body.phoneNumber;
-        const hashPassword = req.session.hashPassword;
+        const hashPassword = bcrypt.hashSync(req.session.password);
         const otpToken = req.body.OTPtoken;
         const isValid = await twofaHelper.verifyOTPToken(phoneNumber, otpToken);
 
@@ -61,7 +46,11 @@ exports.OTPverifier = async (req, res) => {
             return res.send("Invalid OTP");
         }
 
-        const user = await database.userSignUp(phoneNumber, hashPassword);
+        const user = await database.userSignUp(
+            username,
+            phoneNumber,
+            hashPassword
+        );
 
         if (user) {
             return res.status(200).send("Register success");

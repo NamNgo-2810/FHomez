@@ -149,12 +149,17 @@ function Chat() {
                         ))}
                     </div>
                     <div className="chatBoxBottom">
-                        <textarea
+                        <input
                             className="chatMessageInput"
                             placeholder="Aa"
                             defaultValue=""
                             {...register("message")}
-                        ></textarea>
+                            onKeyUp={(e) => {
+                                if (e.key === "Enter") {
+                                    handleSubmit(onSend)();
+                                }
+                            }}
+                        />
                         <button
                             className="chatSubmitButton"
                             onClick={handleSubmit(onSend)}
