@@ -8,9 +8,9 @@ const verifyOTP = (data) => {
   return axiosAuth.post("verify", data);
 }
 
-// register("username", "phoneNumber", "password")
-
-const login = (username, password, rePassword) => {};
+const login = (data) => {
+  return axiosAuth.post("login", data);
+};
 
 const logOut = () => {
   delete localStorage.jwt;

@@ -61,7 +61,6 @@ function Register({ setShow }) {
         console.log("smt wrong")
       } else {
         setStep(1);
-        console.log(response);
       }
     } catch (e) {
       console.log(e);

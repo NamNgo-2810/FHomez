@@ -6,6 +6,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { FaFacebookF, FaGoogle, FaSignInAlt } from "react-icons/fa";
 import styles from "./Login.module.scss";
 import AuthContext from '../../contexts/AuthContext.js'
+import { userService } from "../../services/user.service";
 
 
 // Handle message error validation
@@ -30,9 +31,20 @@ function Login({ setShow }) {
   const {setUser} = useContext(AuthContext)
 
   
-  const onSubmit = (data) => {
-    console.log(data)
-    setUser(true)
+  const onSubmit = async(data) => {
+    try {
+      const response = await userService.login(data);
+
+      if (!response) {
+        console.log("smt wrong")
+      } else {
+        localStorage.jwt = response.accessToken
+        setUser(response.user)
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    
     setShow(0)
   };
 

@@ -2,7 +2,7 @@ const database = require("../services/review.database");
 
 exports.getCommentByMotel = async (req, res) => {
     try {
-        const result = await database.getCommentByMotel(motelid);
+        const result = await database.getCommentByMotel(moteld);
         if (result) {
             return res.status(200).json(result);
         } else {
