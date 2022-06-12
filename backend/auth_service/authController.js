@@ -5,13 +5,15 @@ const bcrypt = require("bcryptjs");
 const randToken = require("rand-token");
 require("dotenv").config();
 
+let data;
+
 exports.signup = async (req, res) => {
     try {
         const { username, phoneNumber, password } = req.body;
         const exist = await database.getUserByPhoneNumber(phoneNumber);
 
         if (exist !== null) {
-            return res.send("Phone number existed");
+            return res.status(400).send("Phone number existed");
         }
 
         const formattedPhoneNumber = "+84" + phoneNumber.substring(1);
@@ -21,16 +23,12 @@ exports.signup = async (req, res) => {
         );
 
         if (!sendOTPToken) {
-            return res.send("OTP sent failed. Try again");
+            return res.status(400).send("OTP sent failed. Try again");
         }
 
-        req.session.username = username;
-        req.session.phoneNumber = phoneNumber;
-        req.session.password = password;
+        data = { username, phoneNumber, password };
 
-        console.log(req.session)
-
-
+        console.log(data);
         return res.status(200).send("OTP sent success");
     } catch (error) {
         console.log(error);
@@ -38,13 +36,17 @@ exports.signup = async (req, res) => {
 };
 
 exports.OTPverifier = async (req, res) => {
-    console.log(req.session)
+    console.log(data);
     try {
-        console.log(req.session.password)
-        const phoneNumber = req.session.phoneNumber || req.body.phoneNumber;
-        const hashPassword = bcrypt.hashSync(req.session.password);
+        const username = data.username;
+        const phoneNumber = data.phoneNumber;
+        const formattedPhoneNumber = "+84" + phoneNumber.substring(1);
+        const hashPassword = bcrypt.hashSync(data.password);
         const otpToken = req.body.OTPtoken;
-        const isValid = await twofaHelper.verifyOTPToken(phoneNumber, otpToken);
+        const isValid = await twofaHelper.verifyOTPToken(
+            formattedPhoneNumber,
+            otpToken
+        );
 
         if (!isValid) {
             return res.send("Invalid OTP");
@@ -67,9 +69,6 @@ exports.OTPverifier = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { phoneNumber, password } = req.body;
-        if (!(phoneNumber && password)) {
-            return res.status(400).send("All input is required");
-        }
         const response = await database.userSignIn(phoneNumber, password);
 
         if (response.status != 200) {

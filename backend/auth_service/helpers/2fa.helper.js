@@ -5,8 +5,6 @@ const sendOTPToken = async (phoneNumber) => {
     console.log(`Sending to ${phoneNumber}...`);
     const accountSid = process.env.TWILIO_ACCOUNT_SID;
     const authToken = process.env.TWILIO_AUTH_TOKEN;
-    console.log("accountSid", accountSid);
-    console.log("authToken", authToken);
     const client = twilio(accountSid, authToken);
 
     let success = false;
