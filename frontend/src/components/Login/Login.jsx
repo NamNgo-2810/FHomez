@@ -5,14 +5,9 @@ import * as yup from "yup";
 import { Button, Form, Modal } from "react-bootstrap";
 import { FaFacebookF, FaGoogle, FaSignInAlt } from "react-icons/fa";
 import styles from "./Login.module.scss";
-<<<<<<< HEAD
 import AuthContext from '../../contexts/AuthContext.js'
 import { userService } from "../../services/user.service";
 
-=======
-import AuthContext from "../../contexts/AuthContext.js";
-import { userService } from "../../services/user.service";
->>>>>>> 99118204ffa17252ec97b521ce44f18e2d6c7328
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
@@ -35,7 +30,6 @@ function Login({ setShow }) {
     } = useForm({ resolver: yupResolver(validationSchema) });
     const { setUser } = useContext(AuthContext);
 
-<<<<<<< HEAD
   
   const onSubmit = async(data) => {
     try {
@@ -53,14 +47,6 @@ function Login({ setShow }) {
     
     setShow(0)
   };
-=======
-    const onSubmit = async (data) => {
-        const response = await userService.login(data);
-        console.log(response);
-        setUser(true);
-        setShow(0);
-    };
->>>>>>> 99118204ffa17252ec97b521ce44f18e2d6c7328
 
     return (
         <>

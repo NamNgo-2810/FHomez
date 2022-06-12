@@ -64,22 +64,10 @@ function Register({ setShow }) {
     const [step, setStep] = useState(0);
     const [otp, setOTP] = useState("");
 
-<<<<<<< HEAD
-      if (!response) {
-        console.log("smt wrong")
-      } else {
-        setStep(1);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-=======
     const requestOTP = async (data) => {
         // call API sign up to get OTP
         try {
             const response = await userService.register(data);
->>>>>>> 99118204ffa17252ec97b521ce44f18e2d6c7328
 
             if (!response) {
                 console.log("smt wrong");
