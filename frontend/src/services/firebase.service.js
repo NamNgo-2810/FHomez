@@ -1,48 +1,52 @@
-import firebase from "firebase/app";
-import "firebase/storage";
-import "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { initializeApp } from "firebase/app";
+import { getStorage, ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
 
-firebase.initializeApp({
-    apiKey: "AIzaSyD5Lb7mk2-QkOSzTsdG5rTkzYwvN37cn40",
-    authDomain: "fhomez-c86fb.firebaseapp.com",
-    projectId: "fhomez-c86fb",
-    storageBucket: "fhomez-c86fb.appspot.com",
-    messagingSenderId: "418087428319",
-    appId: "1:418087428319:web:261028897e59afa6b1896a",
+
+const app = initializeApp({
+  // FHomeZ 
+  apiKey: "AIzaSyD5Lb7mk2-QkOSzTsdG5rTkzYwvN37cn40",
+  authDomain: "fhomez-c86fb.firebaseapp.com",
+  projectId: "fhomez-c86fb",
+  storageBucket: "fhomez-c86fb.appspot.com",
+  messagingSenderId: "418087428319",
+  appId: "1:418087428319:web:261028897e59afa6b1896a"
 });
 
-const firestore = firebase.firestore();
+const storage = getStorage(app);
 
-const storage = firebase.storage();
 
-export const useFirestoreQuery = (query) => {
-    const [docs, setDocs] = useState([]);
-    const queryRef = useRef(query);
+export { uploadBytesResumable,getDownloadURL,ref,storage  };
 
-    useEffect(() => {
-        if (!queryRef.current?.isEqual(query)) {
-            queryRef.current = query;
-        }
-    });
 
-    useEffect(() => {
-        if (!queryRef.current) {
-            return null;
-        }
+// export const useFirestoreQuery = (query) => {
+//   const [docs, setDocs] = useState([]);
+//   const queryRef = useRef(query);
 
-        const unsubscribe = queryRef.current.onSnapshot((querySnapshot) => {
-            const data = querySnapshot.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            setDocs(data);
-        });
+//   useEffect(() => {
+//     if (!queryRef.current?.isEqual(query)) {
+//       queryRef.current = query;
+//     }
+//   });
 
-        return unsubscribe;
-    }, [queryRef]);
+//   useEffect(() => {
+//     if (!queryRef.current) {
+//       return null;
+//     }
 
-    return docs;
-};
+//     const unsubscribe = queryRef.current.onSnapshot((querySnapshot) => {
+//       const data = querySnapshot.docs.map((doc) => ({
+//         ...doc.data(),
+//         id: doc.id,
+//       }));
+//       setDocs(data);
+//     });
 
-export { storage, firestore };
+//     return unsubscribe;
+//   }, [queryRef]);
+
+//   return docs;
+// };
+
+
+
+// https://plnkr.co/edit/zjKMcigaZ3t6kLZv9aOc?p=preview&preview

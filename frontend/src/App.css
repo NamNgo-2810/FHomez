@@ -1,5 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
+}
+
+.row {
+  margin: 0px!important;
 }
 
 .App-logo {

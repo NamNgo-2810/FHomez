@@ -1,4 +1,22 @@
-// import axiosClient from "./axiosClient";
+import axiosAuth from "../apiConfig/axiosAuth";
+
+const register = (data) => {
+    return axiosAuth.post("signup", data);
+};
+
+const verifyOTP = (data) => {
+    return axiosAuth.post("verify", data);
+};
+
+// register("username", "phoneNumber", "password")
+
+const login = (data) => {
+    return axiosAuth.post("login", data);
+};
+
+const logOut = () => {
+    delete localStorage.jwt;
+};
 
 const getMessages = (sender, receiver) => {
     return [
@@ -29,10 +47,10 @@ const sendMessages = (sender, receiver, message) => {
 
 // Handle all backend api call
 export const userService = {
-    // register,
-    // login,
-    // logout,
-    // verifyOTP,
+    register,
+    login,
+    logOut,
+    verifyOTP,
     // getAll, // Lấy tất cả bài đăng
     // getById, // Dùng id lấy chi tiết bài đăng
     // update,
@@ -40,7 +58,3 @@ export const userService = {
     getMessages,
     sendMessages,
 };
-
-const register = (username, password, rePassword) => {};
-
-const login = (username, password, rePassword) => {};
