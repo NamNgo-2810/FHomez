@@ -1,21 +1,16 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import { provinceOptions, districtOptions, roomOptions, facilityOptions, roomPrice } from "./SearchConstant.js"
-import MultiRangeSlider from "multi-range-slider-react";
 import styles from "./Search.module.scss"
+import MultiRangeSlider from "../MultiRangeSlider/MultiRangeSlider";
+import { Link } from "react-router-dom";
 
 const Search = () => {
-  const [minValue, set_minValue] = useState(25);
-  const [maxValue, set_maxValue] = useState(75);
-  const handleInput = (e) => {
-    set_minValue(e.minValue);
-    set_maxValue(e.maxValue);
-  };
 
   return (
     <div className="rowBody col-3">
-      <div className="colSearch">
-        <div className="searchbar_title">
+      <div className={styles.colSearch}>
+        <div className={styles.searchbar_title}>
           Bộ lọc tìm kiếm
           <button type="button" className="searchbar_title_collapse_button">
             <span className="searchbar_title_collapse_button_span">
@@ -24,7 +19,7 @@ const Search = () => {
             </span>
           </button>
         </div>
-        <div className="searchbar_items">          
+        <div className={styles.searchbar_items}>          
           {/* Search by geographical location */}
           <hr className="searchbar_item_divider" />
           <div className="searchbar_item">
@@ -35,7 +30,7 @@ const Search = () => {
                 Tỉnh/Thành phố
                 </div>
                 <div className="searchbar_item_input_province_items">
-                  <Select options={provinceOptions}></Select>
+                  <Select placeholder="Chọn tỉnh/thành phố" options={provinceOptions}></Select>
                 </div>
               </div>
               <div className="searchbar_item_input_district">
@@ -43,7 +38,7 @@ const Search = () => {
                 Quận/Huyện
                 </div>
                 <div className="searchbar_item_input_district_items">
-                  <Select options={districtOptions}></Select>
+                  <Select placeholder="Chọn quận/huyện" options={districtOptions}></Select>
                 </div>
               </div>
             </div>
@@ -56,19 +51,10 @@ const Search = () => {
               <div className="searchbar_price_slider">
                 <div className="price_slider_track_container">
                 <MultiRangeSlider
-                    baseClassName={styles.multiRangeSliderCustom + " multi-range-slider"}
-                    min={0}
-                    max={100}
-                    step={5}
-                  label={true}
-                  ruler={false}
-                    preventWheel={false}
-                    minValue={minValue}
-                    maxValue={maxValue}
-                    onInput={(e) => {
-                      handleInput(e);
-                    }}
-                />
+                    min={500}
+                    max={10000}
+                    onChange={({ min, max }) => console.log()}
+                  />
                 </div>
               </div>
             </div>
@@ -80,7 +66,11 @@ const Search = () => {
             <div className="searchbar_item_input">
               <div className="searchbar_item_input_class">
                 <div className="searchbar_item_input_class_items">
-                <Select options={roomOptions} />
+                  <Select
+                    placeholder="Chọn loại phòng"
+                    options={roomOptions}
+                    isMulti
+                  />
                 </div>
               </div>
             </div>
@@ -89,24 +79,15 @@ const Search = () => {
           {/* Search by area */}
           <hr className="searchbar_item_divider" />
           <div className="searchbar_item">
-          <div className="searchbar_item_title">Diện tích</div>
+          <div className="searchbar_item_title">Diện tích (m2)</div>
             <div className="searchbar_item_input">
               <div className="searchbar_item_input_province">
                 <div className="searchbar_item_input_province_items">
-                <MultiRangeSlider
-                    baseClassName={styles.multiRangeSliderCustom + " multi-range-slider"}
+                  <MultiRangeSlider
                     min={0}
-                    max={100}
-                    step={5}
-                    label={true}
-                    ruler={false}
-                    preventWheel={false}
-                    minValue={minValue}
-                    maxValue={maxValue}
-                    onInput={(e) => {
-                      handleInput(e);
-                    }}
-                />
+                    max={200}
+                    onChange={({ min, max }) => console.log()}
+                  />
                 </div>
               </div>
             </div>
@@ -118,14 +99,23 @@ const Search = () => {
             <div className="searchbar_item_input">
               <div className="searchbar_item_input_province">
                 <div className="searchbar_item_input_province_items">
-                  <Select options={facilityOptions}></Select>
+                <Select
+                    placeholder="Chọn cơ sở vật chất"
+                    options={facilityOptions}
+                    isMulti
+                  />
                 </div>
               </div>
             </div>
           </div>
-          <button className="searchbar_items_button_execute">
-          Tìm kiếm
-          </button>
+          <div className={styles.searchbar_items_button}>
+            <button className={styles.searchbar_items_button_execute}>
+              <Link to="productDetail"
+              className="searchbar_items_button_explore_toProductDetail">
+              Tìm kiếm
+              </Link>
+            </button>
+          </div>          
         </div>
       </div>
     </div>
