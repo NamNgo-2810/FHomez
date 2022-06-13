@@ -5,6 +5,7 @@ import Register from "./components/Register/Register";
 import Home from "./containers/Home";
 import UploadForm from "./components/UploadForm/UploadForm";
 import Chat from "./components/Chat/Chat";
+import ProductDetail from "./components/ProductDetail/ProductDetail"
 import { useMemo, useState } from "react";
 import AuthContext from "./contexts/AuthContext";
 
@@ -33,6 +34,7 @@ function App() {
             {/* <PrivateRoute roles={['admin']}></PrivateRoute> */}
             <Route path="upload" element={<UploadForm />} />
             <Route path="chat" element={<Chat />} />
+            <Route path="productDetail" element={<ProductDetail />} />
           </Routes>
         </BrowserRouter>
       </div>
