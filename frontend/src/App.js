@@ -1,7 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Chat from "./components/Chat/Chat";
-import { Suspense, useMemo, useState, lazy } from "react";
+import { Suspense, useMemo, useState, lazy, useEffect } from "react";
 import AuthContext from "./contexts/AuthContext.js";
 import Hypnosis from "react-cssfx-loading/lib/Hypnosis";
 
@@ -14,10 +13,16 @@ const NewsManager = lazy(() => import("./components/NewsManager/NewsManager"));
 const AccountManager = lazy(() =>
   import("./components/AccountManager/AccountManager")
 );
+const Chat = lazy(() => import("./components/Chat/Chat"));
 
 function App() {
-  // Create localStorage.jwt to fake sign in
-  const [currentUser, setCurrentUser] = useState(localStorage.jwt);
+
+  const [currentUser, setCurrentUser] = useState(localStorage.user && JSON.parse(localStorage.user));
+
+
+  // useEffect(()=> {
+
+  // })
 
   const authCtxValue = useMemo(
     () => ({
@@ -52,6 +57,7 @@ function App() {
               <Route index element={<Home />} />
               {/* <PrivateRoute roles={['admin']}></PrivateRoute> */}
               <Route path="upload" element={<UploadForm />} />
+              <Route path="chat" element={<Chat />} />
               <Route path="account" element={<Info />}>
                 <Route index element={<AccountManager />} />
                 <Route path="quan-li-tin" element={<NewsManager />} />
