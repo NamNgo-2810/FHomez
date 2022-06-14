@@ -13,7 +13,9 @@ const login = (data) => {
 };
 
 const logOut = () => {
-    delete localStorage.jwt;
+    delete localStorage.user
+    delete localStorage.jwt
+    window.location.reload()
 };
 
 const getMessages = (sender, receiver) => {
