@@ -1,10 +1,10 @@
 #Docker Hub Link:
-#docker pull phongnt187270/fhomez-home-service:v3
-#docker pull phongnt187270/fhomez-auth-service:v3
+#docker pull $REPOSITORY/IMAGE_NAME:VERSION
+#docker pull $REPOSITORY/IMAGE_NAME:VERSION
 
-docker build -t phongnt187270/fhomez-home-service:v3 .
+docker build -t $REPOSITORY/IMAGE_NAME:VERSION .
 
-docker build -t phongnt187270/fhomez-auth-service:v3 .
+docker build -t $REPOSITORY/IMAGE_NAME:VERSION .
 
 docker-compose up 
 
