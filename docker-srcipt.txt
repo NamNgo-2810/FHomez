@@ -1,10 +1,10 @@
 #Docker Hub Link:
-#docker pull phongnt187270/fhomez-home-service
-#docker pull phongnt187270/fhomez-auth-service
+#docker pull phongnt187270/fhomez-home-service:v3
+#docker pull phongnt187270/fhomez-auth-service:v3
 
-docker build -t fhomez-auth-service/node:v3 .
+docker build -t phongnt187270/fhomez-home-service:v3 .
 
-docker build -t fhomez-auth-service/node:v3 .
+docker build -t phongnt187270/fhomez-auth-service:v3 .
 
 docker-compose up 
 
