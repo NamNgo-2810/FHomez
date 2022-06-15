@@ -34,7 +34,6 @@
     margin-top: 5px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }
 
 .chatMessageInput {
@@ -52,6 +51,7 @@
     cursor: pointer;
     background-color: #1877f2;
     color: white;
+    margin-left: 5px;
 }
 
 .chatOnline {

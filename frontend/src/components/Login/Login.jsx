@@ -31,8 +31,8 @@ function Login({ setShow }) {
 
     const onSubmit = async (data) => {
         const response = await userService.login(data);
-        console.log(response);
-        setUser(true);
+        setUser(response.user);
+        localStorage.jwt = response.accessToken;
         setShow(0);
     };
 
