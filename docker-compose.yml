@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   home_service:
-    image: fhomez-home-service/node:v2
+    image: phongnt187270/fhomez-home-service:v3
     container_name: backend-home-service
     ports:
       - "49160:5001"
@@ -12,7 +12,7 @@ services:
     networks:
       - fhomez-network
   auth_service:
-    image: fhomez-home-auth/node:v2
+    image: phongnt187270/fhomez-auth-service:v3
     container_name: backend-auth-service
     ports:
       - "49170:5001"
