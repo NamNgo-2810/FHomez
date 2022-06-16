@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function Footer() {
-  return (
-    <div className="row" style={{position:'fixed',bottom:'0',height:'300px',backgroundColor:'black'}}>
-    Footer
-</div>
-  )
+  return <div className="row">Footer</div>;
 }
 
-export default Footer
+export default Footer;

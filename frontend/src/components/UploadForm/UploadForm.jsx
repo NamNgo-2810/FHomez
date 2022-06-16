@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect,useContext } from "react";
+import React, { useState, useMemo, useEffect, useContext } from "react";
 import styles from "./UploadForm.module.scss";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -15,6 +15,8 @@ import { provinceData } from "./Province.js";
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 import CalculatePrice from "../../helpers/CalculatePrice";
+import { facilityOptions } from "../Search/SearchConstant";
+import Select from "react-select";
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
@@ -48,7 +50,7 @@ const UploadForm = () => {
   const [files, setFiles] = useState([]);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const days = useMemo(() => Array.from(new Array(100), (x) => 1), []);
 
   // react-hook-form
@@ -68,16 +70,25 @@ const UploadForm = () => {
       subDistrict: "",
       street: "",
       typeOfNews: 1,
-      dayOfNews: 1,
+      dayOfNews: 1
     }
   );
+  console.log(watchFields[5])
 
-    // handle update location
+  // handle update location
   const [subDistricts, setSubDistricts] = useState([]);
   const [streets, setStreets] = useState([]);
   const [typeOfNews, setTypeOfNews] = useState(1);
   const [dayOfNews, setDayOfNews] = useState(1);
 
+  // handle update facilities 
+  const [facilities, setFacilities] = useState([])
+  const handleChangeFacilities = (e) => {
+    console.log("hello",e)
+    setFacilities(e.map(e => e.value))
+  }
+
+  
   useEffect(() => {
     setSubDistricts(
       provinceData.district.find((e) => e.name === watchFields[0])?.ward
@@ -89,16 +100,13 @@ const UploadForm = () => {
     setDayOfNews(watchFields[4] && watchFields[4]);
   }, [watchFields]);
 
-
   // get price
   const [price, setPrice] = useState({
     hotPrice: [],
     vipPrice: [],
     normalPrice: [],
   });
-  useEffect(() => {
-     
-  }, []);
+  useEffect(() => {}, []);
 
   const onSubmit = async (data) => {
     if (files.length !== 0) {
@@ -115,20 +123,20 @@ const UploadForm = () => {
         promises.push(uploadTask);
       });
 
-      Promise.all(promises)
-        .then((result) => {
-          data.src = result;
-          let date = new Date();
-          let currentTime =
-            date.getDate() +
-            "-" +
-            (date.getMonth() + 1) +
-            "-" +
-            date.getFullYear();
-          // api store to my sql
-          //if success: Gọi onShowSuccess 
-          //if false: Gọi onShowError 
-        })
+      Promise.all(promises).then((result) => {
+        data.src = result;
+        data.facilities = facilities
+        let date = new Date();
+        let currentTime =
+          date.getDate() +
+          "-" +
+          (date.getMonth() + 1) +
+          "-" +
+          date.getFullYear();
+        // api store to my sql
+        //if success: Gọi onShowSuccess
+        //if false: Gọi onShowError
+      });
     } else {
       alert("Pls choose at least 1 image");
     }
@@ -274,6 +282,18 @@ const UploadForm = () => {
                 <p style={{ color: "red" }}>{errors.area?.message}</p>
               </div>
             </div>
+
+            <div className="row mb-3">
+              <label>Chọn cơ sở vật chất(*)</label>
+              <Select
+                required
+                placeholder="Chọn cơ sở vật chất"
+                options={facilityOptions}
+                onChange={((e) => handleChangeFacilities(e))}
+                isMulti
+              />
+            </div>
+
             <div className="row mb-3">
               <div className="col">
                 <label>Giá cho thuê(*)</label>

@@ -59,6 +59,8 @@ function App() {
               <Route path="admin" element={<PrivateRoute roles={["admin"]} />}>
                 <Route index element={<Admin />}></Route>
               </Route>
+              <Route path="products/:productId" element={<ProductDetail />}>
+              </Route>
               <Route path="upload" element={<UploadForm />} />
               <Route path="chat" element={<Chat />} />
               <Route path="account" element={<Info />}>
