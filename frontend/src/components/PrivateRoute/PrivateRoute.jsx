@@ -1,30 +1,21 @@
-import React, { useContext } from 'react'
-import { Route,Redirect } from "react-router-dom";
-function PrivateRoute({component:Component,roles,...rest}) {
+import React, { useContext } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import AuthContext from "../../contexts/AuthContext";
+function PrivateRoute({ component: Component, roles, ...rest }) {
+  const authCtx = useContext(AuthContext);
+  // If not logged in then redirect to login page
+  if (!authCtx.user) {
+    return <Navigate to="/" />;
+  }
 
-    const authCtx = useContext(AuthContext)
-  return (
-    
-    <Route {...rest} render={(props) => {
-
-        // If not logged in then redirect to login page 
-        if (!authCtx.user) {
-          return <Redirect to='/login' />
-        }
-  
-        // restricted by role 
-        if (roles && roles.indexOf(authCtx.user.role) === -1) {
-          return <Redirect to='/login' />
-        }
-        // authorized then return component
-        if (Component) {
-          return <Component {...props} />
-        }
-  
-      }
-  
-      } ></Route>
-   )
+  // restricted by role
+  if (roles && roles.indexOf(authCtx.user.role) === -1) {
+    return <Navigate to="/" />;
+  }
+  // authorized then return component
+  if (authCtx.user.role.includes("admin")) {
+    return <Outlet />;
+  }
 }
 
-export default PrivateRoute
+export default PrivateRoute;
