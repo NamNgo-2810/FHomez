@@ -1,0 +1,25 @@
+#Docker Hub Link:
+#docker pull $REPOSITORY/IMAGE_NAME:VERSION
+#docker pull $REPOSITORY/IMAGE_NAME:VERSION
+
+docker build -t $REPOSITORY/IMAGE_NAME:VERSION .
+
+docker build -t $REPOSITORY/IMAGE_NAME:VERSION .
+
+docker-compose up 
+
+docker-compose down
+
+docker run -p 49160:8080 -d <your username>/node-web-app
+
+# Get container ID
+$ docker ps
+
+# Print app output
+$ docker logs <container id>
+
+# Example
+Running on http://localhost:8080
+
+# Enter the container
+$ docker exec -it <container id> /bin/bash
