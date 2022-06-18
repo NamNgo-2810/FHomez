@@ -7,7 +7,6 @@ async function ownerRegisterApproval(user_id) {
             resolve(result);
         });
     }).then((result) => {
-    
         return result;
     }).catch(error => console.log(error));
 }
@@ -19,11 +18,8 @@ async function deleteUser(user_id) {
             resolve(result);
         });
     }).then((result) => {
-        if (result.length == 0) {
-            return null;
-        }
         return result;
-    });
+    }).catch(error => console.log(error));
 }
 async function blogApproval(motel_id){
     return new Promise((resolve, reject) => {
@@ -32,11 +28,8 @@ async function blogApproval(motel_id){
             resolve(result);
         });
     }).then((result) => {
-        if (result.length == 0) {
-            return null;
-        }
         return result;
-    });
+    }).catch(error => console.log(error));
 }
 
 module.exports = {
