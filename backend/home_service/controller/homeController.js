@@ -13,19 +13,19 @@ exports.getByHomeID = async (req, res) => {
 exports.addHome = async (req, res) => {
     // TO DO: Insert home's info to database
     const result = await database.addHome(req.body);
-    res.status(200).json(req.body);
+    res.status(200).json(result);
 };
 
 exports.updateHome = async (req, res) => {
     // TO DO: Update home's info
     const result = await database.updateHome(req.body);
-    res.status(200).json(req.body);
+    res.status(200).json(result);
 };
 
 exports.deleteHome = async (req, res) => {
     // TO DO: Delete home from database
     const result = await database.deleteHome(req.body);
-    res.status(200).json(req.body);
+    res.status(200).json(result);
 };
 
 exports.rateHome = async (req, res) => {
