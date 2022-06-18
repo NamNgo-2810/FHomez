@@ -46,7 +46,6 @@ const facilityOptions = [
   { value: "18", label: "Chung chủ" },
   { value: "19", label: "Điện nước giá dân" },
   { value: "20", label: "Điện nước giá thuê" },
-
 ]
 
 // Theo giá phòng 

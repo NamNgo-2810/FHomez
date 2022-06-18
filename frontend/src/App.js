@@ -59,18 +59,37 @@ function App() {
               <Route path="admin" element={<PrivateRoute roles={["admin"]} />}>
                 <Route index element={<Admin />}></Route>
               </Route>
-              <Route path="products/:productId" element={<ProductDetail />}>
+              <Route
+                path="products/:productId"
+                element={<PrivateRoute roles={["admin", "owner", "hirer"]} />}
+              >
+                <Route index element={<ProductDetail />}></Route>
               </Route>
-              <Route path="upload" element={<UploadForm />} />
-              <Route path="chat" element={<Chat />} />
-              <Route path="account" element={<Info />}>
-                <Route index element={<AccountManager />} />
-                <Route path="quan-li-tin" element={<NewsManager />} />
-                <Route path="nap-tien" element={<NewsManager />} />
-                <Route path="lich-su-nap-tien" element={<NewsManager />} />
+              <Route
+                path="upload"
+                element={<PrivateRoute roles={["admin", "owner"]} />}
+              >
+                <Route index element={<UploadForm />}></Route>
+              </Route>
+              <Route
+                path="chat"
+                element={<PrivateRoute roles={["admin", "owner", "hirer"]} />}
+              >
+                <Route index element={<Chat />}></Route>
+              </Route>
+
+              <Route
+                path="account"
+                element={<PrivateRoute roles={["admin", "owner", "hirer"]} />}
+              >
+                <Route element={<Info />}>
+                  <Route index element={<AccountManager />} />
+                  <Route path="quan-li-tin" element={<NewsManager />} />
+                  <Route path="nap-tien" element={<NewsManager />} />
+                  <Route path="lich-su-nap-tien" element={<NewsManager />} />
+                </Route>
               </Route>
             </Routes>
-
             <Footer></Footer>
           </BrowserRouter>
         </div>

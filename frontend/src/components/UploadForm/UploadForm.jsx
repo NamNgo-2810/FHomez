@@ -84,11 +84,9 @@ const UploadForm = () => {
   // handle update facilities 
   const [facilities, setFacilities] = useState([])
   const handleChangeFacilities = (e) => {
-    console.log("hello",e)
     setFacilities(e.map(e => e.value))
   }
 
-  
   useEffect(() => {
     setSubDistricts(
       provinceData.district.find((e) => e.name === watchFields[0])?.ward
