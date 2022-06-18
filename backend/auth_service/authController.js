@@ -99,10 +99,12 @@ exports.login = async (req, res) => {
 
         return res.json({
             accessToken,
-            refreshToken,
-            user_id,
-            username,
-            role,
+            user: {
+                user_id,
+                username,
+                role
+            },
+            refreshToken
         });
     } catch (error) {
         console.log(error);
