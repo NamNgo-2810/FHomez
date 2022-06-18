@@ -7,7 +7,8 @@ exports.ownerRegisterApproval = async (req, res) => {
 }
 exports.blogApproval = async (req, res) => {
     const result = await database.blogApproval(req.body.motel_id);
-    return result;
+    if (result.affectedRows != 1) { return res.status(400)}
+    return res.status(200).send("Success");
 }
 exports.deleteUser = async (req, res) => {
     const result = await database.deleteUser(req.body.user_id);
