@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import "./ProductDetail.css"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faChevronLeft, faChevronRight, faCircle, faHeart, faFlag } from "@fortawesome/free-solid-svg-icons";
-import { } from "@fortawesome/fontawesome-svg-core";
 import productDetail1 from "./product_detail1.jpg";
 import productDetail2 from "./product_detail2.jpg";
 import productDetail3 from "./product_detail3.jpg";
@@ -12,7 +9,7 @@ import userAvatar1 from "./user_avatar1.jpg";
 import userAvatar2 from "./user_avatar2.jpg";
 import userAvatar3 from "./user_avatar3.png";
 import slideShowScript from "./SlideshowControl";
-import 'react-slideshow-image/dist/styles.css';
+// import 'react-slideshow-image/dist/styles.css';
 // import { Slide } from "react-slideshow-image";
 // import SimpleImageSlider from "react-simple-image-slider";
 import { default as  ImageSlider} from "./ImageSlider";
@@ -132,12 +129,12 @@ function ProductDetail() {
                                 <div className="tool ">
                                     <button type="button" className="favorite mx-2 v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default">
                                         <span className="v-btn__content">
-                                            <FontAwesomeIcon icon={faHeart}></FontAwesomeIcon>
+                                           
                                         </span>
                                     </button>
                                     <button type="button" className="report mx-2 v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default">
                                         <span className="v-btn__content">
-                                            <FontAwesomeIcon icon={faFlag}></FontAwesomeIcon>
+                                           
                                         </span>
                                     </button>
                                 </div>
