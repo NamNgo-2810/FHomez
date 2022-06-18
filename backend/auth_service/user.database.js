@@ -70,7 +70,7 @@ async function updateRefreshToken(phoneNumber, refreshToken) {
 async function getUserByPhoneNumber(phoneNumber) {
     return new Promise((resolve, reject) => {
         connection.query(
-            `SELECT * FROM user WHERE phoneNumber = ${phoneNumber}`,
+            `SELECT * FROM user WHERE phoneNumber = '${phoneNumber}'`,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);
