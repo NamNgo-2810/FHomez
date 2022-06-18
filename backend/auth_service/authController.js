@@ -95,10 +95,14 @@ exports.login = async (req, res) => {
             refreshToken = user.refreshToken;
         }
 
+        const { user_id, username, role } = user;
+
         return res.json({
             accessToken,
             refreshToken,
-            user,
+            user_id,
+            username,
+            role,
         });
     } catch (error) {
         console.log(error);
