@@ -1,4 +1,3 @@
-const config = require("./config");
 const Conversation = require("./models/Conversation");
 const Message = require("./models/Message");
 
