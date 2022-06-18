@@ -14,7 +14,7 @@ function mySQLConnect() {
         });
         connection.connect((err) => {
             if (err) console.log(err);
-            console.log("MySQL connected success");
+            else console.log("MySQL connected success");
         });
         return connection;
     } catch (error) {

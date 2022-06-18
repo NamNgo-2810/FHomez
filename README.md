@@ -1,6 +1,6 @@
 # FHomez
-Lưu ý: Mỗi người tạo branch riêng của mình theo thư mục, ví dụ: frontend - Long. Khi push code thì push lên branch của mình, TUYỆT ĐỐI không push thẳng lên master\
-Web tìm và quản lý nhà trọ\
+Lưu ý: Mỗi người tạo branch riêng của mình theo thư mục, ví dụ: frontend - Long. Khi push code thì push lên branch của mình, không push thẳng lên master\
+Web hỗ trợ tìm nhà trọ\
 Actor: Khách vãng lai, người thuê, người cho thuê, admin\
 Feature cho khách vãng lai:
 - Đăng ký
@@ -26,8 +26,8 @@ Feature cho admin:
 - Quản lý người dùng
 - Quản lý bài đăng
 - Quản lý đánh giá
-- Chat với người thuê và người cho thuê
+- Chat
 
 Frontend: ReactJS
 Backend: NodeJS (Express)
-Database: MySQL
+Database: MySQL, MongoDB (cho chat), Firebase (lưu ảnh)
