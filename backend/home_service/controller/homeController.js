@@ -39,7 +39,7 @@ exports.search = async (req, res) => {
 
 exports.getCommentByMotel = async (req, res) => {
     try {
-        const result = await database.getCommentByMotel(motelid);
+        const result = await database.getCommentByMotel(req.body.motel_id);
         if (result) {
             return res.status(200).json(result);
         } else {
@@ -52,7 +52,7 @@ exports.getCommentByMotel = async (req, res) => {
 
 exports.addReview = async (req, res) => {
     try {
-        const result = await database.addReview();
+        const result = await database.addReview(req.body.data);
         if (result) {
             return res.status(200).json(result);
         } else {
@@ -64,7 +64,7 @@ exports.addReview = async (req, res) => {
 };
 exports.deleteComment = async (req, res) => {
     try {
-        const result = await database.deleteComment();
+        const result = await database.deleteComment(req.body.review_id);
         if (result) {
             return res.status(200).json(result);
         } else {
