@@ -105,7 +105,6 @@ exports.login = async (req, res) => {
                 role
             },
             refreshToken
-           
         });
     } catch (error) {
         console.log(error);
