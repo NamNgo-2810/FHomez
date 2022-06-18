@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+    home_service:
+        image: namngo/home:v1
+        container_name: backend-home-service
+        ports:
+            - "49160:5001"
+        restart: unless-stopped
+        volumes:
+            - ./app/backend/:/home/fhomez/service
+        networks:
+            - fhomez-network
+    auth_service:
+        image: namngo/auth:v1
+        container_name: backend-auth-service
+        ports:
+            - "49170:5001"
+        restart: unless-stopped
+        volumes:
+            - ./app/backend/:/home/fhomez/service
+        networks:
+            - fhomez-network
+networks:
+    fhomez-network:
+        driver: bridge

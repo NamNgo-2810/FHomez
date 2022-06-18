@@ -8,14 +8,14 @@ const verifyOTP = (data) => {
     return axiosAuth.post("verify", data);
 };
 
-// register("username", "phoneNumber", "password")
-
 const login = (data) => {
-    return axiosAuth.post("login", data);
+  return axiosAuth.post("login", data);
 };
 
 const logOut = () => {
-    delete localStorage.jwt;
+    delete localStorage.user
+    delete localStorage.jwt
+    window.location.reload()
 };
 
 const getMessages = (sender, receiver) => {

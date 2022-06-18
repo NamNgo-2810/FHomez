@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Placeholder } from "react-bootstrap";
 import ProductItem from "../components/ProductItem/ProductItem";
-import { productService } from "../services/product.service";
+import { productService } from "../services/home.service.js";
 
 function ProductList() {
   const [products, setProducts] = useState([]);
@@ -9,9 +9,9 @@ function ProductList() {
 
   useEffect(() => {
     async function getProductList() {
-      let result = await productService.getAll();
-      setIsLoading(false);
-      setProducts(result);
+      // let result = await productService.getAll();
+      // setIsLoading(false);
+      // setProducts(result);
     }
 
     getProductList();

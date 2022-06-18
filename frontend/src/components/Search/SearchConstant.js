@@ -56,6 +56,10 @@ const roomPrice = [
 ]
 
 // Theo diện tích
+const roomArea = [
+  { value: "0", label: "Giá tối thiểu" },
+  { value: "200", label: "Giá tối đa"}
+]
 
 
 export {provinceOptions,districtOptions, roomOptions,facilityOptions,roomPrice}

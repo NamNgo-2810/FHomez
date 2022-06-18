@@ -33,7 +33,7 @@ async function getByHomeID(data) {
 async function addHome(data) {
     return new Promise((resolve, reject) => {
         connection.query(`INSERT INTO motel(src,title,descr,price,area,locationID,createdAt,type)
-         VALUES ('${data.src}','${data.title}','${data.descr}','${data.price}','${data.area}','${data.locationID}','${data.createdAt}', '${data.type}');`, (error, result) => {
+         VALUES ('${data.src}','${data.title}','${data.descr}','${data.price}','${data.area}','${data.locationID}','${data.createdAt}', '${data.type}', status ='${data.status}');`, (error, result) => {
             if (error) reject(error);
             resolve(result);
         });
@@ -64,7 +64,7 @@ async function deleteHome(data) {
 async function updateHome(data) {
     return new Promise((resolve, reject) => {
         connection.query(`UPDATE motel 
-        SET src ='${data.src}', title ='${data.title}', descr = '${data.descr}',price = '${data.price}', area ='${data.area}', locationID = '${data.locationID}', createdAt = '${data.createdAt}', type ='${data.type}'
+        SET src ='${data.src}', title ='${data.title}', descr = '${data.descr}',price = '${data.price}', area ='${data.area}', locationID = '${data.locationID}', createdAt = '${data.createdAt}', type ='${data.type}', status ='${data.status}'
         WHERE motel_id = ${data.motel_id}`, (error, result) => {
             if (error) reject(error);
             resolve(result);

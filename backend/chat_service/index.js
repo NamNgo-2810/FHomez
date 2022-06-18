@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const chatRoutes = require("./chatRoutes");
 const session = require("express-session");
+require("dotenv").config();
 
 const app = express();
 const database = require("./database");

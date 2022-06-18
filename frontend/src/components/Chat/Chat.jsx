@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Conversation from "../Conversation/Conversation";
@@ -6,6 +6,7 @@ import Message from "../Message/Message";
 import ChatOnline from "../ChatOnline/ChatOnline";
 import { io } from "socket.io-client";
 import "./Chat.css";
+import AuthContext from "../../contexts/AuthContext";
 
 function Chat() {
     const [conversations, setConversations] = useState([]);
@@ -20,12 +21,14 @@ function Chat() {
     const socket = useRef(io("ws://localhost:8900"));
     const [arrivalMessage, setArrivalMessage] = useState(null);
 
-    const user = {
-        id: "123",
-        profilePicture:
-            "https://scontent-hkt1-1.xx.fbcdn.net/v/t39.30808-6/274923351_1337119300139137_3012035318960112960_n.jpg?_nc_cat=102&ccb=1-6&_nc_sid=09cbfe&_nc_ohc=ds_b6ZVMWy8AX81iBPT&_nc_ht=scontent-hkt1-1.xx&oh=00_AT_Mrse_kwxS3R_rosAc0isg9YSkpLEbLx6jVBipcNaVXA&oe=627FE3AA",
-        username: "Nam",
-    };
+    const { user } = useContext(AuthContext)
+console.log(user)
+    // const user = {
+    //     id: "123",
+    //     profilePicture:
+    //         "https://scontent-hkt1-1.xx.fbcdn.net/v/t39.30808-6/274923351_1337119300139137_3012035318960112960_n.jpg?_nc_cat=102&ccb=1-6&_nc_sid=09cbfe&_nc_ohc=ds_b6ZVMWy8AX81iBPT&_nc_ht=scontent-hkt1-1.xx&oh=00_AT_Mrse_kwxS3R_rosAc0isg9YSkpLEbLx6jVBipcNaVXA&oe=627FE3AA",
+    //     username: "Nam",
+    // };
 
     const onSend = async (e) => {
         const newMessage = {
