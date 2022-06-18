@@ -61,10 +61,8 @@ function App() {
               </Route>
               <Route
                 path="products/:productId"
-                element={<PrivateRoute roles={["admin", "owner", "hirer"]} />}
-              >
-                <Route index element={<ProductDetail />}></Route>
-              </Route>
+                element={<ProductDetail />}
+              ></Route>
               <Route
                 path="upload"
                 element={<PrivateRoute roles={["admin", "owner"]} />}
