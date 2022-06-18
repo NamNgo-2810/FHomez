@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use(session({ secret: "foo", resave: true, saveUninitialized: true }));
-app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => console.log("Admin service listening on port " + PORT));
