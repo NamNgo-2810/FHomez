@@ -1,4 +1,4 @@
-FROM node:10.19.0
+FROM node:14.19.3
 
 # Create app directory
 WORKDIR /app
@@ -13,8 +13,10 @@ RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production
 
-#Expose port to docker cient
+#Expose port service for docker client
 EXPOSE 5001
 
-#Run app
+#Start app
 CMD npm start
+
+
