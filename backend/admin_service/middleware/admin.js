@@ -12,7 +12,7 @@ const verifyToken = async (token, secretKey) => {
     }
 };
 
-const isAuth = async (req, res, next) => {
+const isAdmin = async (req, res, next) => {
     const accessTokenFromHeader = req.headers.x_authorization;
     if (!accessTokenFromHeader) {
         return res.status(401).send("Access token not found.");
@@ -28,9 +28,13 @@ const isAuth = async (req, res, next) => {
         return res.status(401).send("Permission denied.");
     }
 
+    if (verified.payload !== "admin") {
+        return res.status(401).send("Permission denied");
+    }
+
     return next();
 };
 
 module.exports = {
-    isAuth: isAuth,
+    isAdmin: isAdmin,
 };

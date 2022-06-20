@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const homeRoutes = require("./routes/homeRoutes");
+const homeRoutes = require("./homeRoutes");
 const session = require("express-session");
 require("dotenv").config();
 
