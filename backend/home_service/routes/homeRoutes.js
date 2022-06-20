@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controller/homeController");
-const middleware = require("../../auth_service/middleware/auth");
+const middleware = require("../middleware/auth");
 
 router.post("/", middleware.isAuth, controller.addHome);
 router.put("/", middleware.isAuth, controller.updateHome);

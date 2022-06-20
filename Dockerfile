@@ -1,4 +1,4 @@
-FROM node:10.19.0
+FROM node:14.19.3
 
 # Create app directory
 WORKDIR /app
@@ -16,4 +16,6 @@ RUN npm install
 
 EXPOSE 5001
 CMD sh ./home-service.sh
+
+#EXPOSE 8000
 #CMD sh ./auth-service.sh
