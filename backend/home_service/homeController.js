@@ -1,4 +1,4 @@
-const database = require("../services/home.database");
+const database = require("./home.database");
 
 exports.getAllHome = async (req, res) => {
     const result = await database.getAllHome();
@@ -74,4 +74,3 @@ exports.deleteComment = async (req, res) => {
         console.log(error);
     }
 };
-

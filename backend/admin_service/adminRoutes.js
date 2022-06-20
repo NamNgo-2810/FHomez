@@ -1,10 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("./adminController");
-const middleware = require("../auth_service/middleware/auth");
+const middleware = require(".middleware/admin");
 
-router.delete('/user',middleware.isAuth,controller.deleteUser);
-router.post('/blogApproval',middleware.isAuth,controller.blogApproval);
-router.post('/ownerRegisterApproval', middleware.isAuth, controller.ownerRegisterApproval);
+router.delete("/user", middleware.isAdmin, controller.deleteUser);
+router.post("/blogApproval", middleware.isAdmin, controller.blogApproval);
+router.post(
+    "/ownerRegisterApproval",
+    middleware.isAdmin,
+    controller.ownerRegisterApproval
+);
 
 module.exports = router;

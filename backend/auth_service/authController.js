@@ -2,7 +2,6 @@ const jwtHelper = require("./helpers/jwt.helper");
 const twofaHelper = require("./helpers/2fa.helper");
 const database = require("./user.database");
 const bcrypt = require("bcryptjs");
-const randToken = require("rand-token");
 require("dotenv").config();
 
 let data;
@@ -78,21 +77,13 @@ exports.login = async (req, res) => {
         const user = response.body;
 
         const accessToken = await jwtHelper.generateToken(
-            user,
+            user.role,
             process.env.ACCESS_TOKEN_SECRET,
             process.env.ACCESS_TOKEN_LIFE
         );
 
         if (!accessToken) {
             return res.status(401).send("Login failed, please try again");
-        }
-
-        let refreshToken = randToken.generate(process.env.REFRESH_TOKEN_SIZE);
-
-        if (!user.refreshToken) {
-            await database.updateRefreshToken(phoneNumber, refreshToken);
-        } else {
-            refreshToken = user.refreshToken;
         }
 
         const { user_id, username, role } = user;
@@ -102,60 +93,12 @@ exports.login = async (req, res) => {
             user: {
                 user_id,
                 username,
-                role
+                role,
             },
-            refreshToken
         });
     } catch (error) {
         console.log(error);
     }
-};
-
-exports.refreshToken = async (req, res) => {
-    const accessTokenFromHeader = req.headers.x_authorization;
-    if (!accessTokenFromHeader) {
-        return res.status(400).send("Access token not found");
-    }
-
-    const refreshTokenFromBody = req.body.refreshToken;
-    if (!refreshTokenFromBody) {
-        return res.status(400).send("Refresh token not found");
-    }
-
-    const decoded = jwtHelper.decodeToken(
-        accessTokenFromHeader,
-        process.env.ACCESS_TOKEN_SECRET
-    );
-
-    if (!decoded) {
-        return res.status(400).send("Invalid access token");
-    }
-
-    const phoneNumber = decoded.payload.phoneNumber;
-    const user = await database.getUserByPhoneNumber(phoneNumber);
-    if (!user) {
-        return res.status(401).send("User doesn't exist");
-    }
-
-    if (refreshTokenFromBody !== user.refreshToken) {
-        return res.status(400).send("Invalid refresh token");
-    }
-
-    const dataForAccessToken = { phoneNumber };
-
-    const accessToken = await jwtHelper.generateToken(
-        dataForAccessToken,
-        process.env.ACCESS_TOKEN_SECRET,
-        process.env.ACCESS_TOKEN_LIFE
-    );
-
-    if (!accessToken) {
-        return res.status(400).send("Access token generate failed, try again");
-    }
-
-    return res.json({
-        accessToken,
-    });
 };
 
 exports.getUserById = async (req, res) => {
