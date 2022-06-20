@@ -9,13 +9,13 @@ function ProductList() {
 
   useEffect(() => {
     async function getProductList() {
-      // let result = await productService.getAll();
-      // setIsLoading(false);
-      // setProducts(result);
+      let result = await productService.getAll();
+      setIsLoading(false);
+      setProducts(result);
     }
 
     getProductList();
-  }, [products]);
+  }, []);
 
 
   return (
