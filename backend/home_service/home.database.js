@@ -97,6 +97,26 @@ async function updateHome(data) {
     });
 }
 
+async function searchHome(keys) {
+    const { minCost, maxCost, minArea, maxArea } = keys;
+
+    return new Promise((resolve, reject) => {
+        connection.query(
+            `SELECT * FROM motel 
+            WHERE 'cost' >= ${minCost ? minCost : 0} 
+            AND 'area' >= ${minArea ? minArea : 0}
+            ${maxCost ? ` AND 'cost' <= ${maxCost} ` : ""}
+            ${maxArea ? ` AND 'area' <= ${maxArea}` : ""}`,
+            (error, result) => {
+                if (error) reject(error);
+                resolve(result);
+            }
+        );
+    }).then((result) => {
+        return result;
+    });
+}
+
 async function getCommentByMotel(motel_id) {
     return new Promise((resolve, reject) => {
         connection.query(
@@ -155,6 +175,7 @@ module.exports = {
     deleteHome: deleteHome,
     getByHomeID: getByHomeID,
     updateHome: updateHome,
+    searchHome: searchHome,
     getCommentByMotel: getCommentByMotel,
     addReview: addReview,
     deleteComment: deleteComment,
