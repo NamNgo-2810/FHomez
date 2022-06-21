@@ -1,4 +1,4 @@
-const sort = (location, data, weights) => {
+exports.sort = (location, data, weights) => {
     const ideal = {
         price: Math.max(...data.map((home) => home.price)),
         area: Math.max(...data.map((home) => home.area)),

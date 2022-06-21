@@ -1,3 +1,4 @@
+const { sort } = require("./helpers/topsis.helper");
 const database = require("./home.database");
 
 exports.getAllHome = async (req, res) => {
@@ -31,10 +32,24 @@ exports.deleteHome = async (req, res) => {
 exports.search = async (req, res) => {
     // TO DO: Query all the records that contains information user entered,
     // and then sort by percentage of matching criterias
-    const { minCost, maxCost, minArea, maxArea, latitude, longtitude } =
-        req.query;
+    if (Object.keys(req.query) == 0) {
+        return this.getAllHome(req, res);
+    }
 
-    return res.status(200).send("OK");
+    const result = await database.searchHome(req.query);
+
+    if (result.length == 0) {
+        return res
+            .status(200)
+            .send("Can't find any home matching your requirements!");
+    }
+
+    const { latitude, longtitude } = req.query;
+
+    // const weights = {};
+    // result = sort({ latitude, longtitude }, result, weights);
+
+    return res.status(200).json(result);
 };
 
 exports.getCommentByMotel = async (req, res) => {
