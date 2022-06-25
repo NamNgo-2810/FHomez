@@ -88,7 +88,9 @@ function App() {
                 </Route>
               </Route>
             </Routes>
+
             <Footer></Footer>
+            
           </BrowserRouter>
         </div>
       </Suspense>
