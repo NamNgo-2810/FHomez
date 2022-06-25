@@ -30,9 +30,20 @@ function Login({ setShow }) {
     const { setUser } = useContext(AuthContext);
 
     const onSubmit = async (data) => {
-        const response = await userService.login(data);
-        setUser(response.user);
-        localStorage.jwt = response.accessToken;
+        try {
+            const response = await userService.login(data);
+
+            if (!response) {
+                console.log("smt wrong");
+            } else {
+                localStorage.jwt = response.accessToken;
+                localStorage.user = JSON.stringify(response.user);
+                setUser(response.user);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
         setShow(0);
     };
 

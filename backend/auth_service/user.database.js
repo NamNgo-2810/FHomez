@@ -39,7 +39,7 @@ async function userSignIn(phoneNumber, password) {
 async function userSignUp(username, phoneNumber, password) {
     return new Promise(function (resolve, reject) {
         connection.query(
-            `INSERT INTO user (username, phoneNumber, password) VALUES ('${username}', '${phoneNumber}', '${password}')`,
+            `INSERT INTO user (username, phoneNumber, password, role) VALUES ('${username}', '${phoneNumber}', '${password}', 'hirer')`,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);
@@ -70,7 +70,7 @@ async function updateRefreshToken(phoneNumber, refreshToken) {
 async function getUserByPhoneNumber(phoneNumber) {
     return new Promise((resolve, reject) => {
         connection.query(
-            `SELECT * FROM user WHERE phoneNumber = ${phoneNumber}`,
+            `SELECT * FROM user WHERE phoneNumber = '${phoneNumber}'`,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);

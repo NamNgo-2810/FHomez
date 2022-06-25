@@ -1,0 +1,23 @@
+# Build a container
+docker build . -t <your username>/node-web-app
+
+# Run a container
+docker run -p 49160:5001 -d <your username>/node-web-app
+
+# Get container ID
+$ docker ps
+
+# Print app output
+$ docker logs <container id>
+
+# Example
+Running on http://localhost:8080
+
+# Enter the container
+$ docker exec -it <container id> /bin/bash
+
+#Run docker-compose
+docker-compose up 
+
+#Shutdown docker-compose
+docker-compose down

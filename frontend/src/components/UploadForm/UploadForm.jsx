@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useContext } from "react";
 import styles from "./UploadForm.module.scss";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -13,6 +13,10 @@ import {
 } from "../../services/firebase.service.js";
 import { provinceData } from "./Province.js";
 import { Link } from "react-router-dom";
+import AuthContext from "../../contexts/AuthContext";
+import CalculatePrice from "../../helpers/CalculatePrice";
+import { facilityOptions } from "../Search/SearchConstant";
+import Select from "react-select";
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
@@ -46,21 +50,43 @@ const UploadForm = () => {
   const [files, setFiles] = useState([]);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const { user } = useContext(AuthContext);
   const days = useMemo(() => Array.from(new Array(100), (x) => 1), []);
 
   // react-hook-form
   const {
     register,
     watch,
-    getValues,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
 
-  const watchFields = watch(["district"], { district: "", subDistrict: "" });
+  // watch fields update realtime
+  const watchFields = watch(
+    ["district", "subDistrict", "street", "typeOfNews", "dayOfNews"],
+    {
+      district: "",
+      subDistrict: "",
+      street: "",
+      typeOfNews: 1,
+      dayOfNews: 1
+    }
+  );
+  console.log(watchFields[5])
+
+  // handle update location
   const [subDistricts, setSubDistricts] = useState([]);
   const [streets, setStreets] = useState([]);
+  const [typeOfNews, setTypeOfNews] = useState(1);
+  const [dayOfNews, setDayOfNews] = useState(1);
+
+  // handle update facilities 
+  const [facilities, setFacilities] = useState([])
+  const handleChangeFacilities = (e) => {
+    setFacilities(e.map(e => e.value))
+  }
+
   useEffect(() => {
     setSubDistricts(
       provinceData.district.find((e) => e.name === watchFields[0])?.ward
@@ -68,7 +94,17 @@ const UploadForm = () => {
     setStreets(
       provinceData.district.find((e) => e.name === watchFields[0])?.street
     );
+    setTypeOfNews(watchFields[3] && watchFields[3]);
+    setDayOfNews(watchFields[4] && watchFields[4]);
   }, [watchFields]);
+
+  // get price
+  const [price, setPrice] = useState({
+    hotPrice: [],
+    vipPrice: [],
+    normalPrice: [],
+  });
+  useEffect(() => {}, []);
 
   const onSubmit = async (data) => {
     if (files.length !== 0) {
@@ -85,13 +121,20 @@ const UploadForm = () => {
         promises.push(uploadTask);
       });
 
-      Promise.all(promises)
-        .then((result) => {
-          data.src = result;
-          // api store to my sql
-          //if success: Gọi onShowSuccess 
-          //if false: Gọi onShowError 
-        })
+      Promise.all(promises).then((result) => {
+        data.src = result;
+        data.facilities = facilities
+        let date = new Date();
+        let currentTime =
+          date.getDate() +
+          "-" +
+          (date.getMonth() + 1) +
+          "-" +
+          date.getFullYear();
+        // api store to my sql
+        //if success: Gọi onShowSuccess
+        //if false: Gọi onShowError
+      });
     } else {
       alert("Pls choose at least 1 image");
     }
@@ -152,7 +195,7 @@ const UploadForm = () => {
                     subDistricts.map((e) => (
                       <option
                         key={e.id}
-                        value={e.name}
+                        value={e.pre + " " + e.name}
                       >{`${e.pre} ${e.name}`}</option>
                     ))}
                 </select>
@@ -166,7 +209,7 @@ const UploadForm = () => {
                     streets.map((e) => (
                       <option
                         key={e.id}
-                        value={e.name}
+                        value={e.pre + " " + e.name}
                       >{`${e.pre} ${e.name}`}</option>
                     ))}
                 </select>
@@ -182,6 +225,12 @@ const UploadForm = () => {
                       height: "40px",
                       paddingLeft: "12px",
                     }}
+                    defaultValue={
+                      watchFields[0] &&
+                      watchFields[1] &&
+                      watchFields[2] &&
+                      `${watchFields[2]}, ${watchFields[1]}, ${watchFields[0]}`
+                    }
                     className="form-control"
                     type="text"
                     {...register("address")}
@@ -231,6 +280,18 @@ const UploadForm = () => {
                 <p style={{ color: "red" }}>{errors.area?.message}</p>
               </div>
             </div>
+
+            <div className="row mb-3">
+              <label>Chọn cơ sở vật chất(*)</label>
+              <Select
+                required
+                placeholder="Chọn cơ sở vật chất"
+                options={facilityOptions}
+                onChange={((e) => handleChangeFacilities(e))}
+                isMulti
+              />
+            </div>
+
             <div className="row mb-3">
               <div className="col">
                 <label>Giá cho thuê(*)</label>
@@ -260,16 +321,22 @@ const UploadForm = () => {
               <div className="col">
                 <label>Tên liên hệ(*)</label>
                 <div className="input-group">
-                  <input className="form-control" {...register("name")} />
+                  <input
+                    className="form-control"
+                    value={user && user.displayName}
+                    disabled
+                  />
                 </div>
-                <p style={{ color: "red" }}>{errors.name?.message}</p>
               </div>
               <div className="col">
                 <label>Điện thoại(*)</label>
                 <div className="input-group">
-                  <input className="form-control" {...register("phone")} />
+                  <input
+                    className="form-control"
+                    value={user && user.phoneNumber}
+                    disabled
+                  />
                 </div>
-                <p style={{ color: "red" }}>{errors.phone?.message}</p>
               </div>
             </div>
           </div>
@@ -303,9 +370,8 @@ const UploadForm = () => {
                     >
                       Tin hot
                     </td>
-                    <td>30.000 đ/ngày</td>
-                    <td>189.000 đ/tuần</td>
-                    <td>720.000 đ/tháng</td>
+                    {price.hotPrice &&
+                      price.hotPrice.map((e) => <td key={e}>{e}</td>)}
                   </tr>
                   <tr>
                     <td
@@ -317,9 +383,8 @@ const UploadForm = () => {
                     >
                       Tin vip
                     </td>
-                    <td>20.000 đ/ngày</td>
-                    <td>126.000 đ/tuần</td>
-                    <td>480.000 đ/tháng</td>
+                    {price.vipPrice &&
+                      price.vipPrice.map((e) => <td key={e}>{e}</td>)}
                   </tr>
                   <tr>
                     <td
@@ -327,9 +392,8 @@ const UploadForm = () => {
                     >
                       Tin thường
                     </td>
-                    <td>2.000 đ/ngày</td>
-                    <td>12.600 đ/tuần</td>
-                    <td>48.000 đ/tháng</td>
+                    {price.normalPrice &&
+                      price.normalPrice.map((e) => <td key={e}>{e}</td>)}
                   </tr>
                 </tbody>
               </table>
@@ -365,13 +429,9 @@ const UploadForm = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>
-                      {
-                        [30000,20000,2000][getValues("typeOfNews") - 1]
-                      }
-                    </td>
-                    <td>2</td>
-                    <td>3</td>
+                    <td>{[2000, 20000, 30000][typeOfNews - 1]}</td>
+                    <td>{dayOfNews}</td>
+                    <td>{CalculatePrice(typeOfNews, dayOfNews)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -433,7 +493,7 @@ const UploadForm = () => {
       >
         <p>
           Bài đăng sẽ được kiểm duyệt sớm nhất, bạn có thể kiểm tra trạng thái
-          bài đăng <Link to="/posts">tại đây</Link>
+          bài đăng <Link to="/account/quan-li-tin">tại đây</Link>
         </p>
       </Alert>
       <Alert

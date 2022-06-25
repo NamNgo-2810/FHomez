@@ -1,12 +1,24 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import Conversation from "../Conversation/Conversation";
-import Message from "../Message/Message";
 import { io } from "socket.io-client";
 import "./Chat.css";
+import AuthContext from "../../contexts/AuthContext";
+import {
+    ChatContainer,
+    MainContainer,
+    MessageInput,
+    MessageList,
+    Message,
+    ConversationList,
+    Conversation,
+    Sidebar,
+    Avatar,
+    ConversationHeader,
+} from "@chatscope/chat-ui-kit-react";
+import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
-function Chat({ user, conversationId }) {
+function Chat() {
     const [conversations, setConversations] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
     const [messages, setMessages] = useState([]);
@@ -19,7 +31,14 @@ function Chat({ user, conversationId }) {
     const socket = useRef(io("ws://localhost:8900"));
     const [arrivalMessage, setArrivalMessage] = useState(null);
 
-    console.log(user);
+    const { user } = useContext(AuthContext);
+    console.log("user", user);
+    // const user = {
+    //     id: "123",
+    //     profilePicture:
+    //         "https://scontent-hkt1-1.xx.fbcdn.net/v/t39.30808-6/274923351_1337119300139137_3012035318960112960_n.jpg?_nc_cat=102&ccb=1-6&_nc_sid=09cbfe&_nc_ohc=ds_b6ZVMWy8AX81iBPT&_nc_ht=scontent-hkt1-1.xx&oh=00_AT_Mrse_kwxS3R_rosAc0isg9YSkpLEbLx6jVBipcNaVXA&oe=627FE3AA",
+    //     username: "Nam",
+    // };
 
     const onSend = async (e) => {
         const newMessage = {
@@ -90,6 +109,7 @@ function Chat({ user, conversationId }) {
                 );
                 setConversations(res.data);
                 setCurrentChat(res.data[0]);
+                console.log("res", res);
             } catch (error) {
                 console.log(error);
             }
@@ -101,7 +121,7 @@ function Chat({ user, conversationId }) {
         const getMessages = async () => {
             try {
                 const res = await axios.get(
-                    `http://localhost:5000/api/chat/message?conversationId=${conversationId}`
+                    `http://localhost:5000/api/chat/message?conversationId=627a68fb2141eb8b9e643b9f`
                 );
                 setMessages(res.data);
             } catch (error) {
@@ -112,57 +132,51 @@ function Chat({ user, conversationId }) {
     }, []);
 
     return (
-        <div className="chat">
-            <div className="chatMenu">
-                <div className="chatMenuWrapper">
-                    <input
-                        placeholder="Search for people"
-                        className="chatMenuInput"
-                    />
-                    {conversations.map((c) => (
-                        <div key={12} onClick={() => setCurrentChat(c)}>
-                            <Conversation
-                                conversation={c}
-                                currentUser={user.id}
+        <div style={{ marginTop: "80px", height: "700px" }}>
+            <MainContainer>
+                <Sidebar position="left" scrollable={false}>
+                    <ConversationList>
+                        <Conversation onClick={() => {}}>
+                            <Avatar
+                                status="available"
+                                src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
                             />
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <div className="chatBox">
-                <div className="chatBoxWrapper">
-                    <div className="chatBoxTop">
-                        {messages.map((message) => (
-                            <div ref={scrollRef}>
-                                <Message
-                                    key={message._id}
-                                    message={message}
-                                    own={message.sender === user.id}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                    <div className="chatBoxBottom">
-                        <input
-                            className="chatMessageInput"
-                            placeholder="Aa"
-                            defaultValue=""
-                            {...register("message")}
-                            onKeyUp={(e) => {
-                                if (e.key === "Enter") {
-                                    handleSubmit(onSend)();
-                                }
+                            <Conversation.Content
+                                name="Nam"
+                                lastSenderName="Nam"
+                                info="Hello"
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "flex-start",
+                                }}
+                            />
+                        </Conversation>
+                    </ConversationList>
+                </Sidebar>
+
+                <ChatContainer>
+                    <ConversationHeader>
+                        <ConversationHeader.Back />
+                        <Avatar src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000" />
+                        <ConversationHeader.Content
+                            userName="Nam"
+                            info="Active"
+                        />
+                    </ConversationHeader>
+                    <MessageList>
+                        <Message
+                            model={{
+                                message: "Hello my friend",
+                                sentTime: "15 mins ago",
+                                sender: "Zoe",
+                                direction: "incoming",
+                                position: "single",
                             }}
                         />
-                        <button
-                            className="chatSubmitButton"
-                            onClick={handleSubmit(onSend)}
-                        >
-                            Send
-                        </button>
-                    </div>
-                </div>
-            </div>
+                    </MessageList>
+                    <MessageInput placeholder="Aa" onSend={onSend} />
+                </ChatContainer>
+            </MainContainer>
         </div>
     );
 }
