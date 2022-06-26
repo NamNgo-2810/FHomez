@@ -32,11 +32,11 @@ exports.deleteHome = async (req, res) => {
 exports.search = async (req, res) => {
     // TO DO: Query all the records that contains information user entered,
     // and then sort by percentage of matching criterias
-    if (Object.keys(req.query) == 0) {
+    if (Object.keys(req.body) == 0) {
         return this.getAllHome(req, res);
     }
 
-    const result = await database.searchHome(req.query);
+    const result = await database.searchHome(req.body);
 
     if (result.length == 0) {
         return res
@@ -44,7 +44,7 @@ exports.search = async (req, res) => {
             .send("Can't find any home matching your requirements!");
     }
 
-    const { latitude, longtitude } = req.query;
+    const { latitude, longtitude } = req.body;
 
     // const weights = {};
     // result = sort({ latitude, longtitude }, result, weights);

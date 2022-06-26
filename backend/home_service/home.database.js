@@ -43,8 +43,8 @@ async function getByHomeID(data) {
 async function addHome(data) {
     return new Promise((resolve, reject) => {
         connection.query(
-            `INSERT INTO motel(src,title,descr,price,area,locationID,createdAt,type, status)
-         VALUES ('${data.src}','${data.title}','${data.descr}','${data.price}','${data.area}','${data.locationID}','${data.createdAt}', '${data.type}', ${data.status});`,
+            `INSERT INTO motel(src,title,content,price,area,locationID,createdAt,typeOfNews, status,category,facilities,dayOfNews)
+         VALUES ('${data.src}','${data.title}','${data.content}','${data.price}','${data.area}','${data.locationID}','${data.createdAt}', '${data.type}', ${data.status});`,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);
