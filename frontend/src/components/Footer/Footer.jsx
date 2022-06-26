@@ -1,7 +1,7 @@
 import React from "react";
 
 function Footer() {
-  return <div className="row">Footer</div>;
+  return <div style={{height:'250px'}}>Footer</div>;
 }
 
 export default Footer;

@@ -85,37 +85,26 @@ function App() {
                                 <Route index element={<Chat />}></Route>
                             </Route>
 
-                            <Route
-                                path="account"
-                                element={
-                                    <PrivateRoute
-                                        roles={["admin", "owner", "hirer"]}
-                                    />
-                                }
-                            >
-                                <Route element={<Info />}>
-                                    <Route index element={<AccountManager />} />
-                                    <Route
-                                        path="quan-li-tin"
-                                        element={<NewsManager />}
-                                    />
-                                    <Route
-                                        path="nap-tien"
-                                        element={<NewsManager />}
-                                    />
-                                    <Route
-                                        path="lich-su-nap-tien"
-                                        element={<NewsManager />}
-                                    />
-                                </Route>
-                            </Route>
-                        </Routes>
-                        <Footer></Footer>
-                    </BrowserRouter>
-                </div>
-            </Suspense>
-        </AuthContext.Provider>
-    );
+              <Route
+                path="account"
+                element={<PrivateRoute roles={["admin", "owner", "hirer"]} />}
+              >
+                <Route element={<Info />}>
+                  <Route index element={<AccountManager />} />
+                  <Route path="quan-li-tin" element={<NewsManager />} />
+                  <Route path="nap-tien" element={<NewsManager />} />
+                  <Route path="lich-su-nap-tien" element={<NewsManager />} />
+                </Route>
+              </Route>
+            </Routes>
+
+            <Footer></Footer>
+            
+          </BrowserRouter>
+        </div>
+      </Suspense>
+    </AuthContext.Provider>
+  );
 }
 
 export default App;

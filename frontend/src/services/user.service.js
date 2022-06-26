@@ -12,6 +12,11 @@ const login = (data) => {
   return axiosAuth.post("login", data);
 };
 
+
+const getUserById = (id) => {
+    return axiosAuth.get("get_user_by_id",{userId: id})
+}
+
 const logOut = () => {
     delete localStorage.user
     delete localStorage.jwt
