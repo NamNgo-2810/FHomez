@@ -3,9 +3,8 @@ const connection = require("./database");
 async function getAllHome() {
     return new Promise((resolve, reject) => {
         connection.query(
-            `SELECT motel.motel_id, src, title, content, price, category, area, location.locationID, createdAt, typeOfNews, status, category, facilities, dayOfNews
-                        FROM motel, location
-                        WHERE motel.locationID = location.locationID `,
+            `SELECT motel_id, src, title, content, price, category, area, createdAt, typeOfNews, status, category, facilities, dayOfNews, latitude, longitude, street, district
+                        FROM motel`,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);
@@ -23,9 +22,8 @@ async function getAllHome() {
 async function getByHomeID(data) {
     return new Promise((resolve, reject) => {
         connection.query(
-            `SELECT motel.motel_id, src, title, content, price, category, area, location.locationID, createdAt, typeOfNews, status, category, facilities, dayOfNews
-        FROM motel, location
-        WHERE motel.locationID = location.locationID and motel.motel_id = ${data.motel_id} `,
+            `SELECT motel_id, src, title, content, price, category, area, createdAt, typeOfNews, status, category, facilities, dayOfNews, latitude, longitude, street, district
+             FROM motel WHERE motel.motel_id = ${data.motel_id} `,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);
@@ -43,8 +41,8 @@ async function getByHomeID(data) {
 async function addHome(data) {
     return new Promise((resolve, reject) => {
         connection.query(
-            `INSERT INTO motel(src,title,content,price,area,locationID,createdAt,typeOfNews, status,category,facilities,dayOfNews)
-         VALUES ('${data.src}','${data.title}','${data.content}','${data.price}','${data.area}','${data.locationID}','${data.createdAt}', '${data.type}', ${data.status});`,
+            `INSERT INTO motel( src, title, content, price, area, createdAt, typeOfNews, status, category, facilities, dayOfNews, latitude, longitude, street, district)
+             VALUES ('${data.src}','${data.title}','${data.content}','${data.price}', '${data.area}','${data.createdAt}','${data.typeOfNews}', ${data.status}, '${data.category}', '${data.facilities}', '${data.dayOfNews}', ${data.latitude}, ${data.longitude}, '${data.street}', '${data.district}');`,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);
@@ -81,8 +79,8 @@ async function updateHome(data) {
     return new Promise((resolve, reject) => {
         connection.query(
             `UPDATE motel 
-        SET src ='${data.src}', title ='${data.title}', descr = '${data.descr}',price = '${data.price}', area ='${data.area}', locationID = '${data.locationID}', createdAt = '${data.createdAt}', type ='${data.type}', status ='${data.status}'
-        WHERE motel_id = ${data.motel_id}`,
+            SET src ='${data.src}', title ='${data.title}', content = '${data.content}',price = '${data.price}', area ='${data.area}', createdAt = '${data.createdAt}', typeofNews ='${data.typeofNews}', status = ${data.status}, category = '${data.category}', facilities = '${data.facilities}', dayOfNews ='${data.dayOfNews}', latitude = ${data.latitude}, longitude = ${data.longitude}, street = '${data.street}', district ='${data.district}'
+            WHERE motel_id = ${data.motel_id}`,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);
