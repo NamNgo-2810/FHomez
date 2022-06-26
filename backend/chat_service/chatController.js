@@ -8,9 +8,9 @@ exports.createNewConversation = async (req, res) => {
 
     try {
         const savedConversation = await newConversation.save();
-        res.status(200).json(savedConversation);
+        return res.status(200).json(savedConversation);
     } catch (error) {
-        res.status(500).send(error);
+        return res.status(500).send(error);
     }
 };
 
@@ -19,9 +19,9 @@ exports.getConversationOfUser = async (req, res) => {
         const conversation = await Conversation.find({
             members: { $in: [req.query.userId] },
         });
-        res.status(200).json(conversation);
+        return res.status(200).json(conversation);
     } catch (error) {
-        res.status(500).send(error);
+        return res.status(500).send(error);
     }
 };
 
