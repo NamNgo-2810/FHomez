@@ -17,6 +17,7 @@ import AuthContext from "../../contexts/AuthContext";
 import CalculatePrice from "../../helpers/CalculatePrice";
 import { facilityOptions } from "../Search/SearchConstant";
 import Select from "react-select";
+import { productService } from "../../services/home.service";
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
@@ -33,14 +34,6 @@ const validationSchema = yup.object().shape({
     .required("Nội dung không được để trống")
     .min(10, "Nội dung quá ngắn, nội dung cần nhiều hơn 10 kí tự")
     .max(100, "Nội dung quá dài,nội dung cần ít hơn 100 kí tự"),
-  name: yup.string().required("Tên người cho thuê không được để trống"),
-  phone: yup
-    .string()
-    .required("Số điện thoại không được để trống")
-    .matches(
-      /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
-      "Số điện thoại không đúng định dạng"
-    ),
   typeOfNews: yup.number().required("Loại tin không được để trống"),
   dayOfNews: yup.number().required("Số ngày đăng tin không được để trống"),
   status: yup.number().default(0),
@@ -70,10 +63,9 @@ const UploadForm = () => {
       subDistrict: "",
       street: "",
       typeOfNews: 1,
-      dayOfNews: 1
+      dayOfNews: 1,
     }
   );
-  console.log(watchFields[5])
 
   // handle update location
   const [subDistricts, setSubDistricts] = useState([]);
@@ -81,11 +73,11 @@ const UploadForm = () => {
   const [typeOfNews, setTypeOfNews] = useState(1);
   const [dayOfNews, setDayOfNews] = useState(1);
 
-  // handle update facilities 
-  const [facilities, setFacilities] = useState([])
+  // handle update facilities
+  const [facilities, setFacilities] = useState([]);
   const handleChangeFacilities = (e) => {
-    setFacilities(e.map(e => e.value))
-  }
+    setFacilities(e.map((e) => e.value));
+  };
 
   useEffect(() => {
     setSubDistricts(
@@ -100,13 +92,24 @@ const UploadForm = () => {
 
   // get price
   const [price, setPrice] = useState({
-    hotPrice: [],
-    vipPrice: [],
-    normalPrice: [],
+    hotPrice: ["20000", "200000", "800000"],
+    vipPrice: ["18000", "180000", "650000"],
+    normalPrice: ["12000", "120000", "300000"],
   });
-  useEffect(() => {}, []);
 
-  const onSubmit = async (data) => {
+  // get coordinate
+  const [coordinate, setCoordinate] = useState({
+    latitude: "",
+    longitude: "",
+  });
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setCoordinate((prev) => Object.assign(prev, {latitude: position.coords.latitude}));
+      setCoordinate((prev) => Object.assign(prev, {longitude: position.coords.longitude}));
+    });
+  }, []);
+
+  const handleUploadForm = async (data) => {
     if (files.length !== 0) {
       const promises = [];
       const uid = Date.now();
@@ -122,8 +125,6 @@ const UploadForm = () => {
       });
 
       Promise.all(promises).then((result) => {
-        data.src = result;
-        data.facilities = facilities
         let date = new Date();
         let currentTime =
           date.getDate() +
@@ -131,8 +132,23 @@ const UploadForm = () => {
           (date.getMonth() + 1) +
           "-" +
           date.getFullYear();
+        data.src = result;
+        data.facilities = facilities;
+        data.createdAt = currentTime;
+        data.longitude = coordinate.longitude
+        data.latitude = coordinate.latitude
+        
         // api store to my sql
         //if success: Gọi onShowSuccess
+        productService
+          .addHome(data)
+          .then(() => {
+            onShowSuccess();
+          })
+          .catch((err) => {
+            console.log(err);
+            onShowError();
+          });
         //if false: Gọi onShowError
       });
     } else {
@@ -161,7 +177,10 @@ const UploadForm = () => {
   return (
     <>
       <div className={`${styles.container} container row`}>
-        <form className="col-8 text-start" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="col-8 text-start"
+          onSubmit={handleSubmit(handleUploadForm)}
+        >
           <div className="row shadow bg-body rounded mb-5">
             <h3>Địa chỉ cho thuê</h3>
             <div className="row mt-3 mb-3">
@@ -287,7 +306,7 @@ const UploadForm = () => {
                 required
                 placeholder="Chọn cơ sở vật chất"
                 options={facilityOptions}
-                onChange={((e) => handleChangeFacilities(e))}
+                onChange={(e) => handleChangeFacilities(e)}
                 isMulti
               />
             </div>

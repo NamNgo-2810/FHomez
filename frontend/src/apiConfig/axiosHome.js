@@ -5,6 +5,7 @@ const axiosHome = axios.create({
     baseURL: "http://localhost:5001/api/home/",
     headers: {
         "Content-Type": "application/json",
+        "x_authorization": localStorage.jwt
     },
 });
 
