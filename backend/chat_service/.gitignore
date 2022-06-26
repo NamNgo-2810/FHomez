@@ -1,3 +1,7 @@
 # dependencies
 /node_modules
+<<<<<<< HEAD
 .env
+=======
+.env
+>>>>>>> master

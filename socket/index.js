@@ -21,20 +21,23 @@ const getUser = (userId) => {
 
 io.on("connection", (socket) => {
     // when connected
-    console.log("An user connected");
     // take userId and socketId from user
     socket.on("addUser", (userId) => {
         addUser(userId, socket.id);
+        console.log("users", users);
         io.emit("getUsers", users);
     });
 
     // send and get message
     socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-        const user = getUser(receiverId);
-        io.to(user.socketId).emit("getMessage", {
-            senderId,
-            text,
-        });
+        const user = getUser(parseInt(receiverId));
+        console.log("user", user);
+        if (user) {
+            io.to(user.socketId).emit("getMessage", {
+                senderId,
+                text,
+            });
+        }
     });
 
     // when disconnected
