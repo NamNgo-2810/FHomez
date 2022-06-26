@@ -167,6 +167,28 @@ async function deleteComment(review_id) {
     });
 }
 
+async function getPrice() {
+    return new Promise((resolve, reject) => {
+        connection.query(
+            `select * from price`,
+            (error, result) => {
+                if (error) reject(error);
+                resolve(result);
+            }
+        );
+    }).then((result) => {
+        if (result.length == 0) {
+            return null;
+        }
+        console.log(result);
+        
+        // hotPrice = JSON.parse(result.hotPrice);
+        // console.log(`${hotPrice}`)
+          
+        return result;
+    });
+}
+
 module.exports = {
     getAllHome: getAllHome,
     addHome: addHome,
@@ -177,4 +199,5 @@ module.exports = {
     getCommentByMotel: getCommentByMotel,
     addReview: addReview,
     deleteComment: deleteComment,
+    getPrice: getPrice,
 };

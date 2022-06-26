@@ -89,3 +89,8 @@ exports.deleteComment = async (req, res) => {
         console.log(error);
     }
 };
+
+exports.getPrice = async (req, res) => {
+    const result = await database.getPrice();
+    return res.status(200).json(result);
+};
