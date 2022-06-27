@@ -3,11 +3,17 @@ const database = require("./home.database");
 
 exports.getAllHome = async (req, res) => {
     const result = await database.getAllHome();
+    for (let i in result) {
+        result[i].src = result[i].src.split(",");
+      }
     return res.status(200).json(result);
 };
 
 exports.getByHomeID = async (req, res) => {
     const result = await database.getByHomeID(req.body);
+    // var sr = Object.values(JSON.parse(JSON.stringify(result)));
+    // console.log(sr[0].src);    
+    result[0].src = result[0].src.split(",");         
     return res.status(200).json(result);
 };
 
