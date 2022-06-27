@@ -28,12 +28,13 @@ async function getByHomeID(data) {
                 if (error) reject(error);
                 resolve(result);
             }
+            
         );
     }).then((result) => {
         if (result.length == 0) {
             return null;
         }
-        // console.log(result);
+        //console.log(result);        
         return result;
     });
 }
@@ -52,7 +53,7 @@ async function addHome(data) {
         if (result.length == 0) {
             return null;
         }
-        // console.log(result);
+        // console.log(result);        
         return result;
     });
 }
