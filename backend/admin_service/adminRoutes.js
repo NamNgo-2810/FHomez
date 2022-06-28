@@ -11,4 +11,7 @@ router.post(
     controller.ownerRegisterApproval
 );
 
+router.post("/acceptUser", middleware.isAdmin, controller.acceptUser);
+router.post("/declineUser", middleware.isAdmin, controller.declineUser);
+
 module.exports = router;

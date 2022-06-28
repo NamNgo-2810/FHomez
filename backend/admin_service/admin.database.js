@@ -32,8 +32,32 @@ async function blogApproval(motel_id){
     }).catch(error => console.log(error));
 }
 
+async function acceptOwner(user_id){
+    return new Promise((resolve, reject) =>{
+        connection.query(`UPDATE user SET isWaitingForVerify = 0 AND role = 'owner' WHERE user_id = '${user_id}'`, (error, result)=>{
+            if (error) reject(error);
+            resolve(result);
+        });
+    }).then((result)=>{
+        return result;
+    }).catch(error => console.log(error));
+}
+
+async function declineOwner(user_id){
+    return new Promise((resolve, reject) =>{
+        connection.query(`UPDATE user SET isWaitingForVerify = 0 WHERE user_id = '${user_id}'`, (error, result)=>{
+            if (error) reject(error);
+            resolve(result);
+        });
+    }).then((result)=>{
+        return result;
+    }).catch(error => console.log(error));
+}
+
 module.exports = {
     deleteUser: deleteUser,
     blogApproval: blogApproval,
     ownerRegisterApproval: ownerRegisterApproval,
+    acceptOwner: acceptOwner,
+    declineOwner: declineOwner
 };

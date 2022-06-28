@@ -95,6 +95,10 @@ exports.deleteComment = async (req, res) => {
         console.log(error);
     }
 };
+exports.ownerVerify = async (req, res) => {
+    const result = await database.ownerVerify(req.body.user_id);
+    return result;
+}
 
 exports.getPrice = async (req, res) => {
     const result = await database.getPrice();
