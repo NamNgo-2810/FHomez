@@ -18,6 +18,8 @@ import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../services/firebase.service";
 
+const chatURL = "http://localhost:5000/api/chat/";
+
 function Chat() {
     const [conversations, setConversations] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
@@ -33,7 +35,7 @@ function Chat() {
     const getConversations = async () => {
         try {
             const res = await axios.get(
-                `http://localhost:5000/api/chat/conversation?userId=${user.user_id}`
+                `${chatURL}conversation?userId=${user.user_id}`
             );
             setConversations(res.data);
             setCurrentChat(res.data[0]);
@@ -45,7 +47,7 @@ function Chat() {
     const getMessages = async () => {
         try {
             const res = await axios.get(
-                `http://localhost:5000/api/chat/message?conversationId=${currentChat._id}`
+                `${chatURL}message?conversationId=${currentChat._id}`
             );
             setMessages(res.data);
         } catch (error) {
@@ -62,9 +64,13 @@ function Chat() {
     };
 
     const onSend = async (content) => {
+        if (!content && !imageMessage) {
+            console.log("Empty");
+            return;
+        }
         if (imageMessage) {
             const uploadTask = uploadBytesResumable(
-                ref(storage, `${imageMessage.path}-${user.user_id}`),
+                ref(storage, `${imageMessage.name}-${user.user_id}`),
                 imageMessage
             )
                 .then((result) => {
@@ -76,43 +82,65 @@ function Chat() {
                         senderId: user.user_id,
                         contentType: "image",
                         content: downloadURL,
+                        conversationId: currentChat._id,
                     };
-                    console.log(newMessage);
+                    return newMessage;
+                })
+                .then(async (newMessage) => {
+                    const res = await axios.post(
+                        `${chatURL}message/send`,
+                        newMessage
+                    );
+                    return { res, newMessage };
+                })
+                .then(({ res, newMessage }) => {
+                    setMessages([...messages, res.data]);
+
+                    const receiverId = currentChat.members.find(
+                        (member) => member.id != user.user_id
+                    ).id;
+
+                    socket.current.emit("sendMessage", {
+                        senderId: user.user_id,
+                        receiverId: receiverId,
+                        contentType: newMessage.contentType,
+                        content: newMessage.content,
+                    });
                 });
+        } else {
+            const newMessage = {
+                sender: user.username,
+                senderId: user.user_id,
+                contentType: "text",
+                content: content,
+                conversationId: currentChat._id,
+            };
 
-            return;
+            try {
+                const res = await axios.post(
+                    `${chatURL}message/send`,
+                    newMessage
+                );
+                setMessages([...messages, res.data]);
+            } catch (error) {
+                console.log(error);
+                return;
+            }
+
+            const receiverId = currentChat.members.find(
+                (member) => member.id != user.user_id
+            ).id;
+
+            socket.current.emit("sendMessage", {
+                senderId: user.user_id,
+                receiverId: receiverId,
+                contentType: newMessage.contentType,
+                content: newMessage.content,
+            });
         }
-        const newMessage = {
-            sender: user.username,
-            senderId: user.user_id,
-            contentType: "text",
-            content: content,
-            conversationId: currentChat._id,
-        };
-
-        try {
-            const res = await axios.post(
-                `http://localhost:5000/api/chat/message/send`,
-                newMessage
-            );
-            setMessages([...messages, res.data]);
-        } catch (error) {
-            console.log(error);
-            return;
-        }
-
-        const receiverId = currentChat.members.find(
-            (member) => member.id != user.user_id
-        ).id;
-
-        socket.current.emit("sendMessage", {
-            senderId: user.user_id,
-            receiverId: receiverId,
-            contentType: newMessage.contentType,
-            content: newMessage.content,
-        });
 
         setMessage("");
+        setImageMessage(null);
     };
 
     useEffect(() => {
@@ -178,7 +206,7 @@ function Chat() {
                                             ).user
                                         }
                                         // lastSenderName={
-                                        //     messages?.[messages.length - 1]
+                                        //     messages?.[messages?.length - 1]
                                         //         .sender
                                         // }
                                         // info={
@@ -225,8 +253,6 @@ function Chat() {
                             return (
                                 <Message
                                     model={{
-                                        message: message?.content,
-                                        sender: message?.sender,
                                         direction:
                                             message?.senderId == user.user_id
                                                 ? "outgoing"
@@ -244,6 +270,17 @@ function Chat() {
                                             )?.avtUrl
                                         }
                                     />
+                                    {message?.contentType === "text" ? (
+                                        <Message.TextContent
+                                            text={message?.content}
+                                        />
+                                    ) : (
+                                        <Message.ImageContent
+                                            src={message?.content}
+                                            alt=""
+                                            width={150}
+                                        />
+                                    )}
                                 </Message>
                             );
                         })}
@@ -251,12 +288,13 @@ function Chat() {
                     <MessageInput
                         placeholder="Aa"
                         onSend={onSend}
-                        value={message}
+                        value={imageMessage ? "*" : message}
                         onChange={(e) => {
                             setMessage(e);
                         }}
                         style={{ textAlign: "start" }}
                         onAttachClick={getLocalImage}
+                        sendDisabled={false}
                     />
                 </ChatContainer>
             </MainContainer>
@@ -267,7 +305,12 @@ function Chat() {
                 ref={imageInputRef}
                 onChange={handleImageUpload}
             />
-            {imageMessage ? <img src={imageMessage} /> : null}
+            {imageMessage ? (
+                <img
+                    src={URL.createObjectURL(imageMessage)}
+                    style={{ width: 150, alignSelf: "start" }}
+                />
+            ) : null}
         </div>
     );
 }
