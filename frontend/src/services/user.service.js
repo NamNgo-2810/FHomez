@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosAuth from "../apiConfig/axiosAuth";
 
 const register = (data) => {
@@ -12,9 +13,12 @@ const login = (data) => {
   return axiosAuth.post("login", data);
 };
 
-
 const getUserById = (id) => {
     return axiosAuth.get("get_user_by_id",{userId: id})
+}
+
+const updateUserInfo = () => {
+     return axios.put("")   
 }
 
 const logOut = () => {
