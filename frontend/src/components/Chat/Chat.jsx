@@ -15,16 +15,19 @@ import {
     ConversationHeader,
 } from "@chatscope/chat-ui-kit-react";
 import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../services/firebase.service";
 
 function Chat() {
     const [conversations, setConversations] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
     const [messages, setMessages] = useState([]);
-    const scrollRef = useRef();
-    const socket = useRef(io("ws://localhost:8900"));
+
     const [arrivalMessage, setArrivalMessage] = useState(null);
     const [message, setMessage] = useState("");
-
+    const [imageMessage, setImageMessage] = useState(null);
+    const imageInputRef = useRef(null);
+    const socket = useRef(io("ws://localhost:8900"));
     const { user } = useContext(AuthContext);
 
     const getConversations = async () => {
@@ -50,22 +53,42 @@ function Chat() {
         }
     };
 
-    const onSend = async (text) => {
+    const getLocalImage = () => {
+        imageInputRef.current.click();
+    };
+
+    const handleImageUpload = (e) => {
+        setImageMessage(e.target.files[0]);
+    };
+
+    const onSend = async (content) => {
+        if (imageMessage) {
+            const uploadTask = uploadBytesResumable(
+                ref(storage, `${imageMessage.path}-${user.user_id}`),
+                imageMessage
+            )
+                .then((result) => {
+                    return getDownloadURL(result.ref);
+                })
+                .then((downloadURL) => {
+                    const newMessage = {
+                        sender: user.username,
+                        senderId: user.user_id,
+                        contentType: "image",
+                        content: downloadURL,
+                    };
+                    console.log(newMessage);
+                });
+
+            return;
+        }
         const newMessage = {
-            sender: user.user_id,
-            text: text,
+            sender: user.username,
+            senderId: user.user_id,
+            contentType: "text",
+            content: content,
             conversationId: currentChat._id,
         };
-
-        const receiverId = currentChat.members.find(
-            (member) => member !== user.user_id.toString()
-        );
-
-        socket.current.emit("sendMessage", {
-            senderId: user.user_id,
-            receiverId: receiverId,
-            text: newMessage.text,
-        });
 
         try {
             const res = await axios.post(
@@ -75,28 +98,42 @@ function Chat() {
             setMessages([...messages, res.data]);
         } catch (error) {
             console.log(error);
+            return;
         }
+
+        const receiverId = currentChat.members.find(
+            (member) => member.id != user.user_id
+        ).id;
+
+        socket.current.emit("sendMessage", {
+            senderId: user.user_id,
+            receiverId: receiverId,
+            contentType: newMessage.contentType,
+            content: newMessage.content,
+        });
+
+        setMessage("");
     };
 
     useEffect(() => {
         socket.current = io("ws://localhost:8900");
         socket.current.on("getMessage", (data) => {
             setArrivalMessage({
-                sender: data.senderId,
-                text: data.text,
+                senderId: data.senderId,
+                contentType: data.contentType,
+                content: data.content,
                 createdAt: Date.now(),
             });
         });
     }, []);
 
     useEffect(() => {
-        console.log("New message");
         setMessages((prev) => [...prev, arrivalMessage]);
     }, [arrivalMessage]);
 
     useEffect(() => {
         socket.current.emit("addUser", user.user_id);
-        socket.current.on("getUsers", (users) => {});
+        // socket.current.on("getUsers", (users) => {});
     }, [user]);
 
     useEffect(() => {
@@ -110,7 +147,7 @@ function Chat() {
     }, [currentChat]);
 
     return (
-        <div style={{ marginTop: "80px", height: "400px" }}>
+        <div style={{ marginTop: "80px", height: "450px" }}>
             <MainContainer>
                 <Sidebar position="left" scrollable={false}>
                     <ConversationList>
@@ -121,29 +158,33 @@ function Chat() {
                                         setCurrentChat(conversation);
                                     }}
                                     key={`${index}`}
+                                    active={conversation._id == currentChat._id}
                                 >
                                     <Avatar
-                                        name={
-                                            conversation.members[
-                                                conversation.members[0] ===
-                                                user.user_id.toString()
-                                                    ? 1
-                                                    : 0
-                                            ]
-                                        }
                                         status="available"
-                                        src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+                                        src={
+                                            conversation.members.find(
+                                                (member) =>
+                                                    member.id != user.user_id
+                                            ).avtUrl
+                                        }
                                     />
                                     <Conversation.Content
+                                        style={{ textAlign: "start" }}
                                         name={
-                                            conversation.members[
-                                                conversation.members[0] ===
-                                                user.user_id.toString()
-                                                    ? 1
-                                                    : 0
-                                            ]
+                                            conversation.members.find(
+                                                (member) =>
+                                                    member.id != user.user_id
+                                            ).user
                                         }
-                                        lastSenderName="Nam"
+                                        // lastSenderName={
+                                        //     messages?.[messages.length - 1]
+                                        //         .sender
+                                        // }
+                                        // info={
+                                        //     messages?.[messages.length - 1]
+                                        //         .content
+                                        // }
                                     />
                                 </Conversation>
                             );
@@ -157,13 +198,20 @@ function Chat() {
                             return (
                                 <ConversationHeader>
                                     <ConversationHeader.Back />
-                                    <Avatar src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000" />
+                                    <Avatar
+                                        src={
+                                            currentChat.members.find(
+                                                (member) =>
+                                                    member.id != user.user_id
+                                            ).avtUrl
+                                        }
+                                    />
                                     <ConversationHeader.Content
                                         userName={
-                                            currentChat?.members[0] ===
-                                            user.user_id.toString()
-                                                ? currentChat.members[0]
-                                                : currentChat.members[1]
+                                            currentChat.members.find(
+                                                (member) =>
+                                                    member.id != user.user_id
+                                            ).user
                                         }
                                         info="Active"
                                     />
@@ -177,18 +225,25 @@ function Chat() {
                             return (
                                 <Message
                                     model={{
-                                        message: message?.text,
+                                        message: message?.content,
                                         sender: message?.sender,
                                         direction:
-                                            message?.sender ===
-                                            user.user_id.toString()
+                                            message?.senderId == user.user_id
                                                 ? "outgoing"
                                                 : "incoming",
                                     }}
                                     key={`${index}`}
                                     avatarSpacer
                                 >
-                                    <Avatar src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000" />
+                                    <Avatar
+                                        src={
+                                            currentChat?.members.find(
+                                                (member) =>
+                                                    message?.senderId ==
+                                                    member.id
+                                            )?.avtUrl
+                                        }
+                                    />
                                 </Message>
                             );
                         })}
@@ -200,9 +255,19 @@ function Chat() {
                         onChange={(e) => {
                             setMessage(e);
                         }}
+                        style={{ textAlign: "start" }}
+                        onAttachClick={getLocalImage}
                     />
                 </ChatContainer>
             </MainContainer>
+            <input
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                ref={imageInputRef}
+                onChange={handleImageUpload}
+            />
+            {imageMessage ? <img src={imageMessage} /> : null}
         </div>
     );
 }

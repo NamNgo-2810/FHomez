@@ -2,8 +2,35 @@ const Conversation = require("./models/Conversation");
 const Message = require("./models/Message");
 
 exports.createNewConversation = async (req, res) => {
+    const existConversations = await Conversation.find({
+        id: req.body.id_1,
+    });
+
+    const exist = existConversations.find(
+        (conversation) =>
+            (conversation.members[0].id == req.body.id_1 &&
+                conversation.members[1].id == req.body.id_2) ||
+            (conversation.members[0].id == req.body.id_2 &&
+                conversation.members[1].id == req.body.id_1)
+    );
+
+    if (exist) {
+        return res.status(200).json(exist);
+    }
+
     const newConversation = new Conversation({
-        members: [req.body.senderId, req.body.receiverId],
+        members: [
+            {
+                id: req.body.id_1,
+                user: req.body.user_1,
+                avtUrl: req.body.avt_1,
+            },
+            {
+                id: req.body.id_2,
+                user: req.body.user_2,
+                avtUrl: req.body.avt_2,
+            },
+        ],
     });
 
     try {
@@ -17,7 +44,7 @@ exports.createNewConversation = async (req, res) => {
 exports.getConversationOfUser = async (req, res) => {
     try {
         const conversation = await Conversation.find({
-            members: { $in: [req.query.userId] },
+            id: req.query.userId,
         });
         return res.status(200).json(conversation);
     } catch (error) {

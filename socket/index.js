@@ -16,7 +16,7 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
-    return users.find((user) => user.userId === userId);
+    return users.find((user) => user.userId == userId);
 };
 
 io.on("connection", (socket) => {
@@ -29,16 +29,20 @@ io.on("connection", (socket) => {
     });
 
     // send and get message
-    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-        const user = getUser(parseInt(receiverId));
-        console.log("user", user);
-        if (user) {
-            io.to(user.socketId).emit("getMessage", {
-                senderId,
-                text,
-            });
+    socket.on(
+        "sendMessage",
+        ({ senderId, receiverId, contentType, content }) => {
+            const user = getUser(receiverId);
+            console.log("user", user);
+            if (user) {
+                io.to(user.socketId).emit("getMessage", {
+                    senderId,
+                    contentType,
+                    content,
+                });
+            }
         }
-    });
+    );
 
     // when disconnected
     socket.on("disconnect", () => {
