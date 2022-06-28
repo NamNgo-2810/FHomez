@@ -342,7 +342,7 @@ const UploadForm = () => {
                 <div className="input-group">
                   <input
                     className="form-control"
-                    value={user && user.displayName}
+                    value={user && user.username}
                     disabled
                   />
                 </div>
@@ -352,7 +352,7 @@ const UploadForm = () => {
                 <div className="input-group">
                   <input
                     className="form-control"
-                    value={user && user.phoneNumber}
+                    value={user && user.phonenumber}
                     disabled
                   />
                 </div>

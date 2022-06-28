@@ -12,17 +12,18 @@ function ProductItem({
   category,
   area,
   address,
-  typeofNews,
+  typeNews,
   createdAt,
 }) {
+
   return (
     <div className={styles.container + " d-flex"}>
       <Link to={`/products/${id}`} className={styles.productImage}>
         <img src={src} alt={title} style={{ borderRadius: "5px" }} />
         {
           {
-            0: null,
-            1: (
+            1: null,
+            3: (
               <div className={`${styles.typeNews} ${styles.hotBg}`}>
                 {"HOT".toUpperCase()}
               </div>
@@ -32,7 +33,7 @@ function ProductItem({
                 {"VIP".toUpperCase()}
               </div>
             ),
-          }[typeofNews]
+          }[typeNews]
         }
       </Link>
       <div
