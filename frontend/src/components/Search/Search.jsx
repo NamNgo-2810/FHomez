@@ -73,24 +73,21 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
     console.log("Facilities: " + facilities);
   }
 
-  // Handle Search Results 
-  const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
-    const { getDistrict, getSubDistrict, getStreet } = useFilterProvince();
-  
-    const fetchDataQuery = async (e) => {
-      e.preventDefault();
-  
-      const { min, max, minArea, maxArea } = keyword;
-      let result = await productService.search({
-        minCost: min,
-        maxCost: max,
-        minArea: minArea,
-        maxArea: maxArea,
-      });
-      console.log(result);
-      setQueryItems(result);
-      setHasQuery(true);
-    };
+  // Handle Search Results   
+  const fetchDataQuery = async (e) => {
+    e.preventDefault();
+
+    const { min, max, minArea, maxArea } = keyword;
+    let result = await productService.search({
+      minCost: min,
+      maxCost: max,
+      minArea: minArea,
+      maxArea: maxArea,
+    });
+    console.log(result);
+    setQueryItems(result);
+    setHasQuery(true);
+  };
 
   return (
     <div className="rowBody col-3">
