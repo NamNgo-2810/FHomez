@@ -59,8 +59,8 @@ exports.search = async (req, res) => {
 
     const { latitude, longtitude } = req.body;
 
-    // const weights = {};
-    // result = sort({ latitude, longtitude }, result, weights);
+    const weights = { price: 0.4, area: 0.3, location: 0.3 };
+    result = sort({ latitude, longtitude }, result, weights);
 
     return res.status(200).json(result);
 };
