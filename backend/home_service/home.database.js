@@ -50,7 +50,7 @@ async function getByUserID(data) {
         );
     }).then((result) => {
         if (result.length == 0) {
-            return null;
+            return [];
         }
         //console.log(result);
         return result;
