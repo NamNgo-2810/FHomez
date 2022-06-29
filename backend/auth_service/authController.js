@@ -99,13 +99,12 @@ exports.login = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.params;
     const response = await database.getUserById(userId);
 
     if (response.status != 200) {
       return res.status(400).send("Bad request");
     }
-
     const user = response.body;
 
     return res.json(user);
