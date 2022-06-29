@@ -17,6 +17,7 @@ function PostManager() {
   useEffect(() => {
     async function fetchHomeByUserId() {
       let result = await productService.getHomeByUserId(user.user_id)
+
       setPost(result)
     }
 

@@ -20,7 +20,7 @@ const declineOwner = (id) => {
   return axiosAdmin.post("declineOwner", { user_id: id });
 };
 
-const waitOwnerIsWating = () => {
+const waitOwnerIsWaiting = () => {
   return axiosAdmin.get("getOwnerIsWaiting");
 };
 
@@ -30,5 +30,5 @@ export const adminService = {
   blogReject,
   acceptOwner,
   declineOwner,
-  waitOwnerIsWating
+  waitOwnerIsWaiting
 };
