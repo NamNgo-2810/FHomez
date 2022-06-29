@@ -13,12 +13,16 @@ const getHomeByStatus = () => {
   return axiosHome.get("get_by_home_status_0");
 };
 
+const getHomeByUserId = (id) => {
+  return axiosHome.get(`get_by_user_id/${id}`)
+}
+
 const addHome = (data) => {
   return axiosHome.post("/", data);
 };
 
 const deleteHome = (id) => {
-  return axiosHome.delete("/", { motel_id: id });
+  return axiosHome.delete(`/${id}`);
 };
 
 const search = (data) => {
@@ -41,6 +45,8 @@ const sendRequestVerify = (id) => {
   return axiosHome.post("verifyOwner", { user_id: id });
 };
 
+
+
 export const productService = {
   getAll,
   getHomeById,
@@ -52,4 +58,5 @@ export const productService = {
   addReview,
   deleteHome,
   sendRequestVerify,
+  getHomeByUserId
 };
