@@ -109,24 +109,25 @@ async function getUserById(userId) {
 }
 
 async function updateUserInfo(data) {
+    let queryStatement;
+    if (data.username && data.avtUrl) {
+        queryStatement = `UPDATE user 
+            SET username='${data.username}', avtUrl='${data.avtUrl}'
+            WHERE user_id=${data.user_id}`;
+    } else if (data.username && !data.avtUrl) {
+        queryStatement = `UPDATE user 
+            SET username='${data.username}'
+            WHERE user_id=${data.user_id}`;
+    } else if (!data.username && data.avtUrl) {
+        queryStatement = `UPDATE user 
+            SET avtUrl='${data.avtUrl}'
+            WHERE user_id=${data.user_id}`;
+    }
     return new Promise((resolve, reject) => {
-        connection.query(
-            `UPDATE user 
-            SET 
-            ${data.username ? `username='${data.username}',` : ""}
-            ${data.avtUrl ? `avtUrl='${data.avtUrl}',` : ""}
-            ${data.motel_id ? `motel_id=${data.motel_id},` : ""}
-            ${
-                data.accountBalance
-                    ? `'accountBalance'=${data.accountBalance}`
-                    : ""
-            }
-            WHERE user_id=${data.user_id}`,
-            (error, result) => {
-                if (error) reject(error);
-                resolve(result);
-            }
-        );
+        connection.query(queryStatement, (error, result) => {
+            if (error) reject(error);
+            resolve(result);
+        });
     }).then((result) => {
         return {
             status: "200",
