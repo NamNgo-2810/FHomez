@@ -3,7 +3,7 @@ const connection = require("./database");
 async function getAllHome() {
     return new Promise((resolve, reject) => {
         connection.query(
-            `SELECT motel_id, src, title, content, price, category, area, createdAt, typeOfNews, status, category, facilities, dayOfNews, latitude, longitude, street, district
+            `SELECT motel_id, src, title, content, price, category, area, createdAt, typeOfNews, status, category, facilities, dayOfNews, latitude, longitude, address, street, district, user_id
                         FROM motel`,
             (error, result) => {
                 if (error) reject(error);
@@ -22,7 +22,7 @@ async function getAllHome() {
 async function getByHomeID(data) {
     return new Promise((resolve, reject) => {
         connection.query(
-            `SELECT motel_id, src, title, content, price, category, area, createdAt, typeOfNews, status, category, facilities, dayOfNews, latitude, longitude, street, district
+            `SELECT motel_id, src, title, content, price, category, area, createdAt, typeOfNews, status, category, facilities, dayOfNews, latitude, longitude, address, street, district, user_id
              FROM motel WHERE motel.motel_id = ${data.motel_id} `,
             (error, result) => {
                 if (error) reject(error);
