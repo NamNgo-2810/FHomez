@@ -5,15 +5,38 @@ exports.getAllHome = async (req, res) => {
     const result = await database.getAllHome();
     for (let i in result) {
         result[i].src = result[i].src.split(",");
+        if (result[i].facilities == null) {
+            continue;
+            
+        }
+        result[i].facilities = result[i].facilities.split(",");        
       }
     return res.status(200).json(result);
 };
 
 exports.getByHomeID = async (req, res) => {
     const result = await database.getByHomeID(req.body);
-    // var sr = Object.values(JSON.parse(JSON.stringify(result)));
-    // console.log(sr[0].src);    
-    result[0].src = result[0].src.split(",");         
+    for (let i in result) {
+        result[i].src = result[i].src.split(",");
+        if (result[i].facilities == null) {
+            continue;
+            
+        }
+        result[i].facilities = result[i].facilities.split(",");        
+      }
+    return res.status(200).json(result);
+};
+
+exports.getByHomeStatus0 = async (req, res) => {
+    const result = await database.getByHomeStatus0(req.body);
+    for (let i in result) {
+        result[i].src = result[i].src.split(",");
+        if (result[i].facilities == null) {
+            continue;
+            
+        }
+        result[i].facilities = result[i].facilities.split(",");        
+      }
     return res.status(200).json(result);
 };
 
@@ -52,8 +75,8 @@ exports.search = async (req, res) => {
 
     const { latitude, longtitude } = req.body;
 
-    // const weights = {};
-    // result = sort({ latitude, longtitude }, result, weights);
+    const weights = { price: 0.4, area: 0.3, location: 0.3 };
+    result = sort({ latitude, longtitude }, result, weights);
 
     return res.status(200).json(result);
 };
@@ -98,7 +121,7 @@ exports.deleteComment = async (req, res) => {
 exports.ownerVerify = async (req, res) => {
     const result = await database.ownerVerify(req.body.user_id);
     return result;
-}
+};
 
 exports.getPrice = async (req, res) => {
     const result = await database.getPrice();

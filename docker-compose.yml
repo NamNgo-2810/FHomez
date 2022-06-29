@@ -41,6 +41,16 @@ services:
         #     - ./app/backend/:/home/fhomez/service
         networks:
             - fhomez-network
+    socket_service:
+        image: fhomez/socket
+        container_name: backend-socket-service
+        ports:
+            - "49189:8900"
+        restart: unless-stopped
+        # volumes:
+        #     - ./app/backend/:/home/fhomez/service
+        networks:
+            - fhomez-network
 networks:
     fhomez-network:
         driver: bridge

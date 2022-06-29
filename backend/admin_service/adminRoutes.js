@@ -5,7 +5,8 @@ const middleware = require("./middleware/admin");
 
 router.delete("/user", middleware.isAdmin, controller.deleteUser);
 router.post("/blogApproval", middleware.isAdmin, controller.blogApproval);
-router.post("/acceptOwner", middleware.isAdmin, controller.acceptOwner);
-router.post("/declineOwner", middleware.isAdmin, controller.declineOwner);
+router.post("/acceptUser", middleware.isAdmin, controller.acceptOwner);
+router.post("/declineUser", middleware.isAdmin, controller.declineOwner);
+router.get("/getOwnerIsWaiting", middleware.isAdmin, controller.getOwnerIsWaiting);
 
 module.exports = router;

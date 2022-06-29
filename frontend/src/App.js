@@ -38,8 +38,6 @@ function App() {
   const [currentUser, setCurrentUser] = useState(
     localStorage.user && JSON.parse(localStorage.user)
   );
-  const a = useParams();
-  console.log(a);
 
   const authCtxValue = useMemo(
     () => ({
@@ -96,6 +94,13 @@ function App() {
               >
                 <Route index element={<UploadForm />}></Route>
               </Route>
+              <Route
+                path="chat"
+                element={<PrivateRoute roles={["admin", "owner", "hirer"]} />}
+              >
+                <Route index element={<Chat />} />
+              </Route>
+
               <Route
                 path="account"
                 element={<PrivateRoute roles={["admin", "owner", "hirer"]} />}
