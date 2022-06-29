@@ -81,7 +81,7 @@ async function declineOwner(user_id) {
 async function getOwnerIsWaiting() {
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELLECT * FROM user WHERE isWaitingForVerify = 1`,
+      `SELECT * FROM user WHERE isWaitingForVerify = 1`,
       (error, result) => {
         if (error) reject(error);
         resolve(result);
