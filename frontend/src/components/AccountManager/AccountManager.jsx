@@ -49,6 +49,7 @@ function AccountManager() {
 
         // call to get new data
         let result = await userService.getUserById(user.user_id);
+        localStorage.user = JSON.stringify(result);
         setUser(result);
       } else {
         await userService.updateUserInfo({
@@ -58,6 +59,7 @@ function AccountManager() {
 
         // call to get new data
         let result = await userService.getUserById(user.user_id);
+        console.log(result)
         localStorage.user = JSON.stringify(result);
         setUser(result);
       }
@@ -73,7 +75,7 @@ function AccountManager() {
         >
           <Form.Group className="mb-3" style={{ width: "80%" }}>
             <Form.Label className="me-2">Mã tài khoản</Form.Label>{" "}
-            {user && user.role === "owner" || "admin" ? (
+            {user && user.role === "owner" ? (
               <MdVerified
                 style={{ color: "green" }}
                 type="button"

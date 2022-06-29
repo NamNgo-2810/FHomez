@@ -68,8 +68,8 @@ function ProductList({ keyword, hasQuery, queryItems }) {
         productFilter &&
         productFilter.map((product, i) => (
           <ProductItem
-            key={product.id}
-            id={product.id}
+            key={product.motel_id}
+            id={product.motel_id}
             src={product.src[0]}
             title={product.title}
             content={product.content}
