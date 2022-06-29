@@ -38,6 +38,25 @@ async function getByHomeID(data) {
     });
 }
 
+async function getByHomeStatus0(data) {
+    return new Promise((resolve, reject) => {
+        connection.query(
+            `SELECT motel_id, src, title, content, price, category, area, createdAt, typeOfNews, status, category, facilities, dayOfNews, latitude, longitude, address, street, district, user_id
+             FROM motel WHERE motel.status = '0' `,
+            (error, result) => {
+                if (error) reject(error);
+                resolve(result);
+            }
+        );
+    }).then((result) => {
+        if (result.length == 0) {
+            return null;
+        }
+        //console.log(result);
+        return result;
+    });
+}
+
 async function addHome(data) {
     return new Promise((resolve, reject) => {
         connection.query(
@@ -213,4 +232,5 @@ module.exports = {
     deleteComment: deleteComment,
     getPrice: getPrice,
     ownerVerify: ownerVerify,
+    getByHomeStatus0: getByHomeStatus0,
 };
