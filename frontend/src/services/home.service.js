@@ -5,7 +5,7 @@ const getAll = () => {
   return axiosHome.get("get_all_home");
 };
 
-const getById = (id) => {
+const getHomeById = (id) => {
   return axiosHome.get("get_by_home_id", id);
 };
 
@@ -13,16 +13,16 @@ const addHome = (data) => {
   return axiosHome.post("/", data);
 };
 
-const updateHome = (data) => {
-  return axiosHome.put("/", data);
-};
+// const updateHome = (data) => {
+//   return axiosHome.put("/", data);
+// };
 
 const deleteHome = (id) => {
   return axiosHome.delete("/", { motel_id: id });
 };
 
 const search = (data) => {
-    return axios.get("/search", data);
+    return axiosHome.get("/search", data);
 };
 
 const addReview = (data) => {
@@ -39,10 +39,9 @@ const deleteComment = (id) => {
 
 export const productService = {
   getAll,
-  getById,
+  getHomeById,
   search,
   addHome,
-  updateHome,
   deleteComment,
   getCommentByMotel,
   addReview,

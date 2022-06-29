@@ -2,9 +2,12 @@ import React, { useContext, useState, useEffect } from "react";
 import "./ProductDetail.css";
 import { default as ImageSlider } from "./ImageSlider";
 import { FaStar } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { Link,useParams } from "react-router-dom";
 import { facilityOptions } from "../Search/SearchConstant";
 import AuthContext from "../../contexts/AuthContext";
+import { BsMessenger } from "react-icons/bs";
+import { productService } from "../../services/home.service";
+
 
 const colors = {
   orange: "#FFBA5A",
@@ -55,9 +58,15 @@ function ProductDetail() {
     setRate(value);
   };
 
-  const handleSubmitComment = () => {
+  const handleSubmitComment = async() => {
     if (comment) {
       // save to db
+      await productService.addReview({
+        motel_id: productId,
+        user_id: user.user_id,
+        comment: comment,
+        rate: rate
+      })
     } else {
       setError("Comment không được để trống");
     }
@@ -69,8 +78,8 @@ function ProductDetail() {
   useEffect(() => {
     async function getDetailProduct(productId) {
       // get data from db 
-
-      setProductDetail();
+      let result = await productService.getHomeById(productId)
+      setProductDetail(result);
     }
 
     getDetailProduct(productId);
@@ -89,8 +98,8 @@ function ProductDetail() {
   useEffect(() => {
     async function getComments(productId) {
       // Get comment of a post 
-
-        setCommentList();
+      let result = await productService.getCommentByMotel()
+      setCommentList(result);
     }
 
     getComments(productId);
@@ -139,6 +148,8 @@ function ProductDetail() {
                         <div className="item--text">
                           {productDetail && productDetail.category}
                         </div>
+
+                        <Link to={`/chat/${owner && owner.id}`}><BsMessenger className="ms-5" /></Link>
                       </div>
                     </div>
                   </div>

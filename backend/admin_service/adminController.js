@@ -14,3 +14,13 @@ exports.deleteUser = async (req, res) => {
     const result = await database.deleteUser(req.body.user_id);
     return result;
 }
+exports.acceptOwner = async (req, res) => {
+    const result = await database.acceptUser(req.body.user_id);
+    if (result.affectedRows != 1) { return res.status(400)}
+    return res.status(200).send("Success");
+}
+exports.declineOwner = async (req, res) => {
+    const result = await database.declineUser(req.body.user_id);
+    if (result.affectedRows != 1) { return res.status(400)}
+    return res.status(200).send("Success");
+}

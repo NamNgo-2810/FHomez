@@ -5,20 +5,40 @@ services:
         image: fhomez/home
         container_name: backend-home-service
         ports:
-            - "49160:5001"
+            - "49151:5001"
         restart: unless-stopped
-        volumes:
-            - ./app/backend/:/home/fhomez/service
+        # volumes:
+        #     - ./app/backend/:/home/fhomez/service
         networks:
             - fhomez-network
     auth_service:
         image: fhomez/auth
         container_name: backend-auth-service
         ports:
-            - "49170:8000"
+            - "49180:8000"
         restart: unless-stopped
-        volumes:
-            - ./app/backend/:/home/fhomez/service
+        # volumes:
+        #     - ./app/backend/:/home/fhomez/service
+        networks:
+            - fhomez-network
+    admin_service:
+        image: fhomez/admin
+        container_name: backend-admin-service
+        ports:
+            - "49181:8001"
+        restart: unless-stopped
+        # volumes:
+        #     - ./app/backend/:/home/fhomez/service
+        networks:
+            - fhomez-network
+    chat_service:
+        image: fhomez/chat
+        container_name: backend-chat-service
+        ports:
+            - "49150:5000"
+        restart: unless-stopped
+        # volumes:
+        #     - ./app/backend/:/home/fhomez/service
         networks:
             - fhomez-network
 networks:

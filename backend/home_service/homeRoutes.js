@@ -13,5 +13,6 @@ router.post("/review", middleware.isAuth, controller.addReview);
 router.get("/getCommentByMotel", controller.getCommentByMotel);
 router.get("/price", controller.getPrice);
 router.delete("/deleteComment", middleware.isAuth, controller.deleteComment);
+router.post("/verifyOwner", middleware.isAuth, controller.ownerVerify);
 
 module.exports = router;

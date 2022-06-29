@@ -122,6 +122,7 @@ exports.updateUserInfo = async (req, res) => {
     try {
         const data = req.body;
         const response = await database.updateUserInfo(data);
+        return res.status(200).json(response);
     } catch (error) {
         console.log(error);
     }

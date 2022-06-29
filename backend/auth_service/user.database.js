@@ -111,7 +111,17 @@ async function getUserById(userId) {
 async function updateUserInfo(data) {
     return new Promise((resolve, reject) => {
         connection.query(
-            `UPDATE user SET username=${data.username} WHERE user_id=${data.user_id}`,
+            `UPDATE user 
+            SET 
+            ${data.username ? `username='${data.username}',` : ""}
+            ${data.avtUrl ? `avtUrl='${data.avtUrl}',` : ""}
+            ${data.motel_id ? `motel_id=${data.motel_id},` : ""}
+            ${
+                data.accountBalance
+                    ? `'accountBalance'=${data.accountBalance}`
+                    : ""
+            }
+            WHERE user_id=${data.user_id}`,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);
@@ -121,7 +131,6 @@ async function updateUserInfo(data) {
         return {
             status: "200",
             message: "Success",
-            body: result,
         };
     });
 }

@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import Select from "react-select";
 import { roomOptions, facilityOptions } from "./SearchConstant.js";
 import styles from "./Search.module.scss";
-import MultiRangeSlider from "../MultiRangeSlider/MultiRangeSlider";
-import { Link } from "react-router-dom";
+import MultiRangeSlider from "./MultiRangeSlider";
 import { FaSearch } from "react-icons/fa";
 import useFilterProvince from "../../helpers/FilterProvince.js";
+import { productService } from "../../services/home.service";
 
-const Search = () => {
+const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
   const { getDistrict, getSubDistrict, getStreet } = useFilterProvince();
 
   // Filter then return a list of rooms

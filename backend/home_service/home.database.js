@@ -189,6 +189,16 @@ async function getPrice() {
         return result;
     });
 }
+async function ownerVerify(user_id){
+    return new Promise((resolve, reject) =>{
+        connection.query(`UPDATE user SET isWaitingForVerify = 1 WHERE user_id = '${user_id}'`, (error, result)=>{
+            if (error) reject(error);
+            resolve(result);
+        });
+    }).then((result)=>{
+        return result;
+    }).catch(error => console.log(error));
+}
 
 module.exports = {
     getAllHome: getAllHome,
@@ -201,4 +211,5 @@ module.exports = {
     addReview: addReview,
     deleteComment: deleteComment,
     getPrice: getPrice,
+    ownerVerify: ownerVerify,
 };
