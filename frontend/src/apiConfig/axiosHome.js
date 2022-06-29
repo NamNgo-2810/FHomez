@@ -1,11 +1,13 @@
 import axios from "axios";
 
+const getToken = () => localStorage.jwt ? localStorage.jwt : null
+
 
 const axiosHome = axios.create({
     baseURL: "http://localhost:5001/api/home/",
     headers: {
-        "Content-Type": "application/json",
-        "x_authorization": localStorage.jwt
+        "Content-Type": "application/json"
+       
     },
 });
 
@@ -13,6 +15,7 @@ const axiosHome = axios.create({
 axiosHome.interceptors.request.use(
     function (config) {
         // Do something before request is sent
+        config.headers.x_authorization = getToken();
         return config;
     },
     function (error) {

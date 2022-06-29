@@ -94,7 +94,7 @@ function Login({ setShow }) {
                                 <FaSignInAlt className="me-1 mb-1" />
                                 Đăng nhập
                             </Button>
-                            <hr />
+                            {/* <hr />
                             <Button
                                 className={`${styles.fSignIn} d-flex align-items-center justify-content-center`}
                             >
@@ -106,7 +106,7 @@ function Login({ setShow }) {
                             >
                                 <FaGoogle className="me-1 ms-1" />
                                 Đăng nhập bằng google
-                            </Button>
+                            </Button> */}
                         </Form.Group>
                     </Form>
                 </Modal.Body>
