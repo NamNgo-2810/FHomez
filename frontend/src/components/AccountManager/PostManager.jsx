@@ -7,6 +7,7 @@ import AuthContext from "../../contexts/AuthContext";
 import { FcAcceptDatabase } from "react-icons/fc";
 import { GiThink } from "react-icons/gi";
 import { FcCancel } from "react-icons/fc";
+import { productService } from "../../services/home.service";
 
 
 function PostManager() {
@@ -14,10 +15,18 @@ function PostManager() {
 
   const [post, setPost] = useState([]);
   useEffect(() => {
-    if (user) {
-      
+    async function fetchHomeByUserId() {
+      let result = await productService.getHomeByUserId(user.user_id)
+
+      setPost(result)
     }
-  }, [user.uid]);
+
+    fetchHomeByUserId()
+  }, []);
+
+  const handleDelete = async(id) => {
+    await productService.deleteHome(id)
+  }
 
   return (
     <table className="mt-3 table">
@@ -32,12 +41,12 @@ function PostManager() {
       <tbody>
         {post &&
           post.map((e, i) => (
-            <tr key={"post" + e.id}>
+            <tr key={"post" + e.motel_id}>
               <th>{i + 1}</th>
               <td>
                 {" "}
-                <Link target="_blank" to={`/products/${e.id}`}>
-                  {e.id}
+                <Link target="_blank" to={`/products/${e.motel_id}`}>
+                  {e.motel_id}
                 </Link>
               </td>
               <td>
@@ -50,7 +59,7 @@ function PostManager() {
                 }
               </td>
               <td>
-                <button className="btn btn-primary">Xóa bài</button>
+                <button className="btn btn-primary" onClick={() => handleDelete(e.motel_id)}>Xóa bài</button>
               </td>
             </tr>
           ))}

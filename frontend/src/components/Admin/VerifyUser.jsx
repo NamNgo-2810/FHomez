@@ -6,18 +6,20 @@ function VerifyUser() {
   const [users, setUsers] = useState();
   useEffect(() => {
     async function fetchWaitingOwner() {
-      let result = await adminService.waitOwnerIsWating();
+      let result = await adminService.waitOwnerIsWaiting();
       setUsers(result);
     }
 
-    fetchWaitingOwner()
+    fetchWaitingOwner();
   }, []);
 
   const handleAccept = async (id) => {
     await adminService.acceptOwner(id);
+    window.location.reload();
   };
   const handleReject = async (id) => {
     await adminService.declineOwner(id);
+    window.location.reload();
   };
 
   return (

@@ -5,7 +5,7 @@ const middleware = require("./middleware/auth");
 
 router.post("/", middleware.isAuth, controller.addHome);
 router.put("/", middleware.isAuth, controller.updateHome);
-router.delete("/", middleware.isAuth, controller.deleteHome);
+router.delete("/:motel_id", middleware.isAuth, controller.deleteHome);
 router.get("/search", controller.search);
 router.get("/get_all_home", controller.getAllHome);
 router.get("/get_by_home_id/:motel_id", controller.getByHomeID);
