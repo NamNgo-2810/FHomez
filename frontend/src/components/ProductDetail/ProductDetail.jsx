@@ -2,12 +2,12 @@ import React, { useContext, useState, useEffect } from "react";
 import "./ProductDetail.css";
 import { default as ImageSlider } from "./ImageSlider";
 import { FaStar } from "react-icons/fa";
-import { Link,useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { facilityOptions } from "../Search/SearchConstant";
 import AuthContext from "../../contexts/AuthContext";
 import { BsMessenger } from "react-icons/bs";
 import { productService } from "../../services/home.service";
-
+import { userService } from "../../services/user.service";
 
 const colors = {
   orange: "#FFBA5A",
@@ -58,51 +58,36 @@ function ProductDetail() {
     setRate(value);
   };
 
-  const handleSubmitComment = async() => {
+  const handleSubmitComment = async () => {
     if (comment) {
       // save to db
       await productService.addReview({
         motel_id: productId,
         user_id: user.user_id,
         comment: comment,
-        rate: rate
-      })
+        rate: rate,
+      });
     } else {
       setError("Comment không được để trống");
     }
   };
 
-  // get detail product
+  // get detail product and owner info and comment
   const [productDetail, setProductDetail] = useState();
-
+  const [owner, setOwner] = useState();
+  const [commentList, setCommentList] = useState([]);
   useEffect(() => {
     async function getDetailProduct(productId) {
-      // get data from db 
-      let result = await productService.getHomeById(productId)
+      // get data from db
+      let result = await productService.getHomeById(productId);
+      let ownerInfo = await userService.getUserById(result.user_id);
+      let comments = await productService.getCommentByMotel(result.motel_id);
       setProductDetail(result);
+      setOwner(ownerInfo);
+      setCommentList(comments);
     }
 
     getDetailProduct(productId);
-  }, [productId]);
-
-  const [owner, setOwner] = useState();
-  useEffect(() => {
-    async function getOwnerInfo(productId) {
-      // Get owner by userRef in a post
-    }
-
-    getOwnerInfo(productId);
-  }, [productId]);
-
-  const [commentList, setCommentList] = useState([]);
-  useEffect(() => {
-    async function getComments(productId) {
-      // Get comment of a post 
-      let result = await productService.getCommentByMotel()
-      setCommentList(result);
-    }
-
-    getComments(productId);
   }, [productId]);
 
   return (
@@ -130,7 +115,7 @@ function ProductDetail() {
                       <div>
                         <div className="item--subtitle">Họ tên chủ trọ: </div>
                         <div className="item--text">
-                          {owner && owner.displayName}
+                          {owner && owner.username}
                         </div>
                       </div>
                       <div>
@@ -138,7 +123,7 @@ function ProductDetail() {
                           Số điện thoại liên hệ:{" "}
                         </div>
                         <div className="item--text">
-                          {owner && owner.phoneNumber}
+                          {owner && owner.phonenumber}
                         </div>
                       </div>
                       <div>
@@ -149,7 +134,11 @@ function ProductDetail() {
                           {productDetail && productDetail.category}
                         </div>
 
-                        <Link to={`/chat/${owner && owner.id}`}><BsMessenger className="ms-5" /></Link>
+                        <Link
+                          to={`/chat/${productDetail && productDetail.user_id}`}
+                        >
+                          <BsMessenger className="ms-5" />
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -219,21 +208,11 @@ function ProductDetail() {
                 {commentList &&
                   commentList.map((e) => (
                     <li key={e.commentId} className="comment_detail">
-                      <div className="user_avatar">
-                        <img
-                          style={{ borderRadius: "50%" }}
-                          width="50px"
-                          height="50px"
-                          className="user_avatar_img"
-                          src={e.sender.avatar}
-                        />
-                      </div>
                       <div className="user_text">
                         <div className="comment_info">
                           <div className="user_name">
-                            <span className="me-2">{e.sender.name}</span>
                             <span>
-                              {Array(e.rate)
+                              {Array(Number(e.rate))
                                 .fill(0)
                                 .map((e) => (
                                   <FaStar

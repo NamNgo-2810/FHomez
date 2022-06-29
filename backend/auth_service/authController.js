@@ -80,13 +80,14 @@ exports.login = async (req, res) => {
       return res.status(401).send("Login failed, please try again");
     }
 
-    const { user_id, username, phonenumber, balance, role } = user;
+    const { user_id, username, avtUrl, phonenumber, balance, role } = user;
 
     return res.json({
       accessToken,
       user: {
         user_id,
         username,
+        avtUrl,
         phonenumber,
         balance,
         role,
@@ -114,11 +115,11 @@ exports.getUserById = async (req, res) => {
 };
 
 exports.updateUserInfo = async (req, res) => {
-    try {
-        const data = req.body;
-        const response = await database.updateUserInfo(data);
-        return res.status(200).json(response);
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    const data = req.body;
+    const response = await database.updateUserInfo(data);
+    return res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
+  }
 };

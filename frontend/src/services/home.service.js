@@ -6,23 +6,23 @@ const getAll = () => {
 };
 
 const getHomeById = (id) => {
-  return axiosHome.get("get_by_home_id", id);
+  return axiosHome.get(`get_by_home_id/${id}`);
+};
+
+const getHomeByStatus = () => {
+  return axiosHome.get("get_by_home_status_0");
 };
 
 const addHome = (data) => {
   return axiosHome.post("/", data);
 };
 
-// const updateHome = (data) => {
-//   return axiosHome.put("/", data);
-// };
-
 const deleteHome = (id) => {
   return axiosHome.delete("/", { motel_id: id });
 };
 
 const search = (data) => {
-    return axiosHome.get("search", data);
+  return axiosHome.get("search", data);
 };
 
 const addReview = (data) => {
@@ -30,7 +30,7 @@ const addReview = (data) => {
 };
 
 const getCommentByMotel = (id) => {
-  return axiosHome.get("getCommentByMotel", { motel_id: id });
+  return axiosHome.get(`getCommentByMotel/${id}`);
 };
 
 const deleteComment = (id) => {
@@ -38,17 +38,18 @@ const deleteComment = (id) => {
 };
 
 const sendRequestVerify = (id) => {
-  return axiosHome.post("verifyOwner",{user_id: id});
-}
+  return axiosHome.post("verifyOwner", { user_id: id });
+};
 
 export const productService = {
   getAll,
   getHomeById,
   search,
   addHome,
+  getHomeByStatus,
   deleteComment,
   getCommentByMotel,
   addReview,
   deleteHome,
-  sendRequestVerify
+  sendRequestVerify,
 };

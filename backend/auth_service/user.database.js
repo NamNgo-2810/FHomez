@@ -109,6 +109,7 @@ async function getUserById(userId) {
 }
 
 async function updateUserInfo(data) {
+    console.log(data)
     let queryStatement;
     if (data.username && data.avtUrl) {
         queryStatement = `UPDATE user 

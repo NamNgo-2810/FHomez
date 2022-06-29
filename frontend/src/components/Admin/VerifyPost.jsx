@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { adminService } from "../../services/admin.service";
+import { productService } from "../../services/home.service";
 
 function VerifyPost() {
   const [post, setPost] = useState([]);
   useEffect(() => {
-   
+    async function fetchHomeByStatus() {
+      let result = await productService.getHomeByStatus();
+      setPost(result);
+    }
+
+    fetchHomeByStatus()
   }, []);
 
-  const handleAccept = (id) => {
-    
+  const handleAccept = async (id) => {
+    await adminService.blogApproval(id);
   };
-  const handleReject = (id) => {
-   
+  const handleReject = async (id) => {
+    await adminService.blogApproval(id);
   };
 
   return (
@@ -26,28 +33,30 @@ function VerifyPost() {
       <tbody>
         {post &&
           post.map((e, i) => (
-            <tr key={"post" + e.id}>
+            <tr key={"post" + e.motel_id}>
               <th>{i + 1}</th>
               <td>
                 {" "}
-                <Link target="_blank" to={`/products/${e.id}`}>
-                  {e.id}
+                <Link target="_blank" to={`/products/${e.motel_id}`}>
+                  {e.motel_id}
                 </Link>
               </td>
               <td>
                 <button
                   className="btn btn-primary me-2"
-                  onClick={() => handleAccept(e.id)}
+                  onClick={() => handleAccept(e.motel_id)}
                 >
                   Chấp nhận
                 </button>
-                <button className="btn btn-danger" onClick={() => handleReject(e.id)}>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleReject(e.motel_id)}
+                >
                   Từ chối
                 </button>
               </td>
             </tr>
-          ))
-        }
+          ))}
       </tbody>
     </table>
   );
