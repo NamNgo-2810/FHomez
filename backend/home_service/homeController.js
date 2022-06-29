@@ -22,6 +22,16 @@ exports.getByHomeID = async (req, res) => {
     );
 };
 
+exports.getByUserID = async (req, res) => {
+  const result = await database.getByUserID(req.params);
+  return res
+    .status(200)
+    .json(
+      Object.assign(result[0], { facilities: JSON.parse(result[0].facilities) })
+    );
+};
+
+
 exports.getByHomeStatus0 = async (req, res) => {
   const result = await database.getByHomeStatus0(req.body);
   for (let i in result) {

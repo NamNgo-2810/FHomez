@@ -9,6 +9,7 @@ router.delete("/", middleware.isAuth, controller.deleteHome);
 router.get("/search", controller.search);
 router.get("/get_all_home", controller.getAllHome);
 router.get("/get_by_home_id/:motel_id", controller.getByHomeID);
+router.get("/get_by_user_id/:user_id", controller.getByUserID);
 router.get("/get_by_home_status_0", controller.getByHomeStatus0);
 router.post("/review", middleware.isAuth, controller.addReview);
 router.get("/getCommentByMotel/:motel_id", controller.getCommentByMotel);
