@@ -5,7 +5,14 @@ exports.getAllHome = async (req, res) => {
     const result = await database.getAllHome();
     for (let i in result) {
         result[i].src = result[i].src.split(",");
-    }
+        if (result[i].facilities == null) {
+            continue;
+            
+        }
+        result[i].facilities = result[i].facilities.split(",");        
+      }
+        // let date_1 = new Date(result[21].createdAt);
+        // console.log(date_1); 
     return res.status(200).json(result);
 };
 
