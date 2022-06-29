@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import { Suspense, useMemo, useState, lazy } from "react";
 import AuthContext from "./contexts/AuthContext.js";
 import Hypnosis from "react-cssfx-loading/lib/Hypnosis";
@@ -38,6 +38,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState(
     localStorage.user && JSON.parse(localStorage.user)
   );
+  const a = useParams();
+  console.log(a);
 
   const authCtxValue = useMemo(
     () => ({
@@ -94,7 +96,6 @@ function App() {
               >
                 <Route index element={<UploadForm />}></Route>
               </Route>
-
               <Route
                 path="account"
                 element={<PrivateRoute roles={["admin", "owner", "hirer"]} />}

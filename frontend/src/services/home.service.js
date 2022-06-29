@@ -22,11 +22,11 @@ const deleteHome = (id) => {
 };
 
 const search = (data) => {
-    return axiosHome.get("/search", data);
+    return axiosHome.get("search", data);
 };
 
 const addReview = (data) => {
-  return axiosHome.post("/review", data);
+  return axiosHome.post("review", data);
 };
 
 const getCommentByMotel = (id) => {
@@ -37,6 +37,10 @@ const deleteComment = (id) => {
   return axiosHome.delete("deleteComment", { review_id: id });
 };
 
+const sendRequestVerify = (id) => {
+  return axiosHome.post("verifyOwner",{user_id: id});
+}
+
 export const productService = {
   getAll,
   getHomeById,
@@ -46,4 +50,5 @@ export const productService = {
   getCommentByMotel,
   addReview,
   deleteHome,
+  sendRequestVerify
 };

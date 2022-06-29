@@ -45,7 +45,7 @@ function Header() {
                 <li className="nav-item">
                   <div className="dropdown">
                     <img
-                      src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+                      src={user.avtUrl ? user.avtUrl : "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"}
                       style={{
                         borderRadius: "50%",
                         width: "70px",

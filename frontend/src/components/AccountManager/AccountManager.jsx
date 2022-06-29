@@ -13,6 +13,7 @@ import {
 import { MdVerified } from "react-icons/md";
 import { GoUnverified } from "react-icons/go";
 import { useState } from "react";
+import { userService } from "../../services/user.service.js";
 
 // Handle message error validation
 const validationSchema = yup.object().shape({
@@ -34,17 +35,32 @@ function AccountManager() {
     if (user) {
       if (avatar) {
         const uploadTask = await uploadBytesResumable(
-          ref(storage, `${avatar.path}-${user.uid}`),
+          ref(storage, `${avatar}-${user.user_id}`),
           avatar
         ).then((result) => {
           return getDownloadURL(result.ref);
         });
+
+        await userService.updateUserInfo({
+          user_id: user.user_id,
+          username: data.name,
+          avtUrl: uploadTask,
+        });
+
+        // call to get new data
+        let result = await userService.getUserById(user.user_id);
+        setUser(result);
       } else {
+        await userService.updateUserInfo({
+          user_id: user.user_id,
+          username: data.name,
+        });
+
+        // call to get new data
+        let result = await userService.getUserById(user.user_id);
+        localStorage.user = JSON.stringify(result);
+        setUser(result);
       }
-
-      // call to get new data
-
-      window.location.reload();
     }
   };
 
@@ -57,7 +73,7 @@ function AccountManager() {
         >
           <Form.Group className="mb-3" style={{ width: "80%" }}>
             <Form.Label className="me-2">Mã tài khoản</Form.Label>{" "}
-            {user && user.role === "owner" ? (
+            {user && user.role === "owner" || "admin" ? (
               <MdVerified
                 style={{ color: "green" }}
                 type="button"
@@ -100,59 +116,63 @@ function AccountManager() {
         </Form>
       </div>
       <div className="col-7">
-        <div
-          className="border text-start ps-3 mt-3"
-          style={{ height: "40px", lineHeight: "40px" }}
-        >
-          Số dư: <b style={{ color: "#0d6efd", fontSize: "17px" }}>0đ</b>
-        </div>
+        {user && user.role !== "admin" && (
+          <>
+            <div
+              className="border text-start ps-3 mt-3"
+              style={{ height: "40px", lineHeight: "40px" }}
+            >
+              Số dư: <b style={{ color: "#0d6efd", fontSize: "17px" }}>0đ</b>
+            </div>
 
-        <div className="mt-5">
-          <label
-            htmlFor="avatar"
-            style={{
-              border: "1px solid black",
-              display: "inline-block",
-              width: "150px",
-              height: "150px",
-              cursor: "pointer",
-              borderRadius: "50%",
-              paddingTop: "36px",
-              position: "relative",
-            }}
-          >
-            <input
-              id="avatar"
-              style={{ display: "none" }}
-              type="file"
-              onChange={(e) => setAvatar(e.target.files[0])}
-            />
-            {avatar ? (
-              <img
-                src={URL.createObjectURL(avatar)}
-                onLoad={() => URL.revokeObjectURL(avatar)}
-                width="100%"
-                height="100%"
+            <div className="mt-5">
+              <label
+                htmlFor="avatar"
                 style={{
+                  border: "1px solid black",
+                  display: "inline-block",
+                  width: "150px",
+                  height: "150px",
+                  cursor: "pointer",
                   borderRadius: "50%",
-                  position: "absolute",
-                  left: "0",
-                  top: "0",
+                  paddingTop: "36px",
+                  position: "relative",
                 }}
-              />
-            ) : (
-              <>
-                <img
-                  src="http://cdn.onlinewebfonts.com/svg/img_391162.png"
-                  width="50px"
-                  height="50px"
+              >
+                <input
+                  id="avatar"
+                  style={{ display: "none" }}
+                  type="file"
+                  onChange={(e) => setAvatar(e.target.files[0])}
                 />
-                <br />
-                <small>Change your avatar</small>
-              </>
-            )}
-          </label>
-        </div>
+                {avatar ? (
+                  <img
+                    src={URL.createObjectURL(avatar)}
+                    onLoad={() => URL.revokeObjectURL(avatar)}
+                    width="100%"
+                    height="100%"
+                    style={{
+                      borderRadius: "50%",
+                      position: "absolute",
+                      left: "0",
+                      top: "0",
+                    }}
+                  />
+                ) : (
+                  <>
+                    <img
+                      src="http://cdn.onlinewebfonts.com/svg/img_391162.png"
+                      width="50px"
+                      height="50px"
+                    />
+                    <br />
+                    <small>Change your avatar</small>
+                  </>
+                )}
+              </label>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

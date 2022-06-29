@@ -4,8 +4,8 @@ import queryString from "query-string";
 const getToken = () => localStorage.jwt ? localStorage.jwt : null
 
 
-const axiosAuth = axios.create({
-    baseURL: "http://localhost:8000/api/auth/",
+const axiosAdmin = axios.create({
+    baseURL: "http://localhost:8001/api/admin/",
     headers: {
         "Content-Type": "application/json"
     },
@@ -14,7 +14,7 @@ const axiosAuth = axios.create({
 
 
 // Add a request interceptor
-axiosAuth.interceptors.request.use(
+axiosAdmin.interceptors.request.use(
     function (config) {
         // Do something before request is sent
         config.headers.x_authorization = getToken();
@@ -27,7 +27,7 @@ axiosAuth.interceptors.request.use(
 );
 
 // Add a response interceptor
-axiosAuth.interceptors.response.use(function (response) {
+axiosAdmin.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response.data;
@@ -38,4 +38,4 @@ axiosAuth.interceptors.response.use(function (response) {
   });
 
 
-export default axiosAuth;
+export default axiosAdmin;

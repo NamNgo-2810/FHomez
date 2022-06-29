@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const axiosProduct = axios.create({
+const getToken = () => localStorage.jwt ? localStorage.jwt : null
+
+const axiosChat = axios.create({
     baseURL: "",
     headers: {
         "Content-Type": "application/json",
@@ -8,9 +10,10 @@ const axiosProduct = axios.create({
 });
 
 // Add a request interceptor
-axiosProduct.interceptors.request.use(
+axiosChat.interceptors.request.use(
     function (config) {
         // Do something before request is sent
+        config.headers.x_authorization = getToken();
         return config;
     },
     function (error) {
@@ -20,7 +23,7 @@ axiosProduct.interceptors.request.use(
 );
 
 // Add a response interceptor
-axiosProduct.interceptors.response.use(function (response) {
+axiosChat.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response.data;
