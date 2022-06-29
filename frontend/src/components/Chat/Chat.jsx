@@ -186,14 +186,16 @@ function Chat() {
                                         setCurrentChat(conversation);
                                     }}
                                     key={`${index}`}
-                                    active={conversation._id == currentChat._id}
+                                    active={
+                                        conversation._id === currentChat._id
+                                    }
                                 >
                                     <Avatar
                                         status="available"
                                         src={
                                             conversation.members.find(
                                                 (member) =>
-                                                    member.id != user.user_id
+                                                    member.id !== user.user_id
                                             ).avtUrl
                                         }
                                     />
@@ -202,7 +204,7 @@ function Chat() {
                                         name={
                                             conversation.members.find(
                                                 (member) =>
-                                                    member.id != user.user_id
+                                                    member.id !== user.user_id
                                             ).user
                                         }
                                         // lastSenderName={
@@ -230,7 +232,7 @@ function Chat() {
                                         src={
                                             currentChat.members.find(
                                                 (member) =>
-                                                    member.id != user.user_id
+                                                    member.id !== user.user_id
                                             ).avtUrl
                                         }
                                     />
@@ -238,7 +240,7 @@ function Chat() {
                                         userName={
                                             currentChat.members.find(
                                                 (member) =>
-                                                    member.id != user.user_id
+                                                    member.id !== user.user_id
                                             ).user
                                         }
                                         info="Active"
@@ -254,7 +256,7 @@ function Chat() {
                                 <Message
                                     model={{
                                         direction:
-                                            message?.senderId == user.user_id
+                                            message?.senderId === user.user_id
                                                 ? "outgoing"
                                                 : "incoming",
                                     }}
@@ -265,7 +267,7 @@ function Chat() {
                                         src={
                                             currentChat?.members.find(
                                                 (member) =>
-                                                    message?.senderId ==
+                                                    message?.senderId ===
                                                     member.id
                                             )?.avtUrl
                                         }
@@ -308,7 +310,12 @@ function Chat() {
             {imageMessage ? (
                 <img
                     src={URL.createObjectURL(imageMessage)}
-                    style={{ width: 150, alignSelf: "start" }}
+                    style={{
+                        width: 150,
+                        alignSelf: "start",
+                        marginTop: "10px",
+                        marginBottom: "10px",
+                    }}
                 />
             ) : null}
         </div>

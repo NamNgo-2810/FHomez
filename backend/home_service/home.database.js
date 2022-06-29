@@ -28,13 +28,12 @@ async function getByHomeID(data) {
                 if (error) reject(error);
                 resolve(result);
             }
-            
         );
     }).then((result) => {
         if (result.length == 0) {
             return null;
         }
-        //console.log(result);        
+        //console.log(result);
         return result;
     });
 }
@@ -53,7 +52,7 @@ async function addHome(data) {
         if (result.length == 0) {
             return null;
         }
-        // console.log(result);        
+        // console.log(result);
         return result;
     });
 }
@@ -170,34 +169,36 @@ async function deleteComment(review_id) {
 
 async function getPrice() {
     return new Promise((resolve, reject) => {
-        connection.query(
-            `select * from price`,
-            (error, result) => {
-                if (error) reject(error);
-                resolve(result);
-            }
-        );
+        connection.query(`select * from price`, (error, result) => {
+            if (error) reject(error);
+            resolve(result);
+        });
     }).then((result) => {
         if (result.length == 0) {
             return null;
         }
         console.log(result);
-        
+
         // hotPrice = JSON.parse(result.hotPrice);
         // console.log(`${hotPrice}`)
-          
+
         return result;
     });
 }
-async function ownerVerify(user_id){
-    return new Promise((resolve, reject) =>{
-        connection.query(`UPDATE user SET isWaitingForVerify = 1 WHERE user_id = '${user_id}'`, (error, result)=>{
-            if (error) reject(error);
-            resolve(result);
-        });
-    }).then((result)=>{
-        return result;
-    }).catch(error => console.log(error));
+async function ownerVerify(user_id) {
+    return new Promise((resolve, reject) => {
+        connection.query(
+            `UPDATE user SET isWaitingForVerify = 1 WHERE user_id = '${user_id}'`,
+            (error, result) => {
+                if (error) reject(error);
+                resolve(result);
+            }
+        );
+    })
+        .then((result) => {
+            return result;
+        })
+        .catch((error) => console.log(error));
 }
 
 module.exports = {
