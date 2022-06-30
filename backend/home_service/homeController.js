@@ -4,7 +4,7 @@ const database = require("./home.database");
 exports.getAllHome = async (req, res) => {
   const result = await database.getAllHome();
   for (let i in result) {
-    result[i].src = result[i].src.split(",");
+    
     if (result[i].facilities == null) {
       continue;
     }
