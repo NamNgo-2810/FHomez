@@ -26,7 +26,7 @@ const deleteHome = (id) => {
 };
 
 const search = (data) => {
-  return axiosHome.get("search", data);
+  return axiosHome.post("search", data);
 };
 
 const addReview = (data) => {
