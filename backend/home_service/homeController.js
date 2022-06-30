@@ -18,7 +18,7 @@ exports.getByHomeID = async (req, res) => {
   return res
     .status(200)
     .json(
-      Object.assign(result[0], { facilities: JSON.parse(result[0].facilities) })
+      Object.assign(result[0], { facilities: result[0].facilities.split(",") })
     );
 };
 
@@ -60,11 +60,12 @@ exports.deleteHome = async (req, res) => {
 exports.search = async (req, res) => {
   // TO DO: Query all the records that contains information user entered,
   // and then sort by percentage of matching criterias
+  console.log(req.body)
   if (Object.keys(req.body) == 0) {
     return this.getAllHome(req, res);
   }
 
-  const result = await database.searchHome(req.body);
+  let result = await database.searchHome(req.body);
 
   if (result.length == 0) {
     return res
