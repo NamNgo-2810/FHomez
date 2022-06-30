@@ -14,6 +14,8 @@ function Home() {
     areaMin: "",
     areaMax: "",
     facilities: "",
+    latitude: "",
+    longitude: "",
   });
 
   const [hasQuery, setHasQuery] = useState(false);

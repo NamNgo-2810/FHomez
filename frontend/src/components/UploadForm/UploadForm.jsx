@@ -134,6 +134,7 @@ const UploadForm = () => {
           date.getFullYear();
         data.src = result;
         data.facilities = facilities;
+        data.user_id = user.user_id
         data.createdAt = currentTime;
         data.longitude = coordinate.longitude
         data.latitude = coordinate.latitude

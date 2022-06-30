@@ -3,14 +3,13 @@ import { Link } from "react-router-dom";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import AuthContext from "../../contexts/AuthContext.js";
-import {userService} from '../../services/user.service.js'
+import { userService } from "../../services/user.service.js";
 import {
   FaCommentDollar,
   FaAddressBook,
   FaSignOutAlt,
   FaFolderPlus,
 } from "react-icons/fa";
-
 
 function Header() {
   const [show, setShow] = useState(0);
@@ -45,7 +44,11 @@ function Header() {
                 <li className="nav-item">
                   <div className="dropdown">
                     <img
-                      src={user.avtUrl ? user.avtUrl : "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"}
+                      src={
+                        user.avtUrl
+                          ? user.avtUrl
+                          : "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000"
+                      }
                       style={{
                         borderRadius: "50%",
                         width: "70px",
@@ -62,18 +65,29 @@ function Header() {
                       aria-labelledby="dropdownMenuButton1"
                       style={{ fontSize: "16px" }}
                     >
-                      <Link to="/account" style={{ textDecoration: "none" }}>
-                        <button className="dropdown-item">
-                          <FaAddressBook /> Quản lí tài khoản
-                        </button>
-                      </Link>
+                      {user && user.role === "admin" ? (
+                        <Link to="/admin" style={{ textDecoration: "none" }}>
+                          <button className="dropdown-item">
+                            <FaAddressBook /> Quản lí tài khoản
+                          </button>
+                        </Link>
+                      ) : (
+                        <Link to="/account" style={{ textDecoration: "none" }}>
+                          <button className="dropdown-item">
+                            <FaAddressBook /> Quản lí tài khoản
+                          </button>
+                        </Link>
+                      )}
                       <hr />
-                      <Link to="/upload" style={{ textDecoration: "none" }}>
-                        <button className="dropdown-item">
-                          {" "}
-                          <FaFolderPlus /> Đăng bài
-                        </button>
-                      </Link>
+                      {user && user.role !== "admin" && (
+                        <Link to="/upload" style={{ textDecoration: "none" }}>
+                          <button className="dropdown-item">
+                            {" "}
+                            <FaFolderPlus /> Đăng bài
+                          </button>
+                        </Link>
+                      )}
+
                       <button
                         className="dropdown-item"
                         onClick={() => userService.logOut()}

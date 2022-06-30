@@ -16,9 +16,11 @@ function VerifyPost() {
 
   const handleAccept = async (id) => {
     await adminService.blogApproval(id);
+    window.location.reload();
   };
   const handleReject = async (id) => {
     await adminService.blogApproval(id);
+    window.location.reload();
   };
 
   return (

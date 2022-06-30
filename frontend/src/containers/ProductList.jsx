@@ -11,6 +11,8 @@ function ProductList({ keyword, hasQuery, queryItems }) {
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 10;
 
+  // console.log(hasQuery)
+  // console.log(queryItems)
   useEffect(() => {
     async function fetchDataList() {
       let docs = await productService.getAll();
@@ -30,6 +32,14 @@ function ProductList({ keyword, hasQuery, queryItems }) {
       products.slice((page - 1) * itemsPerPage, page * itemsPerPage - 1)
     );
   }, [page]);
+
+  const [queryItemsFilter,setQueryItemsFilter] = useState([])
+  useEffect(() => {
+      if(hasQuery) {
+        setTotalPages(Math.ceil(queryItems.length / itemsPerPage));
+        setQueryItemsFilter(queryItemsFilter.slice((page - 1) * itemsPerPage, page * itemsPerPage))
+      }
+  },[hasQuery])
 
   return (
     <div className="col-9 d-grid gap-3">
