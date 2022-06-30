@@ -118,7 +118,7 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
                       max={50}
                       onChange={({ min, max }) =>
                         setKeyword((prev) =>
-                          Object.assign(prev, { min: min, max: max })
+                          Object.assign(prev, { minCost: min, maxCost: max })
                         )
                       }
                     />
@@ -160,7 +160,7 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
                       max={200}
                       onChange={({ min, max }) =>
                         setKeyword((prev) =>
-                          Object.assign(prev, { areaMin: min, areaMax: max })
+                          Object.assign(prev, { minArea: min, maxArea: max })
                         )
                       }
                     />

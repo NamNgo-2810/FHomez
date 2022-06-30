@@ -11,12 +11,9 @@ function ProductList({ keyword, hasQuery, queryItems }) {
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 10;
 
-  // console.log(hasQuery)
-  // console.log(queryItems)
   useEffect(() => {
     async function fetchDataList() {
       let docs = await productService.getAll();
-
       setTotalPages(Math.ceil(docs.length / itemsPerPage));
       setProducts(docs);
       setProductFilter(
@@ -27,19 +24,19 @@ function ProductList({ keyword, hasQuery, queryItems }) {
     fetchDataList();
   }, []);
 
+  const [queryItemsFilter, setQueryItemsFilter] = useState([]);
   useEffect(() => {
-    setProductFilter(
-      products.slice((page - 1) * itemsPerPage, page * itemsPerPage - 1)
-    );
-  }, [page]);
-
-  const [queryItemsFilter,setQueryItemsFilter] = useState([])
-  useEffect(() => {
-      if(hasQuery) {
-        setTotalPages(Math.ceil(queryItems.length / itemsPerPage));
-        setQueryItemsFilter(queryItemsFilter.slice((page - 1) * itemsPerPage, page * itemsPerPage))
-      }
-  },[hasQuery])
+    if (!hasQuery) {
+      setProductFilter(
+        products.slice((page - 1) * itemsPerPage, page * itemsPerPage - 1)
+      );
+    } else {
+      setTotalPages(Math.ceil(queryItems.length / itemsPerPage));
+      setQueryItemsFilter(
+        queryItems.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+      );
+    }
+  }, [hasQuery, page]);
 
   return (
     <div className="col-9 d-grid gap-3">
@@ -58,71 +55,117 @@ function ProductList({ keyword, hasQuery, queryItems }) {
           </Card.Body>
         </Card>
       ) : hasQuery ? (
-        queryItems &&
-        queryItems.map((product, i) => (
-          <ProductItem
-            key={product.motel_id}
-            id={product.motel_id}
-            src={product.src[0]}
-            title={product.title}
-            content={product.content}
-            price={product.price}
-            category={product.category}
-            area={product.area}
-            address={product.address}
-            createdAt={product.createdAt}
-            typeNews={product.typeOfNews}
-          ></ProductItem>
-        ))
-      ) : (
-        productFilter &&
-        productFilter.map((product, i) => (
-          <ProductItem
-            key={product.motel_id}
-            id={product.motel_id}
-            src={product.src[0]}
-            title={product.title}
-            content={product.content}
-            price={product.price}
-            category={product.category}
-            area={product.area}
-            address={product.address}
-            createdAt={product.createdAt}
-            typeNews={product.typeOfNews}
-          ></ProductItem>
-        ))
-      )}
-      <ul className="pagination justify-content-center">
-        <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
-          <button
-            className="page-link"
-            onClick={() => setPage((prev) => prev - 1)}
-          >
-            Previous
-          </button>
-        </li>
-        {totalPages &&
-          Array(totalPages)
-            .fill(0)
-            .map((e, i) => (
-              <li
-                key={"page" + i}
-                className={`page-item ${i + 1 === page ? "active" : ""}`}
+        <>
+          {queryItemsFilter &&
+            queryItemsFilter.map((product, i) => (
+              <ProductItem
+                key={product.motel_id}
+                id={product.motel_id}
+                src={product.src}
+                title={product.title}
+                content={product.content}
+                price={product.price}
+                category={product.category}
+                area={product.area}
+                address={product.address}
+                createdAt={product.createdAt}
+                typeNews={product.typeOfNews}
+              ></ProductItem>
+            ))}
+          <ul className="pagination justify-content-center">
+            <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
+              <button
+                className="page-link"
+                onClick={() => setPage((prev) => prev - 1)}
               >
-                <button className="page-link" onClick={() => setPage(i + 1)}>
-                  {i + 1}
+                Previous
+              </button>
+            </li>
+            {totalPages &&
+              Array(totalPages)
+                .fill(0)
+                .map((e, i) => (
+                  <li
+                    key={"page" + i}
+                    className={`page-item ${i + 1 === page ? "active" : ""}`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() => setPage(i + 1)}
+                    >
+                      {i + 1}
+                    </button>
+                  </li>
+                ))}
+            <li
+              className={`page-item ${page === totalPages ? "disabled" : ""}`}
+            >
+              <button
+                className="page-link"
+                onClick={() => setPage((prev) => prev + 1)}
+              >
+                Next
+              </button>
+            </li>
+          </ul>
+        </>
+      ) : (
+        productFilter && (
+          <>
+            {productFilter.map((product, i) => (
+              <ProductItem
+                key={product.motel_id}
+                id={product.motel_id}
+                src={product.src}
+                title={product.title}
+                content={product.content}
+                price={product.price}
+                category={product.category}
+                area={product.area}
+                address={product.address}
+                createdAt={product.createdAt}
+                typeNews={product.typeOfNews}
+              ></ProductItem>
+            ))}
+            <ul className="pagination justify-content-center">
+              <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
+                <button
+                  className="page-link"
+                  onClick={() => setPage((prev) => prev - 1)}
+                >
+                  Previous
                 </button>
               </li>
-            ))}
-        <li className={`page-item ${page === totalPages ? "disabled" : ""}`}>
-          <button
-            className="page-link"
-            onClick={() => setPage((prev) => prev + 1)}
-          >
-            Next
-          </button>
-        </li>
-      </ul>
+              {totalPages &&
+                Array(totalPages)
+                  .fill(0)
+                  .map((e, i) => (
+                    <li
+                      key={"page" + i}
+                      className={`page-item ${i + 1 === page ? "active" : ""}`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => setPage(i + 1)}
+                      >
+                        {i + 1}
+                      </button>
+                    </li>
+                  ))}
+              <li
+                className={`page-item ${page === totalPages ? "disabled" : ""}`}
+              >
+                <button
+                  className="page-link"
+                  onClick={() => setPage((prev) => prev + 1)}
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </>
+        )
+      )}
     </div>
   );
 }
