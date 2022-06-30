@@ -6,85 +6,28 @@ import MultiRangeSlider from "./MultiRangeSlider";
 import { FaSearch } from "react-icons/fa";
 import useFilterProvince from "../../helpers/FilterProvince.js";
 import { productService } from "../../services/home.service";
+import { useEffect } from "react";
 
 const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
   const { getDistrict, getSubDistrict, getStreet } = useFilterProvince();
 
-  // Filter then return a list of rooms
-  
+  // get coordinate
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setKeyword((prev) =>
+        Object.assign(prev, { latitude: position.coords.latitude })
+      );
+      setKeyword((prev) =>
+        Object.assign(prev, { longitude: position.coords.longitude })
+      );
+    });
+  }, []);
 
-  // Get Element for filter
-  const [district, setDistrict] = useState(null);
-  const [subDistrict, setSubDistrict] = useState(null);
-  const [street, setStreet] = useState(null);
-  const [maxPrice, setMaxPrice] = useState(null);
-  const [minPrice, setMinPrice] = useState(null);
-  const [category, setCategory] = useState(null);
-  const [maxArea, setMaxArea] = useState(null);
-  const [minArea, setMinArea] = useState(null);
-  const [facilities, setFacilities] = useState([]);
-  
-  const handleDistrictChange = e => { 
-    setDistrict(e.value);
-  }
-
-  const handleSubDistrictChange = e => { 
-    setSubDistrict(e.value);
-  }
-
-  const handleStreetChange = e => { 
-    setStreet(e.value);
-  }
-
-  const handleMaxPriceChange = e => { 
-    setMaxPrice(e);
-  }
-
-  const handleMinPriceChange = e => { 
-    setMinPrice(e);
-  }
-
-  const handleCategoryChange = e => {
-    setCategory(e.value);
-  }
-
-  const handleMaxAreaChange = e => { 
-    setMaxArea(e);
-  }
-
-  const handleMinAreaChange = e => { 
-    setMinArea(e);
-  }
-
-  const handleFacilitiesChange = (e) => { 
-    setFacilities(Array.isArray(e) ? e.map(x => x.value) : []);
-  }
-
-  //const [district, setDistrict] = useState(null);
-  function TestButton() {
-    console.log("District: " + district);
-    console.log("SubDistrict: " + subDistrict);
-    console.log("Street: " + street);
-    console.log("MaxPrice: " + maxPrice);
-    console.log("MinPrice: " + minPrice);
-    console.log("Category: " + category);
-    console.log("MaxArea: " + maxArea);
-    console.log("MinArea: " + minArea);
-    console.log("Facilities: " + facilities);
-  }
-
-  // Handle Search Results   
+  // Handle Search Results
   const fetchDataQuery = async (e) => {
     e.preventDefault();
 
-    const { min, max, minArea, maxArea } = keyword;
-    let result = await productService.search({
-      minCost: min,
-      maxCost: max,
-      minArea: minArea,
-      maxArea: maxArea,
-    });
-    console.log(result);
+    let result = await productService.search(keyword);
     setQueryItems(result);
     setHasQuery(true);
   };
