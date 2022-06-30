@@ -5,7 +5,7 @@ services:
         image: fhomez/home
         container_name: backend-home-service
         ports:
-            - "49151:5001"
+            - "5001:5001"
         restart: unless-stopped
         # volumes:
         #     - ./app/backend/:/home/fhomez/service
@@ -15,7 +15,7 @@ services:
         image: fhomez/auth
         container_name: backend-auth-service
         ports:
-            - "49180:8000"
+            - "8000:8000"
         restart: unless-stopped
         # volumes:
         #     - ./app/backend/:/home/fhomez/service
@@ -25,7 +25,7 @@ services:
         image: fhomez/admin
         container_name: backend-admin-service
         ports:
-            - "49181:8001"
+            - "8001:8001"
         restart: unless-stopped
         # volumes:
         #     - ./app/backend/:/home/fhomez/service
@@ -35,7 +35,7 @@ services:
         image: fhomez/chat
         container_name: backend-chat-service
         ports:
-            - "49150:5000"
+            - "5000:5000"
         restart: unless-stopped
         # volumes:
         #     - ./app/backend/:/home/fhomez/service
@@ -45,7 +45,17 @@ services:
         image: fhomez/socket
         container_name: backend-socket-service
         ports:
-            - "49189:8900"
+            - "8900:8900"
+        restart: unless-stopped
+        # volumes:
+        #     - ./app/backend/:/home/fhomez/service
+        networks:
+            - fhomez-network
+    frontend:
+        image: fhomez/frontend
+        container_name: frontend
+        ports:
+            - "3000:3000"
         restart: unless-stopped
         # volumes:
         #     - ./app/backend/:/home/fhomez/service
