@@ -12,6 +12,11 @@ function PrivateRoute({ component: Component, roles, ...rest }) {
   if (roles && roles.indexOf(authCtx.user.role) === -1) {
     return <Navigate to="/" replace />;
   }
+
+  // Redirect to admin page
+  if (roles.indexOf("admin") && authCtx.user.role === "admin") {
+    return <Navigate to="/admin" replace />;
+  }
   // authorized then return component
     return <Outlet />;
 }

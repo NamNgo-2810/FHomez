@@ -59,7 +59,6 @@ function AccountManager() {
 
         // call to get new data
         let result = await userService.getUserById(user.user_id);
-        console.log(result)
         localStorage.user = JSON.stringify(result);
         setUser(result);
       }

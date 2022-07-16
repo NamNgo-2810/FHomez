@@ -207,14 +207,14 @@ function Chat() {
                                                     member.id !== user.user_id
                                             ).user
                                         }
-                                        // lastSenderName={
-                                        //     messages?.[messages?.length - 1]
-                                        //         .sender
-                                        // }
-                                        // info={
-                                        //     messages?.[messages.length - 1]
-                                        //         .content
-                                        // }
+                                    // lastSenderName={
+                                    //     messages?.[messages?.length - 1]
+                                    //         .sender
+                                    // }
+                                    // info={
+                                    //     messages?.[messages.length - 1]
+                                    //         .content
+                                    // }
                                     />
                                 </Conversation>
                             );

@@ -17,6 +17,7 @@ function Home() {
         latitude: "",
         longitude: "",
     });
+    console.log(keyword)
 
     const [hasQuery, setHasQuery] = useState(false);
     const [queryItems, setQueryItems] = useState([]);

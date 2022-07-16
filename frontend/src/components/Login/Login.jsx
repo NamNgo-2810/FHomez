@@ -43,7 +43,6 @@ function Login({ setShow }) {
 
         if (response.user.role === "admin") {
             window.location.href = "admin"
-          
         }
       }
     } catch (e) {
