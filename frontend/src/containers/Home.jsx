@@ -5,15 +5,18 @@ import ProductList from "./ProductList";
 
 function Home() {
     const [keyword, setKeyword] = useState({
-        district: "",
-        subDistrict: "",
-        street: "",
-        min: "",
-        max: "",
-        category: "",
-        minArea: "",
-        maxArea: "",
-        facilities: "",
+        // district: "",
+        // subDistrict: "",
+        // street: "",
+        priceWeight: 0.33,
+        areaWeight: 0.33,
+        distanceWeight : 0.33,
+        minCost: -1,
+        maxCost: -1,
+        // category: "",
+        minArea: -1,
+        maxArea: -1,
+        // facilities: "",
         latitude: "",
         longitude: "",
     });

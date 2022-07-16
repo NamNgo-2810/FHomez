@@ -42,7 +42,7 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
           <div className={styles.searchbar_items}>
             {/* Search by geographical location */}
             <hr className="searchbar_item_divider" />
-            <div className="searchbar_item">
+            {/* <div className="searchbar_item">
               <div className="searchbar_item_input">
                 <div className="searchbar_item_input_district">
                   <div className="searchbar_item_input_district_title">
@@ -109,12 +109,43 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
                   </div>
                 </div>
               </div>
+            </div> */}
+
+            <div className="searchbar_item">
+              <div className="searchbar_item_input">
+                <div className="searchbar_item_input_district">
+                  <div className="searchbar_item_input_district_title">
+                    <h6>Chọn mức độ ưu tiên(*)</h6>
+                  </div>
+                  <div className="searchbar_item_input_district_items" style={{ paddingLeft: "24px" }}>
+                    <div className="mb-2">
+                      <label style={{ width: '100px' }} htmlFor="price">Giá nhà</label>
+                      <input style={{ paddingLeft: '4px' }} type="number" min="0" max="1" step="0.1" id="price" onChange={(e) => setKeyword((prev) => Object.assign(prev, {
+                        priceWeight: Number(e.target.value)
+                      }))} />
+                    </div>
+                    <div className="mb-2">
+                      <label style={{ width: '100px' }} htmlFor="area">Diện tích</label>
+                      <input style={{ paddingLeft: '4px' }} type="number" min="0" max="1" step="0.1" id="area" onChange={(e) => setKeyword((prev) => Object.assign(prev, {
+                        areaWeight: Number(e.target.value)
+                      }))} />
+                    </div>
+                    <div className="mb-3">
+                      <label style={{ width: '100px' }} htmlFor="distance">Khoảng cách</label>
+                      <input style={{ paddingLeft: '4px' }} type="number" min="0" max="1" step="0.1" id="distance" onChange={(e) => setKeyword((prev) => Object.assign(prev, {
+                        distanceWeight: Number(e.target.value)
+                      }))} />
+                    </div>
+
+                  </div>
+                </div>
+              </div>
             </div>
             {/* Search by price */}
-            <hr className="searchbar_item_divider" />
+            {/* <hr className="searchbar_item_divider" /> */}
             <div className="searchbar_item">
               <div className="searchbar_item_title">
-                Giá thuê/tháng (triệu đồng)
+                <h6>Giá thuê/tháng (triệu đồng)</h6>
               </div>
               <div className="searchbar_item_input">
                 <div className="searchbar_price_slider">
@@ -136,8 +167,8 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
               </div>
             </div>
             {/* Search by room class */}
-            <hr className="searchbar_item_divider" />
-            <div className="searchbar_item">
+            {/* <hr className="searchbar_item_divider" /> */}
+            {/* <div className="searchbar_item">
               <div className="searchbar_item_title">Loại phòng</div>
               <div className="searchbar_item_input">
                 <div className="searchbar_item_input_class">
@@ -157,12 +188,12 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Search by area */}
             <hr className="searchbar_item_divider" />
             <div className="searchbar_item">
-              <div className="searchbar_item_title">Diện tích (m2)</div>
+              <div className="searchbar_item_title"><h6>Diện tích (m2)</h6> </div>
               <div className="searchbar_item_input">
                 <div className="searchbar_item_input_province">
                   <div className="searchbar_item_input_province_items">
@@ -184,7 +215,7 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
             </div>
             {/* Search by facilities */}
             <hr className="searchbar_item_divider" />
-            <div className="searchbar_item">
+            {/* <div className="searchbar_item">
               <div className="searchbar_item_title">Cơ sở vật chất</div>
               <div className="searchbar_item_input">
                 <div className="searchbar_item_input_province">
@@ -204,7 +235,7 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className={styles.searchbar_items_button}>
               <button
                 type="submit"
