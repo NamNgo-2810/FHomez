@@ -60,7 +60,6 @@ exports.deleteHome = async (req, res) => {
 exports.search = async (req, res) => {
     // TO DO: Query all the records that contains information user entered,
     // and then sort by percentage of matching criterias
-    console.log(req.body);
     if (Object.keys(req.body) == 0) {
         return this.getAllHome(req, res);
     }
@@ -75,7 +74,11 @@ exports.search = async (req, res) => {
 
     const { latitude, longtitude } = req.body;
 
-    const weights = { price: 0.4, area: 0.3, location: 0.3 };
+    const weights = {
+        price: req.body.priceWeight,
+        area: req.body.priceWeight,
+        distance: req.body.distanceWeight,
+    };
 
     for (let i in result) {
         result[i].src = result[i].src.split(",");
