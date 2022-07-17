@@ -72,7 +72,7 @@ exports.search = async (req, res) => {
             .send("Can't find any home matching your requirements!");
     }
 
-    const { latitude, longtitude } = req.body;
+    const { latitude, longitude } = req.body;
 
     const weights = {
         price: req.body.priceWeight,
@@ -88,7 +88,7 @@ exports.search = async (req, res) => {
         result[i].facilities = result[i].facilities.split(",");
     }
 
-    result = sort({ latitude, longtitude }, result, weights);
+    result = sort({ latitude, longitude }, result, weights);
 
     return res.status(200).json(result);
 };
