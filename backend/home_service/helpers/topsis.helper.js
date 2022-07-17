@@ -2,7 +2,7 @@ exports.sort = (location, data, weights) => {
     data.map((home) => {
         home.distance = Math.sqrt(
             Math.pow((home.latitude - location.latitude) * 100, 2) +
-                Math.pow((home.longitude - location.longtitude) * 100, 2)
+                Math.pow((home.longitude - location.longitude) * 100, 2)
         );
     });
 
@@ -21,6 +21,7 @@ exports.sort = (location, data, weights) => {
         price: Math.min(...data.map((home) => home.price)),
         // price: price,
         area: Math.max(...data.map((home) => home.area)),
+        // min distance luôn = 0 ra giá trị infinite nè bro 
         distance: Math.min(...data.map((home) => home.distance)),
     };
 
@@ -31,6 +32,7 @@ exports.sort = (location, data, weights) => {
     data.map((home) => {
         home.normedPrice = (1 / (ideal.price * home.price)) * weights.price;
         home.normedArea = (home.area / ideal.area) * weights.area;
+        console.log(ideal.distance,home.distance,weights.distance);
         home.normedDistance =
             (1 / (ideal.distance * home.distance)) * weights.distance;
     });

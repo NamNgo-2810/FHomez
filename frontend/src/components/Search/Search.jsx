@@ -28,6 +28,7 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
     e.preventDefault();
 
     let result = await productService.search(keyword);
+    console.log(result)
     setQueryItems(result);
     setHasQuery(true);
   };
@@ -152,12 +153,12 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
                   <div className="price_slider_track_container">
                     <MultiRangeSlider
                       min={0}
-                      max={50}
+                      max={6}
                       onChange={({ min, max }) =>
                         setKeyword((prev) =>
                           Object.assign(prev, {
-                            min: min,
-                            max: max,
+                            minCost: min,
+                            maxCost: max,
                           })
                         )
                       }
@@ -199,7 +200,7 @@ const Search = ({ keyword, setKeyword, setHasQuery, setQueryItems }) => {
                   <div className="searchbar_item_input_province_items">
                     <MultiRangeSlider
                       min={0}
-                      max={200}
+                      max={50}
                       onChange={({ min, max }) =>
                         setKeyword((prev) =>
                           Object.assign(prev, {
