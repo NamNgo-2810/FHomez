@@ -20,10 +20,11 @@ async function getAllHome() {
 }
 
 async function getByHomeID(data) {
+    console.log(data.motel_id);
     return new Promise((resolve, reject) => {
         connection.query(
-            `SELECT motel_id, src, title, content, price, category, area, createdAt, typeOfNews, status, category, facilities, dayOfNews, latitude, longitude, address, street, district, user_id
-             FROM motel WHERE motel.motel_id = ${data.motel_id} `,
+            `SELECT *
+             FROM motel WHERE motel_id = ${data.motel_id} `,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);
@@ -135,18 +136,17 @@ async function updateHome(data) {
 
 async function searchHome(keys) {
     const { minCost, maxCost, minArea, maxArea } = keys;
+    console.log(keys);
     return new Promise((resolve, reject) => {
-        connection.query(
-            `SELECT * FROM motel 
+        const query = `SELECT * FROM motel 
             WHERE price >= ${minCost ? minCost : 0} 
             AND area >= ${minArea ? minArea : 0}
             ${maxCost ? ` AND price <= ${maxCost} ` : ""}
-            ${maxArea ? ` AND area <= ${maxArea}` : ""}`,
-            (error, result) => {
-                if (error) reject(error);
-                resolve(result);
-            }
-        );
+            ${maxArea ? ` AND area <= ${maxArea}` : ""}`;
+        connection.query(query, (error, result) => {
+            if (error) reject(error);
+            resolve(result);
+        });
     }).then((result) => {
         return result;
     });

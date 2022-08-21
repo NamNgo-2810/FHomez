@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
     home_service:
-        image: fhomez/home
+        image: nam/home_service
         container_name: backend-home-service
         ports:
             - "5001:5001"
@@ -12,7 +12,7 @@ services:
         networks:
             - fhomez-network
     auth_service:
-        image: fhomez/auth
+        image: name/auth_service
         container_name: backend-auth-service
         ports:
             - "8000:8000"
@@ -22,7 +22,7 @@ services:
         networks:
             - fhomez-network
     admin_service:
-        image: fhomez/admin
+        image: nam/admin_service
         container_name: backend-admin-service
         ports:
             - "8001:8001"
@@ -32,7 +32,7 @@ services:
         networks:
             - fhomez-network
     chat_service:
-        image: fhomez/chat
+        image: nam/chat_service
         container_name: backend-chat-service
         ports:
             - "5000:5000"

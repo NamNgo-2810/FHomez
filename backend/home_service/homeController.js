@@ -15,11 +15,7 @@ exports.getAllHome = async (req, res) => {
 
 exports.getByHomeID = async (req, res) => {
     const result = await database.getByHomeID(req.params);
-    return res.status(200).json(
-        Object.assign(result[0], {
-            facilities: JSON.parse(result[0].facilities),
-        })
-    );
+    return res.status(200).json(Object.assign(result[0]));
 };
 
 exports.getByUserID = async (req, res) => {
