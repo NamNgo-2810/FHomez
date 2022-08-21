@@ -59,7 +59,7 @@ function ProductList({ keyword, hasQuery, queryItems }) {
                 </Card>
             ) : hasQuery ? (
                 <>
-                    {!!queryItemsFilter &&
+                    {Array.isArray(queryItemsFilter) &&
                         queryItemsFilter.map((product, i) => (
                             <ProductItem
                                 key={product.motel_id}
